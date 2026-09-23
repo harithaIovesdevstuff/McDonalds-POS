@@ -4331,7 +4331,21 @@ renderOrder();
         );
     }
 
-    newCustomer();
+    function showCustomer() {
+    const customer =
+        customers[
+            Math.floor(
+                Math.random() * customers.length
+            )
+        ];
+
+    alert(
+        "👤 " + customer.name +
+        "\n🛎️ " + customer.mode +
+        "\n\n" +
+        customer.order
+    );
+}
 </script>
 </body>
 </html>
