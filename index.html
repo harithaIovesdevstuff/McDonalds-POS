@@ -1,0 +1,4296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RushBite POS</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #eef1f4;
+    color: #20242a;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar {
+    height: 68px;
+    background: #17191d;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    border-bottom: 3px solid #f5a623;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    background: #f5a623;
+    color: #17191d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.brand-name {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.brand-sub {
+    color: #969ca4;
+    font-size: 10px;
+    margin-top: 2px;
+    letter-spacing: .6px;
+}
+
+.top-info {
+    display: flex;
+    gap: 9px;
+}
+
+.info-box {
+    min-width: 85px;
+    background: #24272d;
+    border: 1px solid #353940;
+    border-radius: 7px;
+    padding: 7px 11px;
+}
+
+.info-label {
+    color: #8d949d;
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.info-value {
+    font-size: 13px;
+    font-weight: 800;
+    margin-top: 3px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #38d996;
+    margin-right: 4px;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+
+.pos {
+    height: calc(100vh - 68px);
+    display: grid;
+    grid-template-columns: 185px minmax(0, 1fr) 355px;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    background: #202329;
+    color: white;
+    padding: 13px 10px;
+    border-right: 1px solid #343840;
+    overflow-y: auto;
+}
+
+.side-title {
+    color: #8c939c;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+    padding: 8px 8px;
+}
+
+.mode-button {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: #c7ccd2;
+    padding: 12px 9px;
+    border-radius: 7px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.mode-button:hover {
+    background: #2d3138;
+    color: white;
+}
+
+.mode-button.active {
+    background: #f5a623;
+    color: #17191d;
+}
+
+.mode-icon {
+    width: 25px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.sidebar-divider {
+    height: 1px;
+    background: #343840;
+    margin: 15px 4px;
+}
+
+.shift-card {
+    background: #292d34;
+    border: 1px solid #383d45;
+    border-radius: 8px;
+    padding: 11px;
+    margin: 6px 3px;
+}
+
+.shift-title {
+    color: #9ca3ab;
+    font-size: 10px;
+    margin-bottom: 6px;
+}
+
+.shift-value {
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.shift-small {
+    color: #777f89;
+    font-size: 9px;
+    margin-top: 3px;
+}
+
+/* =========================
+   CENTER
+========================= */
+
+.center {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: #f4f6f8;
+}
+
+.order-header {
+    height: 73px;
+    background: white;
+    border-bottom: 1px solid #dce0e5;
+    padding: 12px 17px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-heading {
+    font-size: 19px;
+    font-weight: 900;
+}
+
+.order-subheading {
+    font-size: 11px;
+    color: #7c838c;
+    margin-top: 3px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.header-btn {
+    border: 1px solid #d6dbe0;
+    background: white;
+    border-radius: 6px;
+    padding: 8px 11px;
+    cursor: pointer;
+    color: #555c65;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.header-btn:hover {
+    background: #f3f4f5;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-row {
+    background: white;
+    border-bottom: 1px solid #dce0e5;
+    padding: 9px 14px;
+    display: flex;
+    gap: 7px;
+}
+
+.search-box {
+    flex: 1;
+    border: 1px solid #d5dae0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    outline: none;
+    font-size: 11px;
+}
+
+.search-box:focus {
+    border-color: #f5a623;
+}
+
+.search-clear {
+    border: 1px solid #d5dae0;
+    background: #f6f7f8;
+    border-radius: 6px;
+    padding: 0 13px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* =========================
+   CATEGORIES
+========================= */
+
+.categories {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    background: white;
+    border-bottom: 1px solid #dce0e5;
+    overflow-x: auto;
+}
+
+.category {
+    flex-shrink: 0;
+    border: 1px solid #d7dce1;
+    background: #f7f8f9;
+    color: #555d65;
+    border-radius: 6px;
+    padding: 9px 13px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.category:hover {
+    border-color: #f5a623;
+}
+
+.category.active {
+    background: #202329;
+    color: white;
+    border-color: #202329;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.menu {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.section-title h2 {
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.item-count {
+    color: #8a9199;
+    font-size: 10px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+.product {
+    position: relative;
+    background: white;
+    border: 1px solid #dce0e5;
+    border-radius: 9px;
+    padding: 10px;
+    min-height: 164px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: .12s ease;
+}
+
+.product:hover {
+    border-color: #f5a623;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07);
+    transform: translateY(-1px);
+}
+
+.product:active {
+    transform: scale(.985);
+}
+
+.product-image {
+    height: 72px;
+    border-radius: 7px;
+    background: #f0f2f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    margin-bottom: 8px;
+}
+
+.product-name {
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.25;
+}
+
+.product-description {
+    color: #858c95;
+    font-size: 9px;
+    line-height: 1.35;
+    margin-top: 4px;
+    flex: 1;
+}
+
+.product-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.product-price {
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.add-label {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    background: #f5a623;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+}
+
+.product-badge {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    background: #202329;
+    color: white;
+    padding: 3px 5px;
+    border-radius: 4px;
+    font-size: 7px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 55px;
+    color: #9299a1;
+}
+
+.no-results-icon {
+    font-size: 35px;
+    margin-bottom: 8px;
+}
+
+/* =========================
+   ORDER PANEL
+========================= */
+
+.order-panel {
+    background: white;
+    border-left: 1px solid #d6dbe0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.ticket-header {
+    padding: 14px;
+    border-bottom: 1px solid #dfe3e7;
+}
+
+.ticket-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ticket-title {
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.ticket-number {
+    background: #202329;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.customer-line {
+    display: flex;
+    gap: 6px;
+    margin-top: 9px;
+}
+
+.customer-field {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid #d8dde2;
+    border-radius: 5px;
+    padding: 8px;
+    outline: none;
+    font-size: 10px;
+}
+
+.customer-field:focus {
+    border-color: #f5a623;
+}
+
+/* =========================
+   TICKET
+========================= */
+
+.ticket-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 9px 12px;
+}
+
+.empty-order {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #9aa1a9;
+    padding: 30px;
+}
+
+.empty-icon {
+    font-size: 40px;
+    margin-bottom: 9px;
+    opacity: .65;
+}
+
+.empty-order strong {
+    color: #636a72;
+    font-size: 12px;
+}
+
+.empty-order span {
+    font-size: 10px;
+    line-height: 1.4;
+    margin-top: 5px;
+}
+
+.order-item {
+    border-bottom: 1px solid #edf0f2;
+    padding: 9px 3px;
+}
+
+.item-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 7px;
+}
+
+.item-name {
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.item-price {
+    font-size: 11px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.item-details {
+    color: #8a9199;
+    font-size: 8px;
+    line-height: 1.4;
+    margin-top: 3px;
+}
+
+.quantity-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.qty-btn {
+    width: 22px;
+    height: 22px;
+    border: 1px solid #d7dce1;
+    background: #f8f9fa;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.quantity {
+    min-width: 17px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.remove-btn {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: #a6adb5;
+    cursor: pointer;
+    font-size: 9px;
+}
+
+.remove-btn:hover {
+    color: #d9534f;
+}
+
+/* =========================
+   TOTALS
+========================= */
+
+.totals {
+    padding: 12px 14px;
+    border-top: 1px solid #dfe3e7;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    color: #626970;
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+.total-row.grand {
+    color: #17191d;
+    font-size: 18px;
+    font-weight: 900;
+    padding-top: 9px;
+    margin-top: 7px;
+    border-top: 1px dashed #d6dbe0;
+}
+
+.tax-note {
+    text-align: right;
+    color: #969ca3;
+    font-size: 8px;
+}
+
+/* =========================
+   ORDER BUTTONS
+========================= */
+
+.order-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 9px 12px 13px;
+}
+
+.action-btn {
+    border: 1px solid #d7dce1;
+    background: #f7f8f9;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 900;
+    color: #50575f;
+}
+
+.action-btn:hover {
+    background: #eceff2;
+}
+
+.action-btn.danger:hover {
+    color: #c7443e;
+    border-color: #e7b1ad;
+    background: #fff1f0;
+}
+
+.pay-btn {
+    grid-column: span 2;
+    border: 0;
+    border-radius: 7px;
+    padding: 14px;
+    background: #f5a623;
+    color: #17191d;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.pay-btn:hover {
+    background: #ffb536;
+}
+
+.pay-btn:disabled {
+    background: #d9dbde;
+    color: #96999d;
+    cursor: not-allowed;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.56);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal {
+    width: min(540px, 95vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 55px rgba(0,0,0,.3);
+}
+
+.modal-header {
+    padding: 15px 17px;
+    border-bottom: 1px solid #e0e3e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    font-size: 16px;
+}
+
+.modal-sub {
+    color: #858c95;
+    font-size: 9px;
+    margin-top: 3px;
+}
+
+.modal-close {
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 5px;
+    background: #eef0f2;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.modal-body {
+    padding: 17px;
+}
+
+.modal-section {
+    margin-bottom: 17px;
+}
+
+.modal-section-title {
+    color: #6d747d;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 8px;
+}
+
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+}
+
+.option-button {
+    border: 1px solid #d7dce1;
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 9px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.option-button:hover {
+    border-color: #f5a623;
+}
+
+.option-button.selected {
+    border-color: #f5a623;
+    background: #fff6e5;
+}
+
+.option-price {
+    display: block;
+    color: #7d858e;
+    font-size: 8px;
+    margin-top: 3px;
+}
+
+.checkbox-list {
+    display: grid;
+    gap: 6px;
+}
+
+.check-option {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid #e0e3e6;
+    border-radius: 6px;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.check-option input {
+    accent-color: #f5a623;
+}
+
+.check-price {
+    margin-left: auto;
+    color: #747c85;
+}
+
+.notes-input {
+    width: 100%;
+    min-height: 65px;
+    resize: vertical;
+    border: 1px solid #d7dce1;
+    border-radius: 6px;
+    padding: 9px;
+    outline: none;
+    font-size: 10px;
+}
+
+.notes-input:focus {
+    border-color: #f5a623;
+}
+
+.modal-price {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #d6dbe0;
+    padding-top: 12px;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 7px;
+    margin-top: 15px;
+}
+
+.modal-btn {
+    flex: 1;
+    border: 1px solid #d5d9de;
+    background: #f6f7f8;
+    border-radius: 6px;
+    padding: 11px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.modal-btn.primary {
+    background: #f5a623;
+    border-color: #f5a623;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translate(-50%, 20px);
+    background: #202329;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s;
+    z-index: 300;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c7ccd1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 1000px) {
+
+    .pos {
+        grid-template-columns: 155px minmax(0,1fr) 320px;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px,1fr));
+    }
+
+    .top-info .info-box:nth-child(2),
+    .top-info .info-box:nth-child(3) {
+        display: none;
+    }
+}
+
+@media(max-width: 800px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .pos {
+        height: auto;
+        min-height: calc(100vh - 68px);
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: flex;
+        overflow-x: auto;
+        padding: 7px;
+    }
+
+    .side-title,
+    .sidebar-divider,
+    .shift-card {
+        display: none;
+    }
+
+    .mode-button {
+        min-width: 120px;
+        margin: 0 3px;
+    }
+
+    .order-panel {
+        min-height: 500px;
+        border-left: 0;
+        border-top: 1px solid #d6dbe0;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            R
+        </div>
+
+        <div>
+
+            <div class="brand-name">
+                RUSHBITE
+            </div>
+
+            <div class="brand-sub">
+                POINT OF SALE · TRAINING TERMINAL
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="top-info">
+
+        <div class="info-box">
+
+            <div class="info-label">
+                Terminal
+            </div>
+
+            <div class="info-value">
+                POS-04
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-label">
+                Orders
+            </div>
+
+            <div class="info-value" id="ordersToday">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-label">
+                Sales
+            </div>
+
+            <div class="info-value" id="salesToday">
+                ₹0.00
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-label">
+                System
+            </div>
+
+            <div class="info-value">
+                <span class="status-dot"></span>
+                Online
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     POS
+===================================================== -->
+
+<div class="pos">
+
+
+    <!-- =================================================
+         LEFT SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="side-title">
+            Service Mode
+        </div>
+
+
+        <button class="mode-button active" data-mode="dinein">
+
+            <span class="mode-icon">
+                🍽️
+            </span>
+
+            <span>
+                Dine In
+            </span>
+
+        </button>
+
+
+        <button class="mode-button" data-mode="takeaway">
+
+            <span class="mode-icon">
+                🥡
+            </span>
+
+            <span>
+                Takeaway
+            </span>
+
+        </button>
+
+
+        <button class="mode-button" data-mode="drive">
+
+            <span class="mode-icon">
+                🚗
+            </span>
+
+            <span>
+                Drive-Thru
+            </span>
+
+        </button>
+
+
+        <button class="mode-button" data-mode="delivery">
+
+            <span class="mode-icon">
+                🛵
+            </span>
+
+            <span>
+                Delivery
+            </span>
+
+        </button>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <div class="side-title">
+            Shift
+        </div>
+
+
+        <div class="shift-card">
+
+            <div class="shift-title">
+                Current cashier
+            </div>
+
+            <div class="shift-value">
+                SAM
+            </div>
+
+            <div class="shift-small">
+                Terminal POS-04
+            </div>
+
+        </div>
+
+
+        <div class="shift-card">
+
+            <div class="shift-title">
+                Shift status
+            </div>
+
+            <div class="shift-value">
+                OPEN
+            </div>
+
+            <div class="shift-small">
+                Started 08:00 AM
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =================================================
+         CENTER MENU
+    ================================================== -->
+
+    <main class="center">
+
+
+        <div class="order-header">
+
+            <div>
+
+                <div class="order-heading" id="modeTitle">
+                    Dine In Order
+                </div>
+
+                <div class="order-subheading" id="modeSubtitle">
+                    Select items from the menu to begin
+                </div>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button
+                    class="header-btn"
+                    onclick="showInfo('Keyboard Shortcuts are coming in a later part.')"
+                >
+                    ⌨ Shortcuts
+                </button>
+
+
+                <button
+                    class="header-btn"
+                    onclick="showInfo('Training Mode is active.')"
+                >
+                    ● Training
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="searchBox"
+                class="search-box"
+                placeholder="Search menu items..."
+                autocomplete="off"
+            >
+
+
+            <button
+                class="search-clear"
+                onclick="clearSearch()"
+            >
+                Clear
+            </button>
+
+        </div>
+
+
+        <!-- CATEGORIES -->
+
+        <nav class="categories">
+
+            <button
+                class="category active"
+                data-category="Burgers"
+            >
+                🍔 Burgers
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Meals"
+            >
+                🍔 Meals
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Chicken"
+            >
+                🍗 Chicken
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Wraps"
+            >
+                🌯 Wraps
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Sides"
+            >
+                🍟 Sides
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Drinks"
+            >
+                🥤 Drinks
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Shakes"
+            >
+                🥤 Shakes
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Desserts"
+            >
+                🍦 Desserts
+            </button>
+
+
+            <button
+                class="category"
+                data-category="Breakfast"
+            >
+                🍳 Breakfast
+            </button>
+
+        </nav>
+
+
+        <!-- MENU -->
+
+        <section class="menu">
+
+            <div class="section-title">
+
+                <h2 id="categoryTitle">
+                    Burgers
+                </h2>
+
+                <span
+                    class="item-count"
+                    id="itemCount"
+                >
+                    0 items
+                </span>
+
+            </div>
+
+
+            <div
+                class="menu-grid"
+                id="menuGrid"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =================================================
+         RIGHT ORDER TICKET
+    ================================================== -->
+
+    <aside class="order-panel">
+
+
+        <div class="ticket-header">
+
+            <div class="ticket-top">
+
+                <div class="ticket-title">
+                    Current Order
+                </div>
+
+                <div
+                    class="ticket-number"
+                    id="orderNumber"
+                >
+                    #1001
+                </div>
+
+            </div>
+
+
+            <div class="customer-line">
+
+                <input
+                    class="customer-field"
+                    id="customerName"
+                    placeholder="Customer name"
+                >
+
+
+                <input
+                    class="customer-field"
+                    id="tableNumber"
+                    placeholder="Table"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="ticket-items"
+            id="ticketItems"
+        >
+
+            <div class="empty-order">
+
+                <div class="empty-icon">
+                    🧾
+                </div>
+
+                <strong>
+                    No items in this order
+                </strong>
+
+                <span>
+                    Select a product from the menu<br>
+                    to add it to the ticket.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- TOTALS -->
+
+        <div class="totals">
+
+            <div class="total-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <span id="subtotal">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="total-row">
+
+                <span>
+                    Tax (5%)
+                </span>
+
+                <span id="tax">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="total-row">
+
+                <span>
+                    Discount
+                </span>
+
+                <span id="discount">
+                    - ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="total-row grand">
+
+                <span>
+                    Total
+                </span>
+
+                <span id="total">
+                    ₹0.00
+                </span>
+
+            </div>
+
+
+            <div class="tax-note">
+                Inclusive of applicable taxes
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="order-actions">
+
+            <button
+                class="action-btn"
+                onclick="holdOrder()"
+            >
+                ⏸ Hold
+            </button>
+
+
+            <button
+                class="action-btn"
+                onclick="recallOrder()"
+            >
+                ↻ Recall
+            </button>
+
+
+            <button
+                class="action-btn"
+                onclick="applyDiscount()"
+            >
+                % Discount
+            </button>
+
+
+            <button
+                class="action-btn danger"
+                onclick="clearOrder()"
+            >
+                ✕ Clear
+            </button>
+
+
+            <button
+                class="pay-btn"
+                id="payButton"
+                onclick="checkout()"
+                disabled
+            >
+                PAY ₹0.00
+            </button>
+
+        </div>
+
+    </aside>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div id="modalRoot"></div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   RUSHBITE POS
+   PART 1 + PART 2
+========================================================= */
+
+"use strict";
+
+
+/* =========================================================
+   MENU DATABASE
+========================================================= */
+
+const MENU = {
+
+    Burgers: [
+
+        {
+            id: "classic",
+            name: "Classic Burger",
+            description: "Beef patty, lettuce, tomato & sauce",
+            price: 129,
+            icon: "🍔",
+            customizable: true
+        },
+
+        {
+            id: "cheese",
+            name: "Cheeseburger",
+            description: "Beef patty with melted cheese",
+            price: 149,
+            icon: "🍔",
+            customizable: true
+        },
+
+        {
+            id: "double",
+            name: "Double Cheeseburger",
+            description: "Two beef patties & double cheese",
+            price: 199,
+            icon: "🍔",
+            customizable: true
+        },
+
+        {
+            id: "crispy",
+            name: "Crispy Chicken Burger",
+            description: "Crispy chicken, lettuce & mayo",
+            price: 159,
+            icon: "🍔",
+            customizable: true
+        },
+
+        {
+            id: "spicy",
+            name: "Spicy Chicken Burger",
+            description: "Crispy chicken with spicy sauce",
+            price: 169,
+            icon: "🌶️",
+            customizable: true
+        },
+
+        {
+            id: "veg",
+            name: "Veggie Burger",
+            description: "Crispy vegetable patty & fresh salad",
+            price: 119,
+            icon: "🥬",
+            customizable: true
+        },
+
+        {
+            id: "bbq",
+            name: "BBQ Bacon Burger",
+            description: "Beef patty, BBQ sauce & bacon",
+            price: 219,
+            icon: "🍔",
+            customizable: true
+        },
+
+        {
+            id: "mushroom",
+            name: "Mushroom Swiss Burger",
+            description: "Mushroom, Swiss cheese & sauce",
+            price: 209,
+            icon: "🍄",
+            customizable: true
+        }
+
+    ],
+
+
+    Meals: [
+
+        {
+            id: "classic-meal",
+            name: "Classic Burger Meal",
+            description: "Burger + fries + drink",
+            price: 229,
+            icon: "🍔",
+            combo: true
+        },
+
+        {
+            id: "cheese-meal",
+            name: "Cheeseburger Meal",
+            description: "Cheeseburger + fries + drink",
+            price: 249,
+            icon: "🍔",
+            combo: true
+        },
+
+        {
+            id: "chicken-meal",
+            name: "Chicken Meal",
+            description: "Chicken burger + fries + drink",
+            price: 259,
+            icon: "🍗",
+            combo: true
+        },
+
+        {
+            id: "double-meal",
+            name: "Double Meal",
+            description: "Double burger + fries + drink",
+            price: 299,
+            icon: "🍔",
+            combo: true
+        },
+
+        {
+            id: "wrap-meal",
+            name: "Wrap Meal",
+            description: "Chicken wrap + fries + drink",
+            price: 249,
+            icon: "🌯",
+            combo: true
+        },
+
+        {
+            id: "nugget-meal",
+            name: "Nugget Meal",
+            description: "10 nuggets + fries + drink",
+            price: 279,
+            icon: "🍗",
+            combo: true
+        }
+
+    ],
+
+
+    Chicken: [
+
+        {
+            id: "nuggets6",
+            name: "6pc Chicken Nuggets",
+            description: "Six crispy chicken nuggets",
+            price: 139,
+            icon: "🍗",
+            customizable: true
+        },
+
+        {
+            id: "nuggets10",
+            name: "10pc Chicken Nuggets",
+            description: "Ten crispy chicken nuggets",
+            price: 199,
+            icon: "🍗",
+            customizable: true
+        },
+
+        {
+            id: "nuggets20",
+            name: "20pc Chicken Nuggets",
+            description: "Twenty crispy chicken nuggets",
+            price: 349,
+            icon: "🍗",
+            customizable: true
+        },
+
+        {
+            id: "strips3",
+            name: "3pc Chicken Strips",
+            description: "Three crispy chicken strips",
+            price: 159,
+            icon: "🍗",
+            customizable: true
+        },
+
+        {
+            id: "strips5",
+            name: "5pc Chicken Strips",
+            description: "Five crispy chicken strips",
+            price: 229,
+            icon: "🍗",
+            customizable: true
+        },
+
+        {
+            id: "wings",
+            name: "Chicken Wings",
+            description: "Crispy seasoned chicken wings",
+            price: 179,
+            icon: "🍗",
+            customizable: true
+        }
+
+    ],
+
+
+    Wraps: [
+
+        {
+            id: "classic-wrap",
+            name: "Classic Chicken Wrap",
+            description: "Chicken, lettuce & creamy sauce",
+            price: 149,
+            icon: "🌯",
+            customizable: true
+        },
+
+        {
+            id: "spicy-wrap",
+            name: "Spicy Chicken Wrap",
+            description: "Spicy chicken & vegetables",
+            price: 159,
+            icon: "🌯",
+            customizable: true
+        },
+
+        {
+            id: "bbq-wrap",
+            name: "BBQ Chicken Wrap",
+            description: "Chicken, BBQ sauce & onions",
+            price: 169,
+            icon: "🌯",
+            customizable: true
+        },
+
+        {
+            id: "veg-wrap",
+            name: "Veggie Wrap",
+            description: "Crispy vegetables & fresh salad",
+            price: 119,
+            icon: "🌯",
+            customizable: true
+        }
+
+    ],
+
+
+    Sides: [
+
+        {
+            id: "fries-small",
+            name: "Small Fries",
+            description: "Crispy golden fries",
+            price: 69,
+            icon: "🍟"
+        },
+
+        {
+            id: "fries-medium",
+            name: "Medium Fries",
+            description: "Crispy golden fries",
+            price: 89,
+            icon: "🍟"
+        },
+
+        {
+            id: "fries-large",
+            name: "Large Fries",
+            description: "Large serving of fries",
+            price: 109,
+            icon: "🍟"
+        },
+
+        {
+            id: "cheese-fries",
+            name: "Cheese Fries",
+            description: "Fries topped with cheese",
+            price: 129,
+            icon: "🍟"
+        },
+
+        {
+            id: "loaded-fries",
+            name: "Loaded Fries",
+            description: "Fries, cheese & special sauce",
+            price: 159,
+            icon: "🍟"
+        },
+
+        {
+            id: "hashbrown",
+            name: "Hash Brown",
+            description: "Crispy golden hash brown",
+            price: 59,
+            icon: "🥔"
+        },
+
+        {
+            id: "mozzarella",
+            name: "Mozzarella Sticks",
+            description: "Crispy mozzarella with dip",
+            price: 139,
+            icon: "🧀"
+        }
+
+    ],
+
+
+    Drinks: [
+
+        {
+            id: "coke",
+            name: "Coca-Cola",
+            description: "Chilled soft drink",
+            price: 79,
+            icon: "🥤"
+        },
+
+        {
+            id: "sprite",
+            name: "Sprite",
+            description: "Chilled lemon-lime drink",
+            price: 79,
+            icon: "🥤"
+        },
+
+        {
+            id: "fanta",
+            name: "Fanta",
+            description: "Chilled orange drink",
+            price: 79,
+            icon: "🥤"
+        },
+
+        {
+            id: "iced-tea",
+            name: "Iced Tea",
+            description: "Refreshing lemon iced tea",
+            price: 89,
+            icon: "🧋"
+        },
+
+        {
+            id: "cola-zero",
+            name: "Cola Zero",
+            description: "Zero sugar cola",
+            price: 79,
+            icon: "🥤"
+        },
+
+        {
+            id: "water",
+            name: "Mineral Water",
+            description: "500ml bottled water",
+            price: 49,
+            icon: "💧"
+        },
+
+        {
+            id: "orange-juice",
+            name: "Orange Juice",
+            description: "Chilled orange juice",
+            price: 99,
+            icon: "🍊"
+        }
+
+    ],
+
+
+    Shakes: [
+
+        {
+            id: "vanilla-shake",
+            name: "Vanilla Shake",
+            description: "Cold creamy vanilla shake",
+            price: 119,
+            icon: "🥤"
+        },
+
+        {
+            id: "chocolate-shake",
+            name: "Chocolate Shake",
+            description: "Rich chocolate shake",
+            price: 129,
+            icon: "🥤"
+        },
+
+        {
+            id: "strawberry-shake",
+            name: "Strawberry Shake",
+            description: "Creamy strawberry shake",
+            price: 129,
+            icon: "🥤"
+        },
+
+        {
+            id: "oreo-shake",
+            name: "Oreo Shake",
+            description: "Cookie blended shake",
+            price: 149,
+            icon: "🥤"
+        }
+
+    ],
+
+
+    Desserts: [
+
+        {
+            id: "sundae",
+            name: "Hot Fudge Sundae",
+            description: "Soft serve with chocolate fudge",
+            price: 89,
+            icon: "🍨"
+        },
+
+        {
+            id: "caramel-sundae",
+            name: "Caramel Sundae",
+            description: "Soft serve with caramel",
+            price: 89,
+            icon: "🍨"
+        },
+
+        {
+            id: "mcflurry",
+            name: "Cookie McFlurry",
+            description: "Soft serve with cookie pieces",
+            price: 119,
+            icon: "🍦"
+        },
+
+        {
+            id: "brownie",
+            name: "Chocolate Brownie",
+            description: "Warm chocolate brownie",
+            price: 99,
+            icon: "🍫"
+        },
+
+        {
+            id: "apple-pie",
+            name: "Apple Pie",
+            description: "Warm crispy apple pie",
+            price: 69,
+            icon: "🥧"
+        }
+
+    ],
+
+
+    Breakfast: [
+
+        {
+            id: "egg-muffin",
+            name: "Egg & Cheese Muffin",
+            description: "Egg, cheese & toasted muffin",
+            price: 119,
+            icon: "🥚",
+            customizable: true
+        },
+
+        {
+            id: "sausage-muffin",
+            name: "Sausage Muffin",
+            description: "Sausage, egg & cheese",
+            price: 149,
+            icon: "🥚",
+            customizable: true
+        },
+
+        {
+            id: "breakfast-wrap",
+            name: "Breakfast Wrap",
+            description: "Egg, cheese & crispy filling",
+            price: 139,
+            icon: "🌯",
+            customizable: true
+        },
+
+        {
+            id: "pancakes",
+            name: "Pancake Stack",
+            description: "Fluffy pancakes with syrup",
+            price: 129,
+            icon: "🥞"
+        },
+
+        {
+            id: "breakfast-hash",
+            name: "Breakfast Hash",
+            description: "Crispy potato breakfast side",
+            price: 89,
+            icon: "🥔"
+        }
+
+    ]
+
+};
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+const state = {
+
+    category: "Burgers",
+
+    mode: "dinein",
+
+    order: [],
+
+    orderNumber: 1001,
+
+    heldOrder: null,
+
+    discount: 0,
+
+    sales: 0,
+
+    ordersCompleted: 0,
+
+    search: ""
+
+};
+
+
+/* =========================================================
+   DOM REFERENCES
+========================================================= */
+
+const menuGrid =
+    document.getElementById("menuGrid");
+
+const categoryTitle =
+    document.getElementById("categoryTitle");
+
+const itemCount =
+    document.getElementById("itemCount");
+
+const ticketItems =
+    document.getElementById("ticketItems");
+
+const subtotalElement =
+    document.getElementById("subtotal");
+
+const taxElement =
+    document.getElementById("tax");
+
+const discountElement =
+    document.getElementById("discount");
+
+const totalElement =
+    document.getElementById("total");
+
+const payButton =
+    document.getElementById("payButton");
+
+const orderNumberElement =
+    document.getElementById("orderNumber");
+
+const ordersTodayElement =
+    document.getElementById("ordersToday");
+
+const salesTodayElement =
+    document.getElementById("salesToday");
+
+const modeTitle =
+    document.getElementById("modeTitle");
+
+const modeSubtitle =
+    document.getElementById("modeSubtitle");
+
+const searchBox =
+    document.getElementById("searchBox");
+
+
+/* =========================================================
+   MONEY
+========================================================= */
+
+function money(value) {
+
+    return "₹" + Number(value).toFixed(2);
+
+}
+
+
+/* =========================================================
+   GET ALL ITEMS
+========================================================= */
+
+function getAllMenuItems() {
+
+    const items = [];
+
+    Object.keys(MENU).forEach(function(category) {
+
+        MENU[category].forEach(function(item) {
+
+            items.push(item);
+
+        });
+
+    });
+
+    return items;
+
+}
+
+
+/* =========================================================
+   RENDER MENU
+========================================================= */
+
+function renderMenu() {
+
+    let items;
+
+
+    if (state.search) {
+
+        items =
+            getAllMenuItems().filter(function(item) {
+
+                const name =
+                    item.name.toLowerCase();
+
+                const description =
+                    item.description.toLowerCase();
+
+                return (
+                    name.includes(state.search) ||
+                    description.includes(state.search)
+                );
+
+            });
+
+
+        categoryTitle.textContent =
+            "Search Results";
+
+    } else {
+
+        items =
+            MENU[state.category] || [];
+
+        categoryTitle.textContent =
+            state.category;
+
+    }
+
+
+    itemCount.textContent =
+        items.length +
+        (items.length === 1
+            ? " item"
+            : " items");
+
+
+    menuGrid.innerHTML = "";
+
+
+    if (items.length === 0) {
+
+        menuGrid.innerHTML = `
+
+            <div class="no-results">
+
+                <div class="no-results-icon">
+                    🔎
+                </div>
+
+                <strong>
+                    No menu items found
+                </strong>
+
+                <div style="font-size:10px;margin-top:5px;">
+                    Try another search
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    items.forEach(function(item) {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "product";
+
+
+        if (item.combo) {
+
+            const badge =
+                document.createElement("div");
+
+            badge.className =
+                "product-badge";
+
+            badge.textContent =
+                "Meal";
+
+            card.appendChild(badge);
+
+        } else if (item.customizable) {
+
+            const badge =
+                document.createElement("div");
+
+            badge.className =
+                "product-badge";
+
+            badge.textContent =
+                "Customize";
+
+            card.appendChild(badge);
+
+        }
+
+
+        card.onclick =
+            function() {
+
+                openCustomization(item);
+
+            };
+
+
+        const image =
+            document.createElement("div");
+
+        image.className =
+            "product-image";
+
+        image.textContent =
+            item.icon;
+
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "product-name";
+
+        name.textContent =
+            item.name;
+
+
+        const description =
+            document.createElement("div");
+
+        description.className =
+            "product-description";
+
+        description.textContent =
+            item.description;
+
+
+        const bottom =
+            document.createElement("div");
+
+        bottom.className =
+            "product-bottom";
+
+
+        const price =
+            document.createElement("div");
+
+        price.className =
+            "product-price";
+
+        price.textContent =
+            money(item.price);
+
+
+        const add =
+            document.createElement("div");
+
+        add.className =
+            "add-label";
+
+        add.textContent =
+            "+";
+
+
+        bottom.appendChild(price);
+
+        bottom.appendChild(add);
+
+
+        card.appendChild(image);
+
+        card.appendChild(name);
+
+        card.appendChild(description);
+
+        card.appendChild(bottom);
+
+
+        menuGrid.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+searchBox.addEventListener(
+    "input",
+    function() {
+
+        state.search =
+            searchBox.value
+                .trim()
+                .toLowerCase();
+
+        renderMenu();
+
+    }
+);
+
+
+function clearSearch() {
+
+    searchBox.value = "";
+
+    state.search = "";
+
+    renderMenu();
+
+    searchBox.focus();
+
+}
+
+
+/* =========================================================
+   CATEGORY BUTTONS
+========================================================= */
+
+document
+    .querySelectorAll(".category")
+    .forEach(function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                document
+                    .querySelectorAll(".category")
+                    .forEach(function(btn) {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                state.category =
+                    button.dataset.category;
+
+
+                clearSearch();
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   SERVICE MODES
+========================================================= */
+
+document
+    .querySelectorAll(".mode-button")
+    .forEach(function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                document
+                    .querySelectorAll(".mode-button")
+                    .forEach(function(btn) {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                state.mode =
+                    button.dataset.mode;
+
+
+                const titles = {
+
+                    dinein: [
+                        "Dine In Order",
+                        "Select a table and add items to the ticket"
+                    ],
+
+                    takeaway: [
+                        "Takeaway Order",
+                        "Prepare an order for customer pickup"
+                    ],
+
+                    drive: [
+                        "Drive-Thru Order",
+                        "Take the customer's order at the drive-thru"
+                    ],
+
+                    delivery: [
+                        "Delivery Order",
+                        "Enter customer and delivery details"
+                    ]
+
+                };
+
+
+                modeTitle.textContent =
+                    titles[state.mode][0];
+
+                modeSubtitle.textContent =
+                    titles[state.mode][1];
+
+
+                showToast(
+                    titles[state.mode][0] +
+                    " selected"
+                );
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   ITEM CUSTOMIZATION
+========================================================= */
+
+function openCustomization(product) {
+
+    const modalRoot =
+        document.getElementById("modalRoot");
+
+
+    modalRoot.dataset.productId =
+        product.id;
+
+    modalRoot.dataset.basePrice =
+        product.price;
+
+
+    modalRoot.innerHTML = `
+
+        <div class="modal-backdrop">
+
+            <div class="modal">
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <h3>
+                            ${product.name}
+                        </h3>
+
+                        <div class="modal-sub">
+                            Customize item before adding
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="modal-close"
+                        onclick="closeModal()"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+
+                    <div class="modal-section">
+
+                        <div class="modal-section-title">
+                            Size
+                        </div>
+
+
+                        <div class="option-grid">
+
+                            <button
+                                class="option-button selected"
+                                data-size="Regular"
+                                data-price="0"
+                                onclick="selectSize(this)"
+                            >
+
+                                <span>
+                                    Regular
+                                </span>
+
+                                <span class="option-price">
+                                    Included
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                class="option-button"
+                                data-size="Large"
+                                data-price="30"
+                                onclick="selectSize(this)"
+                            >
+
+                                <span>
+                                    Large
+                                </span>
+
+                                <span class="option-price">
+                                    + ₹30
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-section">
+
+                        <div class="modal-section-title">
+                            Add-ons
+                        </div>
+
+
+                        <div class="checkbox-list">
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="addon"
+                                    data-name="Extra Cheese"
+                                    data-price="25"
+                                    onchange="updateCustomizationPrice()"
+                                >
+
+                                <span>
+                                    Extra Cheese
+                                </span>
+
+                                <span class="check-price">
+                                    +₹25
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="addon"
+                                    data-name="Extra Patty"
+                                    data-price="55"
+                                    onchange="updateCustomizationPrice()"
+                                >
+
+                                <span>
+                                    Extra Patty
+                                </span>
+
+                                <span class="check-price">
+                                    +₹55
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="addon"
+                                    data-name="Extra Sauce"
+                                    data-price="10"
+                                    onchange="updateCustomizationPrice()"
+                                >
+
+                                <span>
+                                    Extra Sauce
+                                </span>
+
+                                <span class="check-price">
+                                    +₹10
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="addon"
+                                    data-name="Jalapeños"
+                                    data-price="20"
+                                    onchange="updateCustomizationPrice()"
+                                >
+
+                                <span>
+                                    Jalapeños
+                                </span>
+
+                                <span class="check-price">
+                                    +₹20
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-section">
+
+                        <div class="modal-section-title">
+                            Remove ingredients
+                        </div>
+
+
+                        <div class="checkbox-list">
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="remove"
+                                    data-name="No Onion"
+                                >
+
+                                <span>
+                                    No Onion
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="remove"
+                                    data-name="No Tomato"
+                                >
+
+                                <span>
+                                    No Tomato
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="remove"
+                                    data-name="No Lettuce"
+                                >
+
+                                <span>
+                                    No Lettuce
+                                </span>
+
+                            </label>
+
+
+                            <label class="check-option">
+
+                                <input
+                                    type="checkbox"
+                                    class="remove"
+                                    data-name="No Sauce"
+                                >
+
+                                <span>
+                                    No Sauce
+                                </span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-section">
+
+                        <div class="modal-section-title">
+                            Special instructions
+                        </div>
+
+
+                        <textarea
+                            id="itemNotes"
+                            class="notes-input"
+                            placeholder="e.g. Make it extra crispy..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="modal-price">
+
+                        <span>
+                            Item Total
+                        </span>
+
+                        <span id="customPrice">
+                            ${money(product.price)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="modal-actions">
+
+                        <button
+                            class="modal-btn"
+                            onclick="closeModal()"
+                        >
+                            Cancel
+                        </button>
+
+
+                        <button
+                            class="modal-btn primary"
+                            onclick="addCustomizedItem()"
+                        >
+                            Add to Order
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   SIZE
+========================================================= */
+
+function selectSize(button) {
+
+    document
+        .querySelectorAll(".option-button")
+        .forEach(function(option) {
+
+            option.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    updateCustomizationPrice();
+
+}
+
+
+/* =========================================================
+   CUSTOM PRICE
+========================================================= */
+
+function updateCustomizationPrice() {
+
+    const modalRoot =
+        document.getElementById("modalRoot");
+
+
+    let price =
+        Number(
+            modalRoot.dataset.basePrice
+        );
+
+
+    const selectedSize =
+        document.querySelector(
+            ".option-button.selected"
+        );
+
+
+    if (selectedSize) {
+
+        price +=
+            Number(
+                selectedSize.dataset.price
+            );
+
+    }
+
+
+    document
+        .querySelectorAll(".addon:checked")
+        .forEach(function(addon) {
+
+            price +=
+                Number(
+                    addon.dataset.price
+                );
+
+        });
+
+
+    document.getElementById(
+        "customPrice"
+    ).textContent =
+        money(price);
+
+}
+
+
+/* =========================================================
+   ADD CUSTOMIZED ITEM
+========================================================= */
+
+function addCustomizedItem() {
+
+    const modalRoot =
+        document.getElementById(
+            "modalRoot"
+        );
+
+
+    const productId =
+        modalRoot.dataset.productId;
+
+
+    const product =
+        getAllMenuItems().find(
+            function(item) {
+
+                return item.id === productId;
+
+            }
+        );
+
+
+    if (!product) {
+
+        return;
+
+    }
+
+
+    const selectedSize =
+        document.querySelector(
+            ".option-button.selected"
+        );
+
+
+    const size =
+        selectedSize
+            ? selectedSize.dataset.size
+            : "Regular";
+
+
+    let price =
+        product.price;
+
+
+    if (selectedSize) {
+
+        price +=
+            Number(
+                selectedSize.dataset.price
+            );
+
+    }
+
+
+    const addons = [];
+
+
+    document
+        .querySelectorAll(".addon:checked")
+        .forEach(function(addon) {
+
+            addons.push({
+                name: addon.dataset.name,
+                price: Number(addon.dataset.price)
+            });
+
+
+            price +=
+                Number(
+                    addon.dataset.price
+                );
+
+        });
+
+
+    const removals = [];
+
+
+    document
+        .querySelectorAll(".remove:checked")
+        .forEach(function(remove) {
+
+            removals.push(
+                remove.dataset.name
+            );
+
+        });
+
+
+    const notes =
+        document
+            .getElementById("itemNotes")
+            .value
+            .trim();
+
+
+    state.order.push({
+
+        id:
+            product.id +
+            "-" +
+            Date.now(),
+
+        baseId:
+            product.id,
+
+        name:
+            product.name,
+
+        icon:
+            product.icon,
+
+        price:
+            price,
+
+        quantity:
+            1,
+
+        customization: {
+
+            size:
+                size,
+
+            addons:
+                addons,
+
+            removals:
+                removals,
+
+            notes:
+                notes
+
+        }
+
+    });
+
+
+    closeModal();
+
+    renderOrder();
+
+    showToast(
+        product.name +
+        " added"
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeModal() {
+
+    document.getElementById(
+        "modalRoot"
+    ).innerHTML = "";
+
+}
+
+
+/* =========================================================
+   RENDER ORDER
+========================================================= */
+
+function renderOrder() {
+
+    ticketItems.innerHTML = "";
+
+
+    if (state.order.length === 0) {
+
+        ticketItems.innerHTML = `
+
+            <div class="empty-order">
+
+                <div class="empty-icon">
+                    🧾
+                </div>
+
+                <strong>
+                    No items in this order
+                </strong>
+
+                <span>
+                    Select a product from the menu<br>
+                    to add it to the ticket.
+                </span>
+
+            </div>
+
+        `;
+
+    } else {
+
+
+        state.order.forEach(
+            function(item, index) {
+
+                const row =
+                    document.createElement("div");
+
+                row.className =
+                    "order-item";
+
+
+                const main =
+                    document.createElement("div");
+
+                main.className =
+                    "item-main";
+
+
+                const name =
+                    document.createElement("div");
+
+                name.className =
+                    "item-name";
+
+                name.textContent =
+                    item.name;
+
+
+                const price =
+                    document.createElement("div");
+
+                price.className =
+                    "item-price";
+
+                price.textContent =
+                    money(
+                        item.price *
+                        item.quantity
+                    );
+
+
+                main.appendChild(name);
+
+                main.appendChild(price);
+
+
+                const details =
+                    document.createElement("div");
+
+                details.className =
+                    "item-details";
+
+
+                let detailText =
+                    "";
+
+
+                if (item.customization) {
+
+                    detailText =
+                        item.customization.size;
+
+
+                    if (
+                        item.customization.addons.length
+                    ) {
+
+                        detailText +=
+                            " • " +
+                            item.customization.addons
+                                .map(function(addon) {
+                                    return addon.name;
+                                })
+                                .join(", ");
+
+                    }
+
+
+                    if (
+                        item.customization.removals.length
+                    ) {
+
+                        detailText +=
+                            " • " +
+                            item.customization.removals
+                                .join(", ");
+
+                    }
+
+
+                    if (
+                        item.customization.notes
+                    ) {
+
+                        detailText +=
+                            " • Note: " +
+                            item.customization.notes;
+
+                    }
+
+                }
+
+
+                details.textContent =
+                    detailText ||
+                    "Standard item";
+
+
+                const quantityRow =
+                    document.createElement("div");
+
+                quantityRow.className =
+                    "quantity-row";
+
+
+                const minus =
+                    document.createElement("button");
+
+                minus.className =
+                    "qty-btn";
+
+                minus.textContent =
+                    "−";
+
+                minus.onclick =
+                    function() {
+
+                        changeQuantity(
+                            index,
+                            -1
+                        );
+
+                    };
+
+
+                const quantity =
+                    document.createElement("span");
+
+                quantity.className =
+                    "quantity";
+
+                quantity.textContent =
+                    item.quantity;
+
+
+                const plus =
+                    document.createElement("button");
+
+                plus.className =
+                    "qty-btn";
+
+                plus.textContent =
+                    "+";
+
+                plus.onclick =
+                    function() {
+
+                        changeQuantity(
+                            index,
+                            1
+                        );
+
+                    };
+
+
+                const remove =
+                    document.createElement("button");
+
+                remove.className =
+                    "remove-btn";
+
+                remove.textContent =
+                    "Remove";
+
+                remove.onclick =
+                    function() {
+
+                        removeItem(index);
+
+                    };
+
+
+                quantityRow.appendChild(minus);
+
+                quantityRow.appendChild(quantity);
+
+                quantityRow.appendChild(plus);
+
+                quantityRow.appendChild(remove);
+
+
+                row.appendChild(main);
+
+                row.appendChild(details);
+
+                row.appendChild(quantityRow);
+
+
+                ticketItems.appendChild(row);
+
+            }
+        );
+
+    }
+
+
+    updateTotals();
+
+}
+
+
+/* =========================================================
+   QUANTITY
+========================================================= */
+
+function changeQuantity(index, amount) {
+
+    state.order[index].quantity +=
+        amount;
+
+
+    if (
+        state.order[index].quantity <= 0
+    ) {
+
+        state.order.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    renderOrder();
+
+}
+
+
+/* =========================================================
+   REMOVE ITEM
+========================================================= */
+
+function removeItem(index) {
+
+    const item =
+        state.order[index];
+
+
+    state.order.splice(
+        index,
+        1
+    );
+
+
+    renderOrder();
+
+
+    showToast(
+        item.name +
+        " removed"
+    );
+
+}
+
+
+/* =========================================================
+   TOTALS
+========================================================= */
+
+function updateTotals() {
+
+    let subtotal =
+        0;
+
+
+    state.order.forEach(
+        function(item) {
+
+            subtotal +=
+                item.price *
+                item.quantity;
+
+        }
+    );
+
+
+    const tax =
+        subtotal *
+        0.05;
+
+
+    const total =
+        Math.max(
+            0,
+            subtotal +
+            tax -
+            state.discount
+        );
+
+
+    subtotalElement.textContent =
+        money(subtotal);
+
+    taxElement.textContent =
+        money(tax);
+
+    discountElement.textContent =
+        "- " +
+        money(state.discount);
+
+    totalElement.textContent =
+        money(total);
+
+    payButton.textContent =
+        "PAY " +
+        money(total);
+
+    payButton.disabled =
+        state.order.length === 0;
+
+}
+
+
+/* =========================================================
+   CLEAR ORDER
+========================================================= */
+
+function clearOrder() {
+
+    if (
+        state.order.length === 0
+    ) {
+
+        showToast(
+            "Order is already empty"
+        );
+
+        return;
+
+    }
+
+
+    state.order = [];
+
+    state.discount = 0;
+
+    renderOrder();
+
+    showToast(
+        "Order cleared"
+    );
+
+}
+
+
+/* =========================================================
+   HOLD ORDER
+========================================================= */
+
+function holdOrder() {
+
+    if (
+        state.order.length === 0
+    ) {
+
+        showToast(
+            "Nothing to hold"
+        );
+
+        return;
+
+    }
+
+
+    state.heldOrder = {
+
+        order:
+            JSON.parse(
+                JSON.stringify(
+                    state.order
+                )
+            ),
+
+        discount:
+            state.discount
+
+    };
+
+
+    state.order = [];
+
+    state.discount = 0;
+
+
+    renderOrder();
+
+
+    showToast(
+        "Order placed on hold"
+    );
+
+}
+
+
+/* =========================================================
+   RECALL ORDER
+========================================================= */
+
+function recallOrder() {
+
+    if (!state.heldOrder) {
+
+        showToast(
+            "No held order"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        state.order.length > 0
+    ) {
+
+        showToast(
+            "Clear current order first"
+        );
+
+        return;
+
+    }
+
+
+    state.order =
+        state.heldOrder.order;
+
+    state.discount =
+        state.heldOrder.discount;
+
+
+    state.heldOrder =
+        null;
+
+
+    renderOrder();
+
+
+    showToast(
+        "Held order recalled"
+    );
+
+}
+
+
+/* =========================================================
+   DISCOUNT
+========================================================= */
+
+function applyDiscount() {
+
+    if (
+        state.order.length === 0
+    ) {
+
+        showToast(
+            "Add items first"
+        );
+
+        return;
+
+    }
+
+
+    const subtotal =
+        state.order.reduce(
+            function(total, item) {
+
+                return total +
+                    item.price *
+                    item.quantity;
+
+            },
+            0
+        );
+
+
+    const input =
+        prompt(
+            "Enter discount percentage:"
+        );
+
+
+    if (input === null) {
+
+        return;
+
+    }
+
+
+    const percentage =
+        Number(input);
+
+
+    if (
+        !Number.isFinite(percentage) ||
+        percentage < 0 ||
+        percentage > 100
+    ) {
+
+        showToast(
+            "Enter a percentage from 0 to 100"
+        );
+
+        return;
+
+    }
+
+
+    state.discount =
+        subtotal *
+        percentage /
+        100;
+
+
+    renderOrder();
+
+
+    showToast(
+        percentage +
+        "% discount applied"
+    );
+
+}
+
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+function checkout() {
+
+    if (
+        state.order.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const subtotal =
+        state.order.reduce(
+            function(total, item) {
+
+                return total +
+                    item.price *
+                    item.quantity;
+
+            },
+            0
+        );
+
+
+    const tax =
+        subtotal *
+        0.05;
+
+
+    const total =
+        Math.max(
+            0,
+            subtotal +
+            tax -
+            state.discount
+        );
+
+
+    openPaymentModal(
+        total
+    );
+
+}
+
+
+/* =========================================================
+   PAYMENT MODAL
+========================================================= */
+
+function openPaymentModal(total) {
+
+    const modalRoot =
+        document.getElementById(
+            "modalRoot"
+        );
+
+
+    modalRoot.innerHTML = `
+
+        <div class="modal-backdrop">
+
+            <div class="modal">
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <h3>
+                            Payment
+                        </h3>
+
+                        <div class="modal-sub">
+                            Select payment method
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="modal-close"
+                        onclick="closeModal()"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <div
+                        style="
+                        text-align:center;
+                        font-size:25px;
+                        font-weight:900;
+                        margin-bottom:20px;
+                        "
+                    >
+                        ${money(total)}
+                    </div>
+
+
+                    <div class="option-grid">
+
+                        <button
+                            class="option-button selected"
+                            onclick="selectPayment('Cash', this)"
+                        >
+                            💵 Cash
+                        </button>
+
+
+                        <button
+                            class="option-button"
+                            onclick="selectPayment('Card', this)"
+                        >
+                            💳 Card
+                        </button>
+
+
+                        <button
+                            class="option-button"
+                            onclick="selectPayment('UPI', this)"
+                        >
+                            📱 UPI
+                        </button>
+
+
+                        <button
+                            class="option-button"
+                            onclick="selectPayment('Wallet', this)"
+                        >
+                            👛 Wallet
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="cashArea"
+                        style="margin-top:18px;"
+                    >
+
+                        <div class="modal-section-title">
+                            Cash received
+                        </div>
+
+                        <input
+                            id="cashReceived"
+                            class="notes-input"
+                            style="min-height:0;"
+                            type="number"
+                            placeholder="Enter amount received"
+                            oninput="calculateChange(${total})"
+                        >
+
+
+                        <div
+                            id="changeDisplay"
+                            style="
+                            margin-top:9px;
+                            font-size:12px;
+                            font-weight:900;
+                            "
+                        >
+                            Change: ₹0.00
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-actions">
+
+                        <button
+                            class="modal-btn"
+                            onclick="closeModal()"
+                        >
+                            Cancel
+                        </button>
+
+
+                        <button
+                            class="modal-btn primary"
+                            onclick="completePayment(${total})"
+                        >
+                            Complete Payment
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   PAYMENT METHOD
+========================================================= */
+
+let selectedPayment =
+    "Cash";
+
+
+function selectPayment(method, button) {
+
+    selectedPayment =
+        method;
+
+
+    document
+        .querySelectorAll(
+            ".option-button"
+        )
+        .forEach(function(option) {
+
+            option.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    button.classList.add(
+        "selected"
+    );
+
+
+    const cashArea =
+        document.getElementById(
+            "cashArea"
+        );
+
+
+    if (method === "Cash") {
+
+        cashArea.style.display =
+            "block";
+
+    } else {
+
+        cashArea.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   CHANGE
+========================================================= */
+
+function calculateChange(total) {
+
+    const input =
+        document.getElementById(
+            "cashReceived"
+        );
+
+
+    const received =
+        Number(input.value);
+
+
+    const change =
+        Math.max(
+            0,
+            received - total
+        );
+
+
+    document.getElementById(
+        "changeDisplay"
+    ).textContent =
+        "Change: " +
+        money(change);
+
+}
+
+
+/* =========================================================
+   COMPLETE PAYMENT
+========================================================= */
+
+function completePayment(total) {
+
+    if (
+        selectedPayment === "Cash"
+    ) {
+
+        const received =
+            Number(
+                document.getElementById(
+                    "cashReceived"
+                ).value
+            );
+
+
+        if (
+            !Number.isFinite(received) ||
+            received < total
+        ) {
+
+            showToast(
+                "Insufficient cash received"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    state.sales +=
+        total;
+
+
+    state.ordersCompleted +=
+        1;
+
+
+    ordersTodayElement.textContent =
+        state.ordersCompleted;
+
+
+    salesTodayElement.textContent =
+        money(state.sales);
+
+
+    showReceipt(
+        total,
+        selectedPayment
+    );
+
+}
+
+
+/* =========================================================
+   RECEIPT
+========================================================= */
+
+function showReceipt(
+    total,
+    paymentMethod
+) {
+
+    const modalRoot =
+        document.getElementById(
+            "modalRoot"
+        );
+
+
+    const customerName =
+        document.getElementById(
+            "customerName"
+        ).value ||
+        "Guest";
+
+
+    let receiptItems = "";
+
+
+    state.order.forEach(
+        function(item) {
+
+            receiptItems += `
+
+                <div
+                    style="
+                    display:flex;
+                    justify-content:space-between;
+                    margin-bottom:6px;
+                    "
+                >
+
+                    <span>
+                        ${item.quantity} × ${item.name}
+                    </span>
+
+                    <span>
+                        ${money(
+                            item.price *
+                            item.quantity
+                        )}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    modalRoot.innerHTML = `
+
+        <div class="modal-backdrop">
+
+            <div class="modal">
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <h3>
+                            Payment Complete
+                        </h3>
+
+                        <div class="modal-sub">
+                            Order #${state.orderNumber}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <div
+                        style="
+                        text-align:center;
+                        padding:8px 0 18px;
+                        "
+                    >
+
+                        <div
+                            style="
+                            font-size:38px;
+                            margin-bottom:7px;
+                            "
+                        >
+                            ✓
+                        </div>
+
+                        <div
+                            style="
+                            font-size:15px;
+                            font-weight:900;
+                            "
+                        >
+                            Payment successful
+                        </div>
+
+                        <div
+                            style="
+                            color:#858c95;
+                            font-size:10px;
+                            margin-top:4px;
+                            "
+                        >
+                            ${paymentMethod} · ${customerName}
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                        border-top:1px dashed #d6dbe0;
+                        border-bottom:1px dashed #d6dbe0;
+                        padding:13px 0;
+                        font-size:10px;
+                        "
+                    >
+
+                        ${receiptItems}
+
+                    </div>
+
+
+                    <div
+                        style="
+                        display:flex;
+                        justify-content:space-between;
+                        font-size:17px;
+                        font-weight:900;
+                        padding-top:14px;
+                        "
+                    >
+
+                        <span>
+                            TOTAL
+                        </span>
+
+                        <span>
+                            ${money(total)}
+                        </span>
+
+                    </div>
+
+
+                    <div class="modal-actions">
+
+                        <button
+                            class="modal-btn primary"
+                            onclick="finishOrder()"
+                        >
+                            New Order
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   FINISH ORDER
+========================================================= */
+
+function finishOrder() {
+
+    state.order = [];
+
+    state.discount = 0;
+
+    state.orderNumber +=
+        1;
+
+
+    orderNumberElement.textContent =
+        "#" +
+        state.orderNumber;
+
+
+    closeModal();
+
+    renderOrder();
+
+
+    document.getElementById(
+        "customerName"
+    ).value = "";
+
+
+    document.getElementById(
+        "tableNumber"
+    ).value = "";
+
+
+    showToast(
+        "Order completed"
+    );
+
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+function showInfo(message) {
+
+    showToast(message);
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function() {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2200
+        );
+
+}
+
+
+/* =========================================================
+   START POS
+========================================================= */
+
+renderMenu();
+
+renderOrder();
+
+</script>
+
+</body>
+</html>
