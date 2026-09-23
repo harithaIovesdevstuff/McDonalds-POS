@@ -4347,5 +4347,42 @@ renderOrder();
     );
 }
 </script>
+    <script>
+    const testCustomers = [
+        {
+            name: "Ananya",
+            mode: "Dine In",
+            order: "Cheeseburger Meal, large fries, Coke, no ice and extra cheese."
+        },
+        {
+            name: "Karthik",
+            mode: "Drive-Thru",
+            order: "Two Classic Burgers, one with no onions, and a large Coke."
+        },
+        {
+            name: "Meera",
+            mode: "Takeaway",
+            order: "Crispy Chicken Wrap, 6 nuggets and a chocolate shake."
+        },
+        {
+            name: "Arjun",
+            mode: "Delivery",
+            order: "Spicy Chicken Meal, medium fries, Sprite and extra cheese."
+        }
+    ];
+
+    const customer =
+        testCustomers[
+            Math.floor(
+                Math.random() * testCustomers.length
+            )
+        ];
+
+    alert(
+        "CUSTOMER: " + customer.name +
+        "\nMODE: " + customer.mode +
+        "\n\nORDER:\n" + customer.order
+    );
+</script>
 </body>
 </html>
