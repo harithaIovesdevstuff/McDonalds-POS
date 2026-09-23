@@ -4291,6 +4291,47 @@ renderMenu();
 renderOrder();
 
 </script>
+<script>
+    const customers = [
+        {
+            name: "Ananya",
+            mode: "Dine In",
+            order: "Can I get a Cheeseburger Meal with large fries, Coke, no ice and extra cheese?"
+        },
+        {
+            name: "Karthik",
+            mode: "Drive-Thru",
+            order: "I'll have two Classic Burgers, one with no onions, and a large Coke."
+        },
+        {
+            name: "Meera",
+            mode: "Takeaway",
+            order: "One Crispy Chicken Wrap, six nuggets and a chocolate shake."
+        },
+        {
+            name: "Arjun",
+            mode: "Delivery",
+            order: "Can I get a Spicy Chicken Meal with medium fries, Sprite and extra cheese?"
+        }
+    ];
 
+    function newCustomer() {
+
+        const customer =
+            customers[
+                Math.floor(
+                    Math.random() * customers.length
+                )
+            ];
+
+        alert(
+            "CUSTOMER: " + customer.name +
+            "\nMODE: " + customer.mode +
+            "\n\nORDER:\n" + customer.order
+        );
+    }
+
+    newCustomer();
+</script>
 </body>
 </html>
