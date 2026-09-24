@@ -3,1136 +3,1218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>RushBite POS Trainer</title>
+<title>Restaurant POS Training Simulator</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+/* =========================================================
+   GLOBAL
+========================================================= */
 
-    :root {
-        --bg: #111315;
-        --panel: #191c1f;
-        --panel2: #202428;
-        --panel3: #292e33;
-        --border: #343a40;
-        --text: #f4f5f6;
-        --muted: #9299a1;
-        --accent: #ff9f1c;
-        --accent2: #ffb84d;
-        --green: #43d17a;
-        --red: #ff5c5c;
-        --blue: #5da9ff;
-        --yellow: #ffd166;
-    }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--text);
-        font-family:
-            Inter,
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
-        overflow: hidden;
-    }
+:root {
+    --bg: #101214;
+    --panel: #181b1f;
+    --panel-2: #20242a;
+    --panel-3: #272c33;
+    --border: #343a43;
+    --text: #f4f5f7;
+    --muted: #9da4ad;
+    --accent: #ff9f1c;
+    --accent-dark: #d77b00;
+    --success: #35c98a;
+    --danger: #ef6262;
+    --info: #58a6ff;
+    --warning: #f4c95d;
+    --shadow: 0 10px 30px rgba(0,0,0,.25);
+}
 
-    button {
-        font: inherit;
-    }
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 
-    .app {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+}
 
-    /* =====================================================
-       TOP BAR
-    ===================================================== */
+/* =========================================================
+   APP
+========================================================= */
 
-    .topbar {
-        height: 70px;
-        background: #0d0f10;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        padding: 0 22px;
-        gap: 25px;
-        flex-shrink: 0;
-    }
+#app {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 220px;
-    }
+/* =========================================================
+   TOP BAR
+========================================================= */
 
-    .brand-logo {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: var(--accent);
-        color: #111;
-        display: grid;
-        place-items: center;
-        font-weight: 900;
-        font-size: 19px;
-    }
+.topbar {
+    height: 68px;
+    min-height: 68px;
+    background: #15171a;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 20;
+}
 
-    .brand-name {
-        font-size: 19px;
-        font-weight: 800;
-        letter-spacing: -.3px;
-    }
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-    .brand-sub {
-        color: var(--muted);
-        font-size: 11px;
-        margin-top: 2px;
-    }
+.brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #151515;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 20px;
+}
 
-    .top-stats {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: 1;
-    }
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
 
-    .stat {
-        padding: 8px 13px;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 9px;
-        min-width: 100px;
-    }
+.brand-name {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: .3px;
+}
 
-    .stat-label {
-        font-size: 10px;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: .7px;
-    }
+.brand-subtitle {
+    color: var(--muted);
+    font-size: 11px;
+}
 
-    .stat-value {
-        font-size: 15px;
-        font-weight: 750;
-        margin-top: 2px;
-    }
+.top-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    .clock {
-        color: var(--muted);
-        font-size: 13px;
-        white-space: nowrap;
-    }
+.status-pill {
+    height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
 
-    /* =====================================================
-       MAIN
-    ===================================================== */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 8px rgba(53,201,138,.5);
+}
+
+.stat-box {
+    min-width: 85px;
+    height: 38px;
+    padding: 0 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.stat-value {
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+
+.main {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 0;
+}
+
+/* =========================================================
+   LEFT SIDE
+========================================================= */
+
+.workspace {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+}
+
+/* =========================================================
+   INCOMING ORDER SECTION
+========================================================= */
+
+.incoming-order {
+    margin: 14px 16px 10px;
+    background: #171a1e;
+    border: 1px solid #3a3f47;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.incoming-header {
+    height: 44px;
+    padding: 0 14px;
+    background: #20242a;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.incoming-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+}
+
+.live-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 9px rgba(53,201,138,.65);
+}
+
+.order-number {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.incoming-body {
+    min-height: 125px;
+    padding: 15px 17px;
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 18px;
+}
+
+.order-type-display {
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+}
+
+.order-type-label {
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.order-type-value {
+    color: var(--accent);
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.order-time {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.order-request {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+}
+
+.order-request-label {
+    color: var(--muted);
+    font-size: 9px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.order-request-text {
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 650;
+}
+
+.order-instruction {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* =========================================================
+   CATEGORY BAR
+========================================================= */
+
+.category-bar {
+    height: 62px;
+    min-height: 62px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border);
+}
+
+.category-bar::-webkit-scrollbar {
+    height: 4px;
+}
+
+.category-bar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+.category-btn {
+    flex-shrink: 0;
+    height: 43px;
+    padding: 0 15px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--muted);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 800;
+    transition: .15s ease;
+}
+
+.category-btn:hover {
+    background: var(--panel-2);
+    color: var(--text);
+}
+
+.category-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #161616;
+}
+
+/* =========================================================
+   MENU AREA
+========================================================= */
+
+.menu-area {
+    flex: 1;
+    min-height: 0;
+    padding: 15px 16px;
+    overflow-y: auto;
+}
+
+.menu-area::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-area::-webkit-scrollbar-thumb {
+    background: #343941;
+    border-radius: 6px;
+}
+
+.menu-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.menu-heading h2 {
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.menu-heading span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 10px;
+}
+
+.menu-card {
+    min-height: 125px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition:
+        transform .12s ease,
+        background .12s ease,
+        border-color .12s ease;
+}
+
+.menu-card:hover {
+    background: var(--panel-2);
+    border-color: #4a515b;
+    transform: translateY(-1px);
+}
+
+.menu-card:active {
+    transform: scale(.98);
+}
+
+.menu-card-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.menu-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    background: var(--panel-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.menu-price {
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.menu-name {
+    font-size: 12px;
+    font-weight: 800;
+    margin-top: 9px;
+}
+
+.menu-description {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+/* =========================================================
+   RIGHT ORDER PANEL
+========================================================= */
+
+.order-panel {
+    min-width: 0;
+    min-height: 0;
+    background: #15171a;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================================
+   ORDER PANEL HEADER
+========================================================= */
+
+.order-panel-header {
+    height: 58px;
+    min-height: 58px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.order-panel-title {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.order-panel-title strong {
+    font-size: 14px;
+}
+
+.order-panel-title span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.order-mode {
+    height: 32px;
+    padding: 0 9px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 7px;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* =========================================================
+   CART
+========================================================= */
+
+.cart {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 10px 13px;
+}
+
+.cart::-webkit-scrollbar {
+    width: 5px;
+}
+
+.cart::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+}
+
+.empty-cart {
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.cart-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 11px;
+    margin-bottom: 8px;
+}
+
+.cart-item-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.cart-item-name {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.cart-item-price {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.cart-item-details {
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 5px;
+    line-height: 1.5;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 9px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.qty-btn {
+    width: 27px;
+    height: 27px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.qty-btn:hover {
+    background: var(--panel-3);
+}
+
+.qty-value {
+    width: 25px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.remove-btn {
+    border: 0;
+    background: transparent;
+    color: var(--danger);
+    font-size: 10px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* =========================================================
+   TOTALS
+========================================================= */
+
+.totals {
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    background: #181a1e;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.total-row.final {
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 900;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    margin-bottom: 0;
+}
+
+.total-row.final span:last-child {
+    color: var(--accent);
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.action-area {
+    padding: 10px 13px 13px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    background: #181a1e;
+}
+
+.action-btn {
+    height: 43px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 800;
+    transition: .12s ease;
+}
+
+.action-btn:hover {
+    background: var(--panel-3);
+}
+
+.action-btn.primary {
+    grid-column: 1 / -1;
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #151515;
+}
+
+.action-btn.primary:hover {
+    background: #ffab38;
+}
+
+.action-btn.danger {
+    color: var(--danger);
+}
+
+.action-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   NOTIFICATION / FEEDBACK AREA
+========================================================= */
+
+.feedback {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translate(-50%, 20px);
+    min-width: 280px;
+    max-width: 500px;
+    padding: 12px 17px;
+    border-radius: 9px;
+    background: #24282e;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: .2s ease;
+    z-index: 100;
+}
+
+.feedback.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.feedback.success {
+    border-color: rgba(53,201,138,.5);
+}
+
+.feedback.error {
+    border-color: rgba(239,98,98,.5);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
 
     .main {
-        flex: 1;
-        min-height: 0;
-        display: grid;
-        grid-template-columns: 290px 1fr 390px;
-        gap: 0;
+        grid-template-columns: minmax(0, 1fr) 330px;
     }
 
-    /* =====================================================
-       LEFT QUEUE
-    ===================================================== */
-
-    .queue-panel {
-        border-right: 1px solid var(--border);
-        background: #151719;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-    }
-
-    .panel-header {
-        height: 62px;
-        padding: 0 17px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .panel-title {
-        font-weight: 800;
-        font-size: 14px;
-    }
-
-    .badge {
-        background: var(--panel3);
-        color: var(--muted);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 4px 9px;
-        font-size: 11px;
-        font-weight: 700;
-    }
-
-    .queue-list {
-        padding: 12px;
-        overflow-y: auto;
-        flex: 1;
-    }
-
-    .queue-card {
-        border: 1px solid var(--border);
-        background: var(--panel);
-        border-radius: 11px;
-        padding: 13px;
-        margin-bottom: 9px;
-        cursor: pointer;
-        transition: .15s;
-    }
-
-    .queue-card:hover {
-        border-color: #555d65;
-        transform: translateY(-1px);
-    }
-
-    .queue-card.active {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 1px rgba(255,159,28,.15);
-    }
-
-    .queue-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 7px;
-    }
-
-    .queue-mode {
-        font-size: 10px;
-        font-weight: 800;
-        color: var(--accent2);
-        text-transform: uppercase;
-        letter-spacing: .7px;
-    }
-
-    .queue-time {
-        font-size: 11px;
-        color: var(--muted);
-    }
-
-    .queue-request {
-        color: #d8dadd;
-        font-size: 12px;
-        line-height: 1.45;
-    }
-
-    .patience {
-        height: 4px;
-        background: #30353a;
-        border-radius: 10px;
-        margin-top: 10px;
-        overflow: hidden;
-    }
-
-    .patience-fill {
-        height: 100%;
-        background: var(--green);
-        transition: width 1s linear;
-    }
-
-    .patience-fill.warning {
-        background: var(--yellow);
-    }
-
-    .patience-fill.danger {
-        background: var(--red);
-    }
-
-    .queue-footer {
-        padding: 12px;
-        border-top: 1px solid var(--border);
-    }
-
-    .new-order-btn {
-        width: 100%;
-        height: 48px;
-        border: 0;
-        border-radius: 9px;
-        background: var(--accent);
-        color: #111;
-        font-weight: 850;
-        cursor: pointer;
-    }
-
-    .new-order-btn:hover {
-        background: var(--accent2);
-    }
-
-    /* =====================================================
-       CENTER
-    ===================================================== */
-
-    .workspace {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        background: #121416;
-    }
-
-    .request-area {
-        padding: 16px;
-        border-bottom: 1px solid var(--border);
-        background: #16191b;
-    }
-
-    .request-ticket {
-        background: #202428;
-        border: 1px solid #3b4147;
-        border-left: 4px solid var(--accent);
-        border-radius: 10px;
-        padding: 14px 16px;
-    }
-
-    .request-ticket.correct {
-        border-left-color: var(--green);
-    }
-
-    .request-ticket.incorrect {
-        border-left-color: var(--red);
-    }
-
-    .request-label {
-        color: var(--accent);
-        font-size: 10px;
-        font-weight: 850;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 6px;
-    }
-
-    .request-text {
-        font-size: 15px;
-        line-height: 1.45;
-        font-weight: 600;
-    }
-
-    .request-status {
-        margin-top: 8px;
-        font-size: 11px;
-        color: var(--muted);
-    }
-
-    .request-status.success {
-        color: var(--green);
-    }
-
-    .request-status.error {
-        color: var(--red);
-    }
-
-    .categories {
-        display: flex;
-        gap: 7px;
-        padding: 12px 15px;
-        border-bottom: 1px solid var(--border);
-        overflow-x: auto;
-        flex-shrink: 0;
-    }
-
-    .category-btn {
-        white-space: nowrap;
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--panel);
-        color: #bfc4c8;
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .category-btn.active {
-        background: var(--accent);
-        color: #111;
-        border-color: var(--accent);
+    .incoming-body {
+        grid-template-columns: 120px minmax(0, 1fr);
     }
 
     .menu-grid {
-        flex: 1;
-        min-height: 0;
-        overflow-y: auto;
-        padding: 15px;
-        display: grid;
-        grid-template-columns: repeat(4, minmax(130px, 1fr));
-        gap: 10px;
-        align-content: start;
+        grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+
+    html,
+    body {
+        overflow: auto;
     }
 
-    .menu-card {
-        min-height: 116px;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 11px;
-        padding: 13px;
-        cursor: pointer;
+    #app {
+        min-height: 100vh;
+        height: auto;
+    }
+
+    .main {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        text-align: left;
-        color: var(--text);
-        transition: .12s;
     }
 
-    .menu-card:hover {
-        border-color: var(--accent);
-        transform: translateY(-1px);
+    .workspace {
+        min-height: 650px;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
     }
-
-    .menu-name {
-        font-weight: 750;
-        font-size: 13px;
-        line-height: 1.3;
-    }
-
-    .menu-description {
-        color: var(--muted);
-        font-size: 10px;
-        margin-top: 5px;
-    }
-
-    .menu-price {
-        font-weight: 850;
-        color: var(--accent2);
-        font-size: 14px;
-    }
-
-    /* =====================================================
-       RIGHT CART
-    ===================================================== */
 
     .order-panel {
-        border-left: 1px solid var(--border);
-        background: #17191b;
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
+        min-height: 500px;
     }
 
-    .order-header {
-        padding: 14px 17px;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .top-status .stat-box {
+        display: none;
     }
-
-    .order-number {
-        font-size: 13px;
-        font-weight: 850;
-    }
-
-    .order-mode {
-        color: var(--accent2);
-        font-size: 10px;
-        text-transform: uppercase;
-        font-weight: 800;
-    }
-
-    .cart {
-        flex: 1;
-        min-height: 0;
-        overflow-y: auto;
-        padding: 10px;
-    }
-
-    .empty-cart {
-        height: 100%;
-        display: grid;
-        place-items: center;
-        color: var(--muted);
-        font-size: 12px;
-        text-align: center;
-        padding: 30px;
-    }
-
-    .cart-item {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 9px;
-        padding: 11px;
-        margin-bottom: 8px;
-    }
-
-    .cart-item-top {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .cart-item-name {
-        font-weight: 750;
-        font-size: 13px;
-    }
-
-    .cart-item-price {
-        color: var(--accent2);
-        font-size: 12px;
-        font-weight: 750;
-        white-space: nowrap;
-    }
-
-    .cart-item-details {
-        color: var(--muted);
-        font-size: 10px;
-        line-height: 1.45;
-        margin-top: 4px;
-    }
-
-    .cart-controls {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-top: 9px;
-    }
-
-    .qty-btn {
-        width: 29px;
-        height: 29px;
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        background: var(--panel3);
-        color: white;
-        cursor: pointer;
-    }
-
-    .qty-number {
-        min-width: 28px;
-        text-align: center;
-        font-size: 12px;
-        font-weight: 800;
-    }
-
-    .remove-btn {
-        margin-left: auto;
-        border: 0;
-        background: transparent;
-        color: var(--red);
-        cursor: pointer;
-        font-size: 11px;
-    }
-
-    .totals {
-        padding: 13px 16px;
-        border-top: 1px solid var(--border);
-    }
-
-    .total-row {
-        display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: #b9bec2;
-        margin-bottom: 7px;
-    }
-
-    .total-row.grand {
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid var(--border);
-        color: white;
-        font-size: 18px;
-        font-weight: 850;
-    }
-
-    .order-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        padding: 12px 16px 16px;
-    }
-
-    .action-btn {
-        height: 45px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--panel2);
-        color: #e7e8e9;
-        font-weight: 750;
-        font-size: 12px;
-        cursor: pointer;
-    }
-
-    .action-btn:hover {
-        border-color: #555d65;
-    }
-
-    .action-btn.primary {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: #111;
-        grid-column: span 2;
-        height: 51px;
-        font-size: 14px;
-        font-weight: 900;
-    }
-
-    .action-btn.primary:disabled {
-        background: #34383c;
-        border-color: #34383c;
-        color: #777;
-        cursor: not-allowed;
-    }
-
-    /* =====================================================
-       FOOTER
-    ===================================================== */
-
-    .statusbar {
-        height: 31px;
-        background: #0c0e0f;
-        border-top: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 15px;
-        color: var(--muted);
-        font-size: 10px;
-        flex-shrink: 0;
-    }
-
-    .online {
-        color: var(--green);
-    }
-
-    /* =====================================================
-       MODALS
-    ===================================================== */
-
-    .modal-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-        padding: 20px;
-    }
-
-    .modal {
-        width: min(570px, 100%);
-        max-height: 90vh;
-        overflow-y: auto;
-        background: #1b1e21;
-        border: 1px solid #41474d;
-        border-radius: 14px;
-        box-shadow: 0 25px 80px rgba(0,0,0,.5);
-    }
-
-    .modal-header {
-        padding: 18px;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .modal-title {
-        font-weight: 850;
-    }
-
-    .modal-close {
-        border: 0;
-        background: transparent;
-        color: var(--muted);
-        font-size: 22px;
-        cursor: pointer;
-    }
-
-    .modal-body {
-        padding: 18px;
-    }
-
-    .option-section {
-        margin-bottom: 18px;
-    }
-
-    .option-label {
-        font-size: 11px;
-        color: var(--muted);
-        text-transform: uppercase;
-        font-weight: 800;
-        letter-spacing: .7px;
-        margin-bottom: 8px;
-    }
-
-    .option-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 7px;
-    }
-
-    .option-btn {
-        border: 1px solid var(--border);
-        background: var(--panel);
-        color: white;
-        border-radius: 8px;
-        padding: 11px;
-        text-align: left;
-        cursor: pointer;
-        font-size: 12px;
-    }
-
-    .option-btn.selected {
-        border-color: var(--accent);
-        background: rgba(255,159,28,.12);
-    }
-
-    .modal-footer {
-        padding: 14px 18px;
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .builder-total {
-        font-size: 18px;
-        font-weight: 900;
-    }
-
-    .confirm-btn {
-        border: 0;
-        background: var(--accent);
-        color: #111;
-        border-radius: 8px;
-        height: 45px;
-        padding: 0 22px;
-        font-weight: 900;
-        cursor: pointer;
-    }
-
-    .payment-methods {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin-bottom: 18px;
-    }
-
-    .payment-method {
-        padding: 14px 8px;
-        border: 1px solid var(--border);
-        background: var(--panel);
-        color: white;
-        border-radius: 8px;
-        cursor: pointer;
-        text-align: center;
-        font-weight: 750;
-    }
-
-    .payment-method.selected {
-        border-color: var(--accent);
-        background: rgba(255,159,28,.12);
-    }
-
-    .cash-input {
-        width: 100%;
-        height: 50px;
-        background: #111315;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: white;
-        padding: 0 13px;
-        font-size: 18px;
-        outline: none;
-    }
-
-    .cash-input:focus {
-        border-color: var(--accent);
-    }
-
-    .change-box {
-        margin-top: 10px;
-        padding: 13px;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    /* =====================================================
-       RESPONSIVE
-    ===================================================== */
-
-    @media (max-width: 1100px) {
-        .main {
-            grid-template-columns: 230px 1fr 330px;
-        }
-
-        .menu-grid {
-            grid-template-columns: repeat(3, minmax(120px, 1fr));
-        }
-
-        .top-stats {
-            display: none;
-        }
-    }
-
-    @media (max-width: 800px) {
-        body {
-            overflow: auto;
-        }
-
-        .main {
-            grid-template-columns: 1fr;
-            overflow: auto;
-        }
-
-        .queue-panel {
-            display: none;
-        }
-
-        .order-panel {
-            border-left: 0;
-            min-height: 500px;
-        }
-
-        .workspace {
-            min-height: 650px;
-        }
-
-        .menu-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
+}
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div id="app">
 
-    <!-- =================================================
+    <!-- =====================================================
          TOP BAR
-    ================================================= -->
+    ====================================================== -->
 
     <header class="topbar">
 
         <div class="brand">
 
             <div class="brand-logo">
-                RB
+                P
             </div>
 
-            <div>
+            <div class="brand-text">
                 <div class="brand-name">
-                    RushBite
+                    PRIME POS
                 </div>
 
-                <div class="brand-sub">
-                    POS TRAINING TERMINAL
-                </div>
-            </div>
-
-        </div>
-
-        <div class="top-stats">
-
-            <div class="stat">
-                <div class="stat-label">
-                    Served
-                </div>
-
-                <div
-                    class="stat-value"
-                    id="servedCount"
-                >
-                    0
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">
-                    Sales
-                </div>
-
-                <div
-                    class="stat-value"
-                    id="salesTotal"
-                >
-                    ₹0
-                </div>
-            </div>
-
-            <div class="stat">
-                <div class="stat-label">
-                    Current Order
-                </div>
-
-                <div
-                    class="stat-value"
-                    id="currentOrderNumber"
-                >
-                    #1001
+                <div class="brand-subtitle">
+                    Restaurant Training Simulator
                 </div>
             </div>
 
         </div>
 
-        <div
-            class="clock"
-            id="clock"
-        >
-            --:--:--
+        <div class="top-status">
+
+            <div class="status-pill">
+                <span class="status-dot"></span>
+                SYSTEM ONLINE
+            </div>
+
+            <div class="stat-box">
+                <span class="stat-label">Served</span>
+                <span class="stat-value" id="servedCount">0</span>
+            </div>
+
+            <div class="stat-box">
+                <span class="stat-label">Accuracy</span>
+                <span class="stat-value" id="accuracyDisplay">100%</span>
+            </div>
+
+            <div class="stat-box">
+                <span class="stat-label">Sales</span>
+                <span class="stat-value" id="salesDisplay">₹0.00</span>
+            </div>
+
         </div>
 
     </header>
 
 
-    <!-- =================================================
-         MAIN
-    ================================================= -->
+    <!-- =====================================================
+         MAIN POS AREA
+    ====================================================== -->
 
     <main class="main">
 
 
-        <!-- =============================================
-             QUEUE
-        ============================================= -->
-
-        <aside class="queue-panel">
-
-            <div class="panel-header">
-
-                <div class="panel-title">
-                    Customer Queue
-                </div>
-
-                <div
-                    class="badge"
-                    id="queueCount"
-                >
-                    0
-                </div>
-
-            </div>
-
-            <div
-                class="queue-list"
-                id="queueList"
-            >
-            </div>
-
-            <div class="queue-footer">
-
-                <button
-                    class="new-order-btn"
-                    onclick="createCustomer()"
-                >
-                    + NEW CUSTOMER
-                </button>
-
-            </div>
-
-        </aside>
-
-
-        <!-- =============================================
-             WORKSPACE
-        ============================================= -->
+        <!-- =================================================
+             LEFT WORKSPACE
+        ================================================== -->
 
         <section class="workspace">
 
 
-            <!-- REQUEST -->
+            <!-- =============================================
+                 INCOMING CUSTOMER ORDER
 
-            <div class="request-area">
+                 IMPORTANT:
+                 THIS IS THE ACTUAL IN-GAME ORDER SECTION.
+                 NO BROWSER ALERTS.
+            ============================================== -->
 
-                <div
-                    class="request-ticket"
-                    id="requestTicket"
-                >
+            <section class="incoming-order">
 
-                    <div class="request-label">
-                        Incoming Order
+                <div class="incoming-header">
+
+                    <div class="incoming-title">
+
+                        <span class="live-indicator"></span>
+
+                        Incoming Customer Order
+
                     </div>
 
-                    <div
-                        class="request-text"
-                        id="requestText"
-                    >
-                        Waiting for customer...
-                    </div>
-
-                    <div
-                        class="request-status"
-                        id="requestStatus"
-                    >
-                        Enter the customer's order using the menu.
+                    <div class="order-number" id="incomingOrderNumber">
+                        ORDER #0001
                     </div>
 
                 </div>
 
-            </div>
+
+                <div class="incoming-body">
+
+                    <div class="order-type-display">
+
+                        <span class="order-type-label">
+                            Order Type
+                        </span>
+
+                        <span
+                            class="order-type-value"
+                            id="incomingOrderType"
+                        >
+                            DINE IN
+                        </span>
+
+                        <span
+                            class="order-time"
+                            id="orderTimer"
+                        >
+                            00:00
+                        </span>
+
+                    </div>
 
 
-            <!-- CATEGORIES -->
+                    <div class="order-request">
 
-            <div
-                class="categories"
-                id="categories"
+                        <span class="order-request-label">
+                            Customer Request
+                        </span>
+
+                        <div
+                            class="order-request-text"
+                            id="incomingOrderText"
+                        >
+                            Waiting for incoming order...
+                        </div>
+
+                        <span class="order-instruction">
+                            Enter the requested items using the POS below.
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 CATEGORIES
+            ============================================== -->
+
+            <nav
+                class="category-bar"
+                id="categoryBar"
             >
-            </div>
+
+                <button
+                    class="category-btn active"
+                    data-category="Burgers"
+                >
+                    Burgers
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Meals & Combos"
+                >
+                    Meals & Combos
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Chicken"
+                >
+                    Chicken
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Wraps"
+                >
+                    Wraps
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Sides"
+                >
+                    Sides
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Drinks"
+                >
+                    Drinks
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Shakes"
+                >
+                    Shakes
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Cafe"
+                >
+                    Cafe
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Desserts"
+                >
+                    Desserts
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Breakfast"
+                >
+                    Breakfast
+                </button>
+
+                <button
+                    class="category-btn"
+                    data-category="Kids"
+                >
+                    Kids
+                </button>
+
+            </nav>
 
 
-            <!-- MENU -->
+            <!-- =============================================
+                 MENU
+            ============================================== -->
 
-            <div
-                class="menu-grid"
-                id="menuGrid"
-            >
-            </div>
+            <section class="menu-area">
 
+                <div class="menu-heading">
+
+                    <h2 id="menuHeading">
+                        Burgers
+                    </h2>
+
+                    <span id="menuItemCount">
+                        0 items
+                    </span>
+
+                </div>
+
+                <div
+                    class="menu-grid"
+                    id="menuGrid"
+                >
+                    <!-- JavaScript will populate this -->
+                </div>
+
+            </section>
 
         </section>
 
 
-        <!-- =============================================
-             ORDER PANEL
-        ============================================= -->
+        <!-- =================================================
+             RIGHT ORDER / CART PANEL
+        ================================================== -->
 
         <aside class="order-panel">
 
-            <div class="order-header">
 
-                <div>
+            <header class="order-panel-header">
 
-                    <div
-                        class="order-number"
-                        id="orderNumber"
-                    >
-                        Order #1001
-                    </div>
+                <div class="order-panel-title">
 
-                    <div
-                        class="order-mode"
-                        id="orderMode"
-                    >
-                        DINE IN
-                    </div>
+                    <strong>
+                        Current Order
+                    </strong>
+
+                    <span>
+                        Build the order requested above
+                    </span>
 
                 </div>
 
-                <div class="badge">
-                    OPEN
+                <div
+                    class="order-mode"
+                    id="orderMode"
+                >
+                    DINE IN
                 </div>
 
-            </div>
+            </header>
 
 
-            <div
+            <!-- =============================================
+                 CART
+            ============================================== -->
+
+            <section
                 class="cart"
                 id="cart"
             >
-            </div>
+
+                <div class="empty-cart">
+
+                    No items added yet.<br>
+                    Select items from the menu.
+
+                </div>
+
+            </section>
 
 
-            <div class="totals">
+            <!-- =============================================
+                 TOTALS
+            ============================================== -->
+
+            <section class="totals">
 
                 <div class="total-row">
-                    <span>Subtotal</span>
-                    <span id="subtotal">₹0.00</span>
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <span id="subtotalDisplay">
+                        ₹0.00
+                    </span>
+
                 </div>
 
                 <div class="total-row">
-                    <span>Tax</span>
-                    <span id="tax">₹0.00</span>
+
+                    <span>
+                        Discount
+                    </span>
+
+                    <span id="discountDisplay">
+                        -₹0.00
+                    </span>
+
                 </div>
 
-                <div class="total-row grand">
-                    <span>Total</span>
-                    <span id="total">₹0.00</span>
+                <div class="total-row">
+
+                    <span>
+                        Tax
+                    </span>
+
+                    <span id="taxDisplay">
+                        ₹0.00
+                    </span>
+
                 </div>
 
-            </div>
+                <div class="total-row final">
+
+                    <span>
+                        TOTAL
+                    </span>
+
+                    <span id="totalDisplay">
+                        ₹0.00
+                    </span>
+
+                </div>
+
+            </section>
 
 
-            <div class="order-actions">
+            <!-- =============================================
+                 ACTION BUTTONS
+            ============================================== -->
+
+            <section class="action-area">
 
                 <button
                     class="action-btn"
-                    onclick="clearCart()"
+                    id="holdBtn"
                 >
-                    Clear
+                    HOLD
                 </button>
 
                 <button
                     class="action-btn"
-                    onclick="holdOrder()"
+                    id="recallBtn"
                 >
-                    Hold
+                    RECALL
                 </button>
 
                 <button
                     class="action-btn"
-                    onclick="showHeldOrder()"
+                    id="discountBtn"
                 >
-                    Recall
+                    DISCOUNT
                 </button>
 
                 <button
-                    class="action-btn"
-                    onclick="showDiscount()"
+                    class="action-btn danger"
+                    id="clearBtn"
                 >
-                    Discount
+                    CLEAR
                 </button>
 
                 <button
                     class="action-btn primary"
                     id="checkoutBtn"
-                    onclick="openPayment()"
                     disabled
                 >
-                    CHECKOUT
+                    PROCEED TO PAYMENT
                 </button>
 
-            </div>
+            </section>
 
         </aside>
 
     </main>
 
 
-    <!-- =================================================
-         STATUS BAR
-    ================================================= -->
+    <!-- =====================================================
+         IN-GAME FEEDBACK
+         ALSO NOT A BROWSER POPUP.
+    ====================================================== -->
 
-    <footer class="statusbar">
-
-        <span>
-            Register 04 · Training Mode
-        </span>
-
-        <span class="online">
-            ● SYSTEM ONLINE
-        </span>
-
-    </footer>
+    <div
+        class="feedback"
+        id="feedback"
+    ></div>
 
 </div>
-
-
-<!-- =====================================================
-     MODAL ROOT
-===================================================== -->
-
-<div id="modalRoot"></div>
 
 
 <script>
@@ -1143,772 +1225,522 @@
 
 const state = {
 
-    categories: [
-        "Burgers",
-        "Meals",
-        "Chicken",
-        "Wraps",
-        "Sides",
-        "Drinks",
-        "Shakes",
-        "Cafe",
-        "Desserts",
-        "Breakfast",
-        "Kids"
-    ],
-
     activeCategory: "Burgers",
 
     cart: [],
 
-    currentCustomer: null,
-
-    queue: [],
-
-    heldOrder: null,
-
-    orderNumber: 1001,
-
-    served: 0,
-
-    sales: 0,
+    discount: 0,
 
     taxRate: 0.05,
 
-    discount: 0,
+    orderNumber: 1,
 
-    nextCustomerTimer: null
+    served: 0,
+
+    successfulOrders: 0,
+
+    attemptedOrders: 0,
+
+    sales: 0,
+
+    timerSeconds: 0,
+
+    timerInterval: null,
+
+    currentCustomerOrder: null,
+
+    heldOrders: [],
+
+    score: 0
 
 };
 
 
 /* =========================================================
-   MENU
+   MENU DATABASE
 ========================================================= */
 
-const menu = [
+const menu = {
 
-    {
-        id: "classic",
-        name: "Classic Burger",
-        category: "Burgers",
-        price: 129,
-        description: "Beef patty, lettuce, tomato"
-    },
+    "Burgers": [
 
-    {
-        id: "cheese",
-        name: "Cheeseburger",
-        category: "Burgers",
-        price: 149,
-        description: "Classic burger with cheese"
-    },
+        {
+            id: "classic-burger",
+            name: "Classic Burger",
+            price: 149,
+            icon: "🍔",
+            description: "Beef patty, lettuce, tomato & house sauce"
+        },
 
-    {
-        id: "double",
-        name: "Double Cheeseburger",
-        category: "Burgers",
-        price: 199,
-        description: "Two patties, double cheese"
-    },
+        {
+            id: "cheeseburger",
+            name: "Cheeseburger",
+            price: 169,
+            icon: "🍔",
+            description: "Classic burger with melted cheese"
+        },
 
-    {
-        id: "crispy",
-        name: "Crispy Chicken Burger",
-        category: "Burgers",
-        price: 179,
-        description: "Crispy chicken, lettuce"
-    },
+        {
+            id: "double-cheese",
+            name: "Double Cheeseburger",
+            price: 219,
+            icon: "🍔",
+            description: "Two patties with double cheese"
+        },
 
-    {
-        id: "spicy",
-        name: "Spicy Chicken Burger",
-        category: "Burgers",
-        price: 169,
-        description: "Spicy chicken fillet"
-    },
+        {
+            id: "spicy-burger",
+            name: "Spicy Chicken Burger",
+            price: 189,
+            icon: "🌶️",
+            description: "Crispy chicken with spicy sauce"
+        },
 
+        {
+            id: "bbq-burger",
+            name: "BBQ Bacon Burger",
+            price: 229,
+            icon: "🥓",
+            description: "Smoky BBQ sauce and crispy bacon"
+        },
 
-    /* MEALS */
+        {
+            id: "mushroom-burger",
+            name: "Mushroom Swiss Burger",
+            price: 209,
+            icon: "🍄",
+            description: "Sautéed mushrooms and Swiss cheese"
+        }
 
-    {
-        id: "classic-meal",
-        name: "Classic Burger Meal",
-        category: "Meals",
-        price: 249,
-        description: "Burger + fries + drink",
-        combo: true
-    },
-
-    {
-        id: "cheese-meal",
-        name: "Cheeseburger Meal",
-        category: "Meals",
-        price: 269,
-        description: "Cheeseburger + fries + drink",
-        combo: true
-    },
-
-    {
-        id: "double-meal",
-        name: "Double Burger Meal",
-        category: "Meals",
-        price: 319,
-        description: "Double burger + fries + drink",
-        combo: true
-    },
-
-    {
-        id: "chicken-meal",
-        name: "Crispy Chicken Meal",
-        category: "Meals",
-        price: 289,
-        description: "Chicken burger + fries + drink",
-        combo: true
-    },
+    ],
 
 
-    /* CHICKEN */
+    "Meals & Combos": [
 
-    {
-        id: "chicken2",
-        name: "Crispy Chicken 2pc",
-        category: "Chicken",
-        price: 169,
-        description: "Two pieces"
-    },
+        {
+            id: "classic-meal",
+            name: "Classic Burger Meal",
+            price: 249,
+            icon: "🍔",
+            description: "Burger, fries and soft drink"
+        },
 
-    {
-        id: "chicken4",
-        name: "Crispy Chicken 4pc",
-        category: "Chicken",
-        price: 299,
-        description: "Four pieces"
-    },
+        {
+            id: "cheese-meal",
+            name: "Cheeseburger Meal",
+            price: 269,
+            icon: "🍔",
+            description: "Cheeseburger, fries and soft drink"
+        },
 
-    {
-        id: "nuggets6",
-        name: "Chicken Nuggets 6pc",
-        category: "Chicken",
-        price: 129,
-        description: "Six nuggets"
-    },
+        {
+            id: "chicken-meal",
+            name: "Chicken Burger Meal",
+            price: 279,
+            icon: "🍗",
+            description: "Chicken burger, fries and soft drink"
+        },
 
-    {
-        id: "nuggets10",
-        name: "Chicken Nuggets 10pc",
-        category: "Chicken",
-        price: 189,
-        description: "Ten nuggets"
-    },
+        {
+            id: "double-meal",
+            name: "Double Burger Meal",
+            price: 319,
+            icon: "🍔",
+            description: "Double cheeseburger, fries and drink"
+        }
 
-
-    /* WRAPS */
-
-    {
-        id: "wrap",
-        name: "Crispy Chicken Wrap",
-        category: "Wraps",
-        price: 159,
-        description: "Crispy chicken wrap"
-    },
-
-    {
-        id: "paneer-wrap",
-        name: "Spicy Paneer Wrap",
-        category: "Wraps",
-        price: 149,
-        description: "Paneer with spicy sauce"
-    },
+    ],
 
 
-    /* SIDES */
+    "Chicken": [
 
-    {
-        id: "fries-s",
-        name: "Fries Small",
-        category: "Sides",
-        price: 79,
-        description: "Classic fries"
-    },
+        {
+            id: "nuggets-6",
+            name: "6pc Nuggets",
+            price: 119,
+            icon: "🍗",
+            description: "Six crispy chicken nuggets"
+        },
 
-    {
-        id: "fries-m",
-        name: "Fries Medium",
-        category: "Sides",
-        price: 99,
-        description: "Classic fries"
-    },
+        {
+            id: "nuggets-10",
+            name: "10pc Nuggets",
+            price: 179,
+            icon: "🍗",
+            description: "Ten crispy chicken nuggets"
+        },
 
-    {
-        id: "fries-l",
-        name: "Fries Large",
-        category: "Sides",
-        price: 119,
-        description: "Classic fries"
-    },
+        {
+            id: "crispy-chicken",
+            name: "Crispy Chicken",
+            price: 199,
+            icon: "🍗",
+            description: "Golden crispy chicken pieces"
+        },
 
-    {
-        id: "peri",
-        name: "Peri Peri Fries",
-        category: "Sides",
-        price: 119,
-        description: "Seasoned fries"
-    },
+        {
+            id: "chicken-strips",
+            name: "Chicken Strips",
+            price: 169,
+            icon: "🍗",
+            description: "Crispy seasoned chicken strips"
+        }
 
-
-    /* DRINKS */
-
-    {
-        id: "coke-s",
-        name: "Coke Small",
-        category: "Drinks",
-        price: 59,
-        description: "Chilled soft drink"
-    },
-
-    {
-        id: "coke-m",
-        name: "Coke Medium",
-        category: "Drinks",
-        price: 69,
-        description: "Chilled soft drink"
-    },
-
-    {
-        id: "coke-l",
-        name: "Coke Large",
-        category: "Drinks",
-        price: 79,
-        description: "Chilled soft drink"
-    },
-
-    {
-        id: "sprite-m",
-        name: "Sprite Medium",
-        category: "Drinks",
-        price: 69,
-        description: "Lemon-lime drink"
-    },
-
-    {
-        id: "sprite-l",
-        name: "Sprite Large",
-        category: "Drinks",
-        price: 79,
-        description: "Lemon-lime drink"
-    },
-
-    {
-        id: "fanta",
-        name: "Fanta Medium",
-        category: "Drinks",
-        price: 69,
-        description: "Orange soft drink"
-    },
+    ],
 
 
-    /* SHAKES */
+    "Wraps": [
 
-    {
-        id: "vanilla",
-        name: "Vanilla Shake",
-        category: "Shakes",
-        price: 129,
-        description: "Creamy vanilla"
-    },
+        {
+            id: "crispy-wrap",
+            name: "Crispy Chicken Wrap",
+            price: 179,
+            icon: "🌯",
+            description: "Crispy chicken, lettuce and sauce"
+        },
 
-    {
-        id: "chocolate",
-        name: "Chocolate Shake",
-        category: "Shakes",
-        price: 139,
-        description: "Rich chocolate"
-    },
+        {
+            id: "spicy-wrap",
+            name: "Spicy Chicken Wrap",
+            price: 189,
+            icon: "🌯",
+            description: "Spicy chicken with fresh vegetables"
+        },
 
-    {
-        id: "strawberry",
-        name: "Strawberry Shake",
-        category: "Shakes",
-        price: 139,
-        description: "Strawberry shake"
-    },
+        {
+            id: "veg-wrap",
+            name: "Veggie Wrap",
+            price: 149,
+            icon: "🌯",
+            description: "Fresh vegetables and creamy sauce"
+        }
 
-
-    /* CAFE */
-
-    {
-        id: "americano",
-        name: "Americano",
-        category: "Cafe",
-        price: 99,
-        description: "Espresso with water"
-    },
-
-    {
-        id: "cappuccino",
-        name: "Cappuccino",
-        category: "Cafe",
-        price: 129,
-        description: "Espresso, milk, foam"
-    },
-
-    {
-        id: "latte",
-        name: "Latte",
-        category: "Cafe",
-        price: 139,
-        description: "Smooth milk coffee"
-    },
+    ],
 
 
-    /* DESSERTS */
+    "Sides": [
 
-    {
-        id: "soft",
-        name: "Soft Serve",
-        category: "Desserts",
-        price: 69,
-        description: "Vanilla soft serve"
-    },
+        {
+            id: "small-fries",
+            name: "Small Fries",
+            price: 79,
+            icon: "🍟",
+            description: "Crispy golden fries"
+        },
 
-    {
-        id: "sundae",
-        name: "Chocolate Sundae",
-        category: "Desserts",
-        price: 99,
-        description: "Chocolate topping"
-    },
+        {
+            id: "medium-fries",
+            name: "Medium Fries",
+            price: 99,
+            icon: "🍟",
+            description: "Medium portion of crispy fries"
+        },
 
-    {
-        id: "brownie",
-        name: "Brownie Sundae",
-        category: "Desserts",
-        price: 139,
-        description: "Brownie with ice cream"
-    },
+        {
+            id: "large-fries",
+            name: "Large Fries",
+            price: 119,
+            icon: "🍟",
+            description: "Large portion of crispy fries"
+        },
 
+        {
+            id: "onion-rings",
+            name: "Onion Rings",
+            price: 109,
+            icon: "🧅",
+            description: "Crispy battered onion rings"
+        },
 
-    /* BREAKFAST */
+        {
+            id: "loaded-fries",
+            name: "Loaded Fries",
+            price: 159,
+            icon: "🍟",
+            description: "Fries with cheese and special sauce"
+        }
 
-    {
-        id: "muffin",
-        name: "Egg & Cheese Muffin",
-        category: "Breakfast",
-        price: 139,
-        description: "Egg and cheese"
-    },
-
-    {
-        id: "pancakes",
-        name: "Pancake Stack",
-        category: "Breakfast",
-        price: 129,
-        description: "Three pancakes"
-    },
-
-    {
-        id: "hash",
-        name: "Hash Browns",
-        category: "Breakfast",
-        price: 69,
-        description: "Crispy hash browns"
-    },
+    ],
 
 
-    /* KIDS */
+    "Drinks": [
 
-    {
-        id: "kids-burger",
-        name: "Kids Burger Meal",
-        category: "Kids",
-        price: 189,
-        description: "Small burger meal"
-    },
+        {
+            id: "coke",
+            name: "Coca-Cola",
+            price: 69,
+            icon: "🥤",
+            description: "Chilled Coca-Cola"
+        },
 
-    {
-        id: "kids-nuggets",
-        name: "Kids Nuggets Meal",
-        category: "Kids",
-        price: 199,
-        description: "Nuggets + fries + drink"
-    }
+        {
+            id: "sprite",
+            name: "Sprite",
+            price: 69,
+            icon: "🥤",
+            description: "Refreshing lemon-lime soda"
+        },
 
-];
+        {
+            id: "fanta",
+            name: "Fanta",
+            price: 69,
+            icon: "🥤",
+            description: "Orange flavored soft drink"
+        },
+
+        {
+            id: "iced-tea",
+            name: "Iced Tea",
+            price: 79,
+            icon: "🧋",
+            description: "Cold brewed iced tea"
+        },
+
+        {
+            id: "water",
+            name: "Mineral Water",
+            price: 40,
+            icon: "💧",
+            description: "Bottled mineral water"
+        }
+
+    ],
+
+
+    "Shakes": [
+
+        {
+            id: "chocolate-shake",
+            name: "Chocolate Shake",
+            price: 139,
+            icon: "🥤",
+            description: "Rich chocolate milkshake"
+        },
+
+        {
+            id: "vanilla-shake",
+            name: "Vanilla Shake",
+            price: 129,
+            icon: "🥤",
+            description: "Classic vanilla milkshake"
+        },
+
+        {
+            id: "strawberry-shake",
+            name: "Strawberry Shake",
+            price: 139,
+            icon: "🍓",
+            description: "Creamy strawberry shake"
+        },
+
+        {
+            id: "oreo-shake",
+            name: "Oreo Shake",
+            price: 159,
+            icon: "🥤",
+            description: "Cookies and cream shake"
+        }
+
+    ],
+
+
+    "Cafe": [
+
+        {
+            id: "cappuccino",
+            name: "Cappuccino",
+            price: 119,
+            icon: "☕",
+            description: "Espresso with steamed milk foam"
+        },
+
+        {
+            id: "latte",
+            name: "Cafe Latte",
+            price: 129,
+            icon: "☕",
+            description: "Smooth espresso and steamed milk"
+        },
+
+        {
+            id: "americano",
+            name: "Americano",
+            price: 99,
+            icon: "☕",
+            description: "Espresso with hot water"
+        },
+
+        {
+            id: "iced-coffee",
+            name: "Iced Coffee",
+            price: 129,
+            icon: "🧋",
+            description: "Cold coffee with milk"
+        }
+
+    ],
+
+
+    "Desserts": [
+
+        {
+            id: "chocolate-sundae",
+            name: "Chocolate Sundae",
+            price: 99,
+            icon: "🍨",
+            description: "Vanilla ice cream with chocolate sauce"
+        },
+
+        {
+            id: "brownie",
+            name: "Chocolate Brownie",
+            price: 109,
+            icon: "🍫",
+            description: "Warm chocolate brownie"
+        },
+
+        {
+            id: "apple-pie",
+            name: "Apple Pie",
+            price: 89,
+            icon: "🥧",
+            description: "Classic baked apple pie"
+        },
+
+        {
+            id: "soft-serve",
+            name: "Soft Serve",
+            price: 79,
+            icon: "🍦",
+            description: "Classic vanilla soft serve"
+        }
+
+    ],
+
+
+    "Breakfast": [
+
+        {
+            id: "breakfast-burger",
+            name: "Breakfast Burger",
+            price: 159,
+            icon: "🍳",
+            description: "Egg, cheese and breakfast patty"
+        },
+
+        {
+            id: "pancakes",
+            name: "Pancake Stack",
+            price: 149,
+            icon: "🥞",
+            description: "Fluffy pancakes with syrup"
+        },
+
+        {
+            id: "egg-toast",
+            name: "Egg & Toast",
+            price: 119,
+            icon: "🍳",
+            description: "Eggs served with toasted bread"
+        }
+
+    ],
+
+
+    "Kids": [
+
+        {
+            id: "kids-burger",
+            name: "Kids Burger",
+            price: 139,
+            icon: "🍔",
+            description: "Small burger for kids"
+        },
+
+        {
+            id: "kids-nuggets",
+            name: "Kids Nuggets",
+            price: 129,
+            icon: "🍗",
+            description: "Four chicken nuggets with fries"
+        },
+
+        {
+            id: "kids-meal",
+            name: "Kids Meal",
+            price: 189,
+            icon: "🍟",
+            description: "Kids burger, fries and drink"
+        }
+
+    ]
+
+};
 
 
 /* =========================================================
-   RANDOM ORDER DATABASE
-========================================================= */
-
-const randomOrders = [
-
-    {
-        mode: "Dine In",
-
-        text:
-            "Can I get a Cheeseburger Meal with large fries, Coke, no ice and extra cheese?",
-
-        items: [
-            {
-                menu: "cheese-meal",
-                modifiers: ["Large fries", "Coke", "No ice", "Extra cheese"]
-            }
-        ]
-    },
-
-    {
-        mode: "Drive-Thru",
-
-        text:
-            "I'll have two Classic Burgers, one with no onions, and a large Coke.",
-
-        items: [
-            {
-                menu: "classic",
-                quantity: 2,
-                modifiers: ["No onions"]
-            },
-            {
-                menu: "coke-l"
-            }
-        ]
-    },
-
-    {
-        mode: "Takeaway",
-
-        text:
-            "One Crispy Chicken Wrap, six nuggets and a chocolate shake.",
-
-        items: [
-            {
-                menu: "wrap"
-            },
-            {
-                menu: "nuggets6"
-            },
-            {
-                menu: "chocolate"
-            }
-        ]
-    },
-
-    {
-        mode: "Delivery",
-
-        text:
-            "Can I get a Spicy Chicken Meal with medium fries, Sprite and extra cheese?",
-
-        items: [
-            {
-                menu: "chicken-meal",
-                modifiers: [
-                    "Medium fries",
-                    "Sprite",
-                    "Extra cheese"
-                ]
-            }
-        ]
-    },
-
-    {
-        mode: "Dine In",
-
-        text:
-            "I'll take a Classic Burger, no pickles, extra sauce, with peri peri fries.",
-
-        items: [
-            {
-                menu: "classic",
-                modifiers: [
-                    "No pickles",
-                    "Extra sauce"
-                ]
-            },
-            {
-                menu: "peri"
-            }
-        ]
-    },
-
-    {
-        mode: "Takeaway",
-
-        text:
-            "Two Crispy Chicken Burgers and two medium Cokes, both with no ice.",
-
-        items: [
-            {
-                menu: "crispy",
-                quantity: 2
-            },
-            {
-                menu: "coke-m",
-                quantity: 2,
-                modifiers: ["No ice"]
-            }
-        ]
-    },
-
-    {
-        mode: "Drive-Thru",
-
-        text:
-            "One Double Cheeseburger Meal, large fries, Sprite and extra cheese.",
-
-        items: [
-            {
-                menu: "double-meal",
-                modifiers: [
-                    "Large fries",
-                    "Sprite",
-                    "Extra cheese"
-                ]
-            }
-        ]
-    },
-
-    {
-        mode: "Dine In",
-
-        text:
-            "Can I get a Spicy Paneer Wrap and a strawberry shake?",
-
-        items: [
-            {
-                menu: "paneer-wrap"
-            },
-            {
-                menu: "strawberry"
-            }
-        ]
-    },
-
-    {
-        mode: "Takeaway",
-
-        text:
-            "One large fries, one Coke and six nuggets.",
-
-        items: [
-            {
-                menu: "fries-l"
-            },
-            {
-                menu: "coke-m"
-            },
-            {
-                menu: "nuggets6"
-            }
-        ]
-    },
-
-    {
-        mode: "Dine In",
-
-        text:
-            "I'll have a Double Cheeseburger with no onions and jalapeños, please.",
-
-        items: [
-            {
-                menu: "double",
-                modifiers: [
-                    "No onions",
-                    "Jalapeños"
-                ]
-            }
-        ]
-    },
-
-    {
-        mode: "Delivery",
-
-        text:
-            "One Crispy Chicken Meal, large fries, Coke with no ice.",
-
-        items: [
-            {
-                menu: "chicken-meal",
-                modifiers: [
-                    "Large fries",
-                    "Coke",
-                    "No ice"
-                ]
-            }
-        ]
-    },
-
-    {
-        mode: "Takeaway",
-
-        text:
-            "A chocolate shake, brownie sundae and a cappuccino.",
-
-        items: [
-            {
-                menu: "chocolate"
-            },
-            {
-                menu: "brownie"
-            },
-            {
-                menu: "cappuccino"
-            }
-        ]
-    }
-
-];
-
-
-/* =========================================================
-   UTILITY
-========================================================= */
-
-function random(array) {
-
-    return array[
-        Math.floor(
-            Math.random() * array.length
-        )
-    ];
-
-}
-
-
-function money(value) {
-
-    return "₹" +
-        Number(value).toFixed(2);
-
-}
-
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-}
-
-
-/* =========================================================
-   CATEGORIES
-========================================================= */
-
-function renderCategories() {
-
-    const container =
-        document.getElementById("categories");
-
-    container.innerHTML = "";
-
-    state.categories.forEach(category => {
-
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "category-btn" +
-            (
-                state.activeCategory === category
-                    ? " active"
-                    : ""
-            );
-
-        button.textContent = category;
-
-        button.onclick = () => {
-
-            state.activeCategory = category;
-
-            renderCategories();
-            renderMenu();
-
-        };
-
-        container.appendChild(button);
-
-    });
-
-}
-
-
-/* =========================================================
-   MENU
+   INITIAL MENU RENDER
 ========================================================= */
 
 function renderMenu() {
 
-    const grid =
-        document.getElementById("menuGrid");
+    const grid = document.getElementById("menuGrid");
+
+    const heading = document.getElementById("menuHeading");
+
+    const count = document.getElementById("menuItemCount");
+
+    const items = menu[state.activeCategory] || [];
+
+    heading.textContent = state.activeCategory;
+
+    count.textContent =
+        `${items.length} item${items.length === 1 ? "" : "s"}`;
 
     grid.innerHTML = "";
 
-    const items =
-        menu.filter(
-            item =>
-                item.category ===
-                state.activeCategory
-        );
-
-    if (!items.length) {
-
-        grid.innerHTML =
-            `<div style="
-                color:#9299a1;
-                padding:20px;
-            ">
-                No items available.
-            </div>`;
-
-        return;
-    }
-
     items.forEach(item => {
 
-        const card =
-            document.createElement("button");
+        const card = document.createElement("button");
 
         card.className = "menu-card";
 
-        card.onclick = () => {
-
-            if (item.combo) {
-
-                openComboBuilder(item);
-
-            } else {
-
-                addItem(item);
-
-            }
-
-        };
+        card.type = "button";
 
         card.innerHTML = `
+
+            <div class="menu-card-top">
+
+                <div class="menu-icon">
+                    ${item.icon}
+                </div>
+
+                <div class="menu-price">
+                    ₹${item.price.toFixed(2)}
+                </div>
+
+            </div>
 
             <div>
 
                 <div class="menu-name">
-                    ${escapeHTML(item.name)}
+                    ${item.name}
                 </div>
 
                 <div class="menu-description">
-                    ${escapeHTML(item.description)}
+                    ${item.description}
                 </div>
 
             </div>
 
-            <div class="menu-price">
-                ${money(item.price)}
-            </div>
-
         `;
+
+        card.addEventListener("click", () => {
+
+            addToCart(item);
+
+        });
 
         grid.appendChild(card);
 
@@ -1918,19 +1750,46 @@ function renderMenu() {
 
 
 /* =========================================================
+   CATEGORY SWITCHING
+========================================================= */
+
+document
+    .getElementById("categoryBar")
+    .addEventListener("click", event => {
+
+        const button =
+            event.target.closest(".category-btn");
+
+        if (!button) return;
+
+        state.activeCategory =
+            button.dataset.category;
+
+        document
+            .querySelectorAll(".category-btn")
+            .forEach(btn => {
+
+                btn.classList.toggle(
+                    "active",
+                    btn === button
+                );
+
+            });
+
+        renderMenu();
+
+    });
+
+
+/* =========================================================
    CART
 ========================================================= */
 
-function addItem(item, modifiers = []) {
+function addToCart(item) {
 
     const existing =
         state.cart.find(
-            cartItem =>
-                cartItem.id === item.id &&
-                JSON.stringify(
-                    cartItem.modifiers
-                ) ===
-                JSON.stringify(modifiers)
+            cartItem => cartItem.id === item.id
         );
 
     if (existing) {
@@ -1941,8 +1800,6 @@ function addItem(item, modifiers = []) {
 
         state.cart.push({
 
-            type: "item",
-
             id: item.id,
 
             name: item.name,
@@ -1951,7 +1808,7 @@ function addItem(item, modifiers = []) {
 
             quantity: 1,
 
-            modifiers
+            details: []
 
         });
 
@@ -1959,15 +1816,20 @@ function addItem(item, modifiers = []) {
 
     renderCart();
 
-    validateOrder();
+    showFeedback(
+        `${item.name} added to order`,
+        "success"
+    );
 
 }
 
 
-function changeQuantity(index, amount) {
+function changeQuantity(id, amount) {
 
     const item =
-        state.cart[index];
+        state.cart.find(
+            cartItem => cartItem.id === id
+        );
 
     if (!item) return;
 
@@ -1975,37 +1837,26 @@ function changeQuantity(index, amount) {
 
     if (item.quantity <= 0) {
 
-        state.cart.splice(index, 1);
+        state.cart =
+            state.cart.filter(
+                cartItem => cartItem.id !== id
+            );
 
     }
 
     renderCart();
 
-    validateOrder();
-
 }
 
 
-function removeItem(index) {
+function removeFromCart(id) {
 
-    state.cart.splice(index, 1);
-
-    renderCart();
-
-    validateOrder();
-
-}
-
-
-function clearCart() {
-
-    state.cart = [];
-
-    state.discount = 0;
+    state.cart =
+        state.cart.filter(
+            item => item.id !== id
+        );
 
     renderCart();
-
-    validateOrder();
 
 }
 
@@ -2016,127 +1867,112 @@ function clearCart() {
 
 function renderCart() {
 
-    const cart =
+    const cartElement =
         document.getElementById("cart");
 
-    if (!state.cart.length) {
+    if (state.cart.length === 0) {
 
-        cart.innerHTML = `
+        cartElement.innerHTML = `
 
             <div class="empty-cart">
 
-                <div>
-                    <div style="font-size:28px;">
-                        🧾
-                    </div>
-
-                    <div style="margin-top:8px;">
-                        Order is empty
-                    </div>
-
-                    <div style="
-                        margin-top:5px;
-                        font-size:10px;
-                    ">
-                        Select items from the menu
-                    </div>
-                </div>
+                No items added yet.<br>
+                Select items from the menu.
 
             </div>
 
         `;
 
-    } else {
+        document
+            .getElementById("checkoutBtn")
+            .disabled = true;
 
-        cart.innerHTML = "";
+        updateTotals();
 
-        state.cart.forEach(
-            (item, index) => {
-
-                const element =
-                    document.createElement("div");
-
-                element.className =
-                    "cart-item";
-
-                const modifiers =
-                    item.modifiers &&
-                    item.modifiers.length
-                        ? item.modifiers.join(", ")
-                        : "";
-
-                element.innerHTML = `
-
-                    <div class="cart-item-top">
-
-                        <div class="cart-item-name">
-                            ${escapeHTML(item.name)}
-                        </div>
-
-                        <div class="cart-item-price">
-                            ${money(
-                                item.price *
-                                item.quantity
-                            )}
-                        </div>
-
-                    </div>
-
-                    ${
-                        modifiers
-                            ? `
-                            <div class="cart-item-details">
-                                ${escapeHTML(modifiers)}
-                            </div>
-                            `
-                            : ""
-                    }
-
-                    <div class="cart-controls">
-
-                        <button
-                            class="qty-btn"
-                            onclick="changeQuantity(
-                                ${index},
-                                -1
-                            )"
-                        >
-                            −
-                        </button>
-
-                        <div class="qty-number">
-                            ${item.quantity}
-                        </div>
-
-                        <button
-                            class="qty-btn"
-                            onclick="changeQuantity(
-                                ${index},
-                                1
-                            )"
-                        >
-                            +
-                        </button>
-
-                        <button
-                            class="remove-btn"
-                            onclick="removeItem(
-                                ${index}
-                            )"
-                        >
-                            Remove
-                        </button>
-
-                    </div>
-
-                `;
-
-                cart.appendChild(element);
-
-            }
-        );
+        return;
 
     }
+
+    cartElement.innerHTML = "";
+
+    state.cart.forEach(item => {
+
+        const element =
+            document.createElement("div");
+
+        element.className = "cart-item";
+
+        const details =
+            item.details.length
+                ? item.details.join(" • ")
+                : "Standard preparation";
+
+        element.innerHTML = `
+
+            <div class="cart-item-main">
+
+                <div class="cart-item-name">
+                    ${item.name}
+                </div>
+
+                <div class="cart-item-price">
+                    ₹${(
+                        item.price *
+                        item.quantity
+                    ).toFixed(2)}
+                </div>
+
+            </div>
+
+            <div class="cart-item-details">
+                ${details}
+            </div>
+
+            <div class="cart-item-controls">
+
+                <div class="quantity-controls">
+
+                    <button
+                        class="qty-btn"
+                        data-action="minus"
+                        data-id="${item.id}"
+                    >
+                        −
+                    </button>
+
+                    <span class="qty-value">
+                        ${item.quantity}
+                    </span>
+
+                    <button
+                        class="qty-btn"
+                        data-action="plus"
+                        data-id="${item.id}"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+                <button
+                    class="remove-btn"
+                    data-action="remove"
+                    data-id="${item.id}"
+                >
+                    REMOVE
+                </button>
+
+            </div>
+
+        `;
+
+        cartElement.appendChild(element);
+
+    });
+
+    document
+        .getElementById("checkoutBtn")
+        .disabled = false;
 
     updateTotals();
 
@@ -2144,14 +1980,54 @@ function renderCart() {
 
 
 /* =========================================================
-   TOTALS
+   CART BUTTON EVENTS
 ========================================================= */
 
-function getSubtotal() {
+document
+    .getElementById("cart")
+    .addEventListener("click", event => {
+
+        const button =
+            event.target.closest("button");
+
+        if (!button) return;
+
+        const id =
+            button.dataset.id;
+
+        const action =
+            button.dataset.action;
+
+        if (action === "plus") {
+
+            changeQuantity(id, 1);
+
+        }
+
+        if (action === "minus") {
+
+            changeQuantity(id, -1);
+
+        }
+
+        if (action === "remove") {
+
+            removeFromCart(id);
+
+        }
+
+    });
+
+
+/* =========================================================
+   TOTAL CALCULATIONS
+========================================================= */
+
+function calculateSubtotal() {
 
     return state.cart.reduce(
-        (sum, item) =>
-            sum +
+        (total, item) =>
+            total +
             item.price *
             item.quantity,
         0
@@ -2163,1352 +2039,1158 @@ function getSubtotal() {
 function updateTotals() {
 
     const subtotal =
-        getSubtotal();
+        calculateSubtotal();
 
-    const discounted =
+    const discount =
+        Math.min(
+            state.discount,
+            subtotal
+        );
+
+    const taxable =
         Math.max(
-            0,
-            subtotal - state.discount
+            subtotal - discount,
+            0
         );
 
     const tax =
-        discounted *
+        taxable *
         state.taxRate;
 
     const total =
-        discounted + tax;
+        taxable + tax;
 
-    document.getElementById(
-        "subtotal"
-    ).textContent =
-        money(subtotal);
+    document
+        .getElementById("subtotalDisplay")
+        .textContent =
+        `₹${subtotal.toFixed(2)}`;
 
-    document.getElementById(
-        "tax"
-    ).textContent =
-        money(tax);
+    document
+        .getElementById("discountDisplay")
+        .textContent =
+        `-₹${discount.toFixed(2)}`;
 
-    document.getElementById(
-        "total"
-    ).textContent =
-        money(total);
+    document
+        .getElementById("taxDisplay")
+        .textContent =
+        `₹${tax.toFixed(2)}`;
 
-}
-
-
-/* =========================================================
-   CUSTOMER GENERATION
-========================================================= */
-
-function createCustomer() {
-
-    const order =
-        random(
-            randomOrders
-        );
-
-    const customer = {
-
-        id:
-            Date.now(),
-
-        mode:
-            order.mode,
-
-        request:
-            order.text,
-
-        expected:
-            order.items,
-
-        patience:
-            100
-
-    };
-
-    state.queue.push(customer);
-
-    renderQueue();
-
-    if (!state.currentCustomer) {
-
-        selectCustomer(customer.id);
-
-    }
-
-}
-
-
-function createInitialCustomers() {
-
-    state.queue = [];
-
-    createCustomer();
-    createCustomer();
-    createCustomer();
+    document
+        .getElementById("totalDisplay")
+        .textContent =
+        `₹${total.toFixed(2)}`;
 
 }
 
 
 /* =========================================================
-   QUEUE
+   FEEDBACK
 ========================================================= */
 
-function renderQueue() {
+let feedbackTimeout = null;
 
-    const list =
-        document.getElementById(
-            "queueList"
+function showFeedback(message, type = "") {
+
+    const feedback =
+        document.getElementById("feedback");
+
+    feedback.textContent =
+        message;
+
+    feedback.className =
+        `feedback show ${type}`;
+
+    clearTimeout(feedbackTimeout);
+
+    feedbackTimeout =
+        setTimeout(() => {
+
+            feedback.classList.remove("show");
+
+        }, 2200);
+
+}
+
+
+/* =========================================================
+   CLEAR ORDER
+========================================================= */
+
+document
+    .getElementById("clearBtn")
+    .addEventListener("click", () => {
+
+        if (state.cart.length === 0) {
+
+            showFeedback(
+                "There are no items to clear."
+            );
+
+            return;
+
+        }
+
+        state.cart = [];
+
+        state.discount = 0;
+
+        renderCart();
+
+        showFeedback(
+            "Current order cleared."
         );
-
-    list.innerHTML = "";
-
-    state.queue.forEach(customer => {
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "queue-card" +
-            (
-                state.currentCustomer &&
-                state.currentCustomer.id ===
-                customer.id
-                    ? " active"
-                    : ""
-            );
-
-        const mode =
-            customer.mode;
-
-        card.innerHTML = `
-
-            <div class="queue-top">
-
-                <div class="queue-mode">
-                    ${escapeHTML(mode)}
-                </div>
-
-                <div class="queue-time">
-                    NOW
-                </div>
-
-            </div>
-
-            <div class="queue-request">
-                ${escapeHTML(
-                    customer.request
-                )}
-            </div>
-
-            <div class="patience">
-
-                <div
-                    class="patience-fill"
-                    style="width:${customer.patience}%"
-                ></div>
-
-            </div>
-
-        `;
-
-        card.onclick = () => {
-
-            selectCustomer(
-                customer.id
-            );
-
-        };
-
-        list.appendChild(card);
 
     });
 
-    document.getElementById(
-        "queueCount"
-    ).textContent =
-        state.queue.length;
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+renderMenu();
+
+renderCart();
+
+<!-- =========================================================
+     PART 2 — CUSTOMER ORDER ENGINE
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   CUSTOMER ORDER DATABASE
+========================================================= */
+
+/*
+    Every order below is an order the POS is going to ask
+    you to build.
+
+    IMPORTANT:
+    These are displayed INSIDE the website.
+    There are NO browser alerts.
+*/
+
+const customerOrders = [
+
+    {
+        type: "Dine In",
+        items: [
+            {
+                id: "cheeseburger",
+                quantity: 1,
+                details: ["Extra cheese"]
+            },
+            {
+                id: "large-fries",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "coke",
+                quantity: 1,
+                details: ["No ice"]
+            }
+        ],
+        text:
+            "1 Cheeseburger with extra cheese, 1 Large Fries, and 1 Coke with no ice."
+    },
+
+    {
+        type: "Drive-Thru",
+        items: [
+            {
+                id: "classic-burger",
+                quantity: 2,
+                details: ["One with no onions"]
+            },
+            {
+                id: "large-fries",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "coke",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "2 Classic Burgers, one with no onions, 1 Large Fries, and 1 Coke."
+    },
+
+    {
+        type: "Takeaway",
+        items: [
+            {
+                id: "crispy-wrap",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "nuggets-6",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "chocolate-shake",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Crispy Chicken Wrap, 6pc Nuggets, and 1 Chocolate Shake."
+    },
+
+    {
+        type: "Delivery",
+        items: [
+            {
+                id: "chicken-meal",
+                quantity: 1,
+                details: ["Extra cheese"]
+            },
+            {
+                id: "sprite",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Chicken Burger Meal with extra cheese and 1 Sprite."
+    },
+
+    {
+        type: "Dine In",
+        items: [
+            {
+                id: "double-cheese",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "medium-fries",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "chocolate-shake",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Double Cheeseburger, 1 Medium Fries, and 1 Chocolate Shake."
+    },
+
+    {
+        type: "Takeaway",
+        items: [
+            {
+                id: "spicy-wrap",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "onion-rings",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "sprite",
+                quantity: 1,
+                details: ["No ice"]
+            }
+        ],
+        text:
+            "1 Spicy Chicken Wrap, 1 Onion Rings, and 1 Sprite with no ice."
+    },
+
+    {
+        type: "Drive-Thru",
+        items: [
+            {
+                id: "classic-meal",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "nuggets-10",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Classic Burger Meal and 10pc Nuggets."
+    },
+
+    {
+        type: "Delivery",
+        items: [
+            {
+                id: "double-meal",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "large-fries",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "fanta",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Double Burger Meal, 1 Large Fries, and 1 Fanta."
+    },
+
+    {
+        type: "Dine In",
+        items: [
+            {
+                id: "mushroom-burger",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "loaded-fries",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "iced-tea",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Mushroom Swiss Burger, 1 Loaded Fries, and 1 Iced Tea."
+    },
+
+    {
+        type: "Takeaway",
+        items: [
+            {
+                id: "kids-burger",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "small-fries",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "vanilla-shake",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Kids Burger, 1 Small Fries, and 1 Vanilla Shake."
+    },
+
+    {
+        type: "Dine In",
+        items: [
+            {
+                id: "classic-burger",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "onion-rings",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "cappuccino",
+                quantity: 1,
+                details: []
+            },
+            {
+                id: "brownie",
+                quantity: 1,
+                details: []
+            }
+        ],
+        text:
+            "1 Classic Burger, 1 Onion Rings, 1 Cappuccino, and 1 Chocolate Brownie."
+    },
+
+    {
+        type: "Delivery",
+        items: [
+            {
+                id: "crispy-chicken",
+                quantity: 2,
+                details: []
+            },
+            {
+                id: "medium-fries",
+                quantity: 2,
+                details: []
+            },
+            {
+                id: "coke",
+                quantity: 2,
+                details: ["No ice"]
+            }
+        ],
+        text:
+            "2 Crispy Chicken, 2 Medium Fries, and 2 Cokes with no ice."
+    }
+
+];
+
+
+/* =========================================================
+   FIND MENU ITEM
+========================================================= */
+
+function findMenuItem(id) {
+
+    for (const category in menu) {
+
+        const found =
+            menu[category].find(
+                item => item.id === id
+            );
+
+        if (found) {
+            return found;
+        }
+
+    }
+
+    return null;
 
 }
 
 
 /* =========================================================
-   SELECT CUSTOMER
+   PICK RANDOM CUSTOMER ORDER
 ========================================================= */
 
-function selectCustomer(id) {
+function getRandomCustomerOrder() {
 
-    const customer =
-        state.queue.find(
-            item =>
-                item.id === id
+    const index =
+        Math.floor(
+            Math.random() *
+            customerOrders.length
         );
 
-    if (!customer) return;
+    return customerOrders[index];
 
-    state.currentCustomer =
-        customer;
+}
+
+
+/* =========================================================
+   START NEW CUSTOMER ORDER
+========================================================= */
+
+function startNewCustomerOrder() {
+
+    /*
+        Pick a random order.
+    */
+
+    state.currentCustomerOrder =
+        getRandomCustomerOrder();
+
+
+    /*
+        Reset timer.
+    */
+
+    state.timerSeconds = 0;
+
+    startOrderTimer();
+
+
+    /*
+        Reset current POS order.
+    */
 
     state.cart = [];
 
     state.discount = 0;
 
-    document.getElementById(
-        "requestText"
-    ).textContent =
-        customer.request;
-
-    document.getElementById(
-        "orderMode"
-    ).textContent =
-        customer.mode.toUpperCase();
-
-    document.getElementById(
-        "requestTicket"
-    ).className =
-        "request-ticket";
-
-    document.getElementById(
-        "requestStatus"
-    ).textContent =
-        "Enter the customer's order using the menu.";
-
-    document.getElementById(
-        "requestStatus"
-    ).className =
-        "request-status";
-
-    renderQueue();
-
     renderCart();
 
-    validateOrder();
-
-}
-
-
-/* =========================================================
-   VALIDATE ORDER
-========================================================= */
-
-function getExpectedItems() {
-
-    if (!state.currentCustomer) {
-
-        return [];
-
-    }
-
-    return state.currentCustomer.expected;
-
-}
-
-
-function validateOrder() {
-
-    const status =
-        document.getElementById(
-            "requestStatus"
-        );
-
-    const ticket =
-        document.getElementById(
-            "requestTicket"
-        );
-
-    const checkout =
-        document.getElementById(
-            "checkoutBtn"
-        );
-
-    if (!state.currentCustomer) {
-
-        checkout.disabled = true;
-
-        return;
-
-    }
-
-    const expected =
-        getExpectedItems();
 
     /*
-     * For this training version we compare
-     * the menu IDs and quantities.
-     */
+        Update the actual IN-GAME order section.
+    */
 
-    let correct =
-        true;
+    const order =
+        state.currentCustomerOrder;
 
-    let actualMap = {};
 
-    state.cart.forEach(item => {
+    document
+        .getElementById("incomingOrderType")
+        .textContent =
+        order.type.toUpperCase();
 
-        actualMap[item.id] =
-            (
-                actualMap[item.id] || 0
-            ) +
-            item.quantity;
 
-    });
+    document
+        .getElementById("orderMode")
+        .textContent =
+        order.type.toUpperCase();
 
-    let expectedMap = {};
 
-    expected.forEach(item => {
+    document
+        .getElementById("incomingOrderText")
+        .textContent =
+        order.text;
 
-        expectedMap[item.menu] =
-            (
-                expectedMap[item.menu] || 0
-            ) +
-            (item.quantity || 1);
 
-    });
+    document
+        .getElementById("incomingOrderNumber")
+        .textContent =
+        `ORDER #${String(state.orderNumber).padStart(4, "0")}`;
 
-    const actualKeys =
-        Object.keys(actualMap);
 
-    const expectedKeys =
-        Object.keys(expectedMap);
+    /*
+        Give the order a small visual confirmation.
+    */
 
-    if (
-        actualKeys.length !==
-        expectedKeys.length
-    ) {
+    const incoming =
+        document.querySelector(".incoming-order");
 
-        correct = false;
+    incoming.style.borderColor =
+        "rgba(255,159,28,.65)";
 
-    }
 
-    expectedKeys.forEach(key => {
+    setTimeout(() => {
 
-        if (
-            actualMap[key] !==
-            expectedMap[key]
-        ) {
+        incoming.style.borderColor =
+            "";
 
-            correct = false;
+    }, 500);
 
-        }
 
-    });
-
-    if (
-        correct &&
-        state.cart.length
-    ) {
-
-        status.textContent =
-            "✓ Order matches the customer's request. Ready for payment.";
-
-        status.className =
-            "request-status success";
-
-        ticket.className =
-            "request-ticket correct";
-
-        checkout.disabled = false;
-
-    } else {
-
-        if (state.cart.length) {
-
-            status.textContent =
-                "Order does not match the request yet.";
-
-        } else {
-
-            status.textContent =
-                "Enter the customer's order using the menu.";
-
-        }
-
-        status.className =
-            "request-status error";
-
-        ticket.className =
-            "request-ticket incorrect";
-
-        checkout.disabled = true;
-
-    }
-
-}
-
-
-/* =========================================================
-   COMBO BUILDER
-========================================================= */
-
-function openComboBuilder(item) {
-
-    const modal =
-        document.getElementById(
-            "modalRoot"
-        );
-
-    let side = "fries-m";
-    let drink = "coke-m";
-    let extras = [];
-
-    function renderBuilder() {
-
-        const sideItem =
-            menu.find(
-                x => x.id === side
-            );
-
-        const drinkItem =
-            menu.find(
-                x => x.id === drink
-            );
-
-        let price =
-            item.price;
-
-        if (side === "fries-l") {
-
-            price += 20;
-
-        }
-
-        extras.forEach(extra => {
-
-            price += extra.price;
-
-        });
-
-        modal.innerHTML = `
-
-            <div class="modal-backdrop">
-
-                <div class="modal">
-
-                    <div class="modal-header">
-
-                        <div class="modal-title">
-                            Build ${escapeHTML(
-                                item.name
-                            )}
-                        </div>
-
-                        <button
-                            class="modal-close"
-                            onclick="closeModal()"
-                        >
-                            ×
-                        </button>
-
-                    </div>
-
-
-                    <div class="modal-body">
-
-                        <div class="option-section">
-
-                            <div class="option-label">
-                                Fries
-                            </div>
-
-                            <div class="option-grid">
-
-                                <button
-                                    class="option-btn ${
-                                        side === "fries-m"
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        window.comboSide =
-                                        'fries-m';
-                                        rebuildCombo();
-                                    "
-                                >
-                                    Medium Fries
-                                </button>
-
-                                <button
-                                    class="option-btn ${
-                                        side === "fries-l"
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        window.comboSide =
-                                        'fries-l';
-                                        rebuildCombo();
-                                    "
-                                >
-                                    Large Fries +₹20
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="option-section">
-
-                            <div class="option-label">
-                                Drink
-                            </div>
-
-                            <div class="option-grid">
-
-                                <button
-                                    class="option-btn ${
-                                        drink === "coke-m"
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        window.comboDrink =
-                                        'coke-m';
-                                        rebuildCombo();
-                                    "
-                                >
-                                    Medium Coke
-                                </button>
-
-                                <button
-                                    class="option-btn ${
-                                        drink === "sprite-m"
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        window.comboDrink =
-                                        'sprite-m';
-                                        rebuildCombo();
-                                    "
-                                >
-                                    Medium Sprite
-                                </button>
-
-                                <button
-                                    class="option-btn ${
-                                        drink === "coke-l"
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        window.comboDrink =
-                                        'coke-l';
-                                        rebuildCombo();
-                                    "
-                                >
-                                    Large Coke
-                                </button>
-
-                                <button
-                                    class="option-btn ${
-                                        drink === "sprite-l"
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        window.comboDrink =
-                                        'sprite-l';
-                                        rebuildCombo();
-                                    "
-                                >
-                                    Large Sprite
-                                </button>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="option-section">
-
-                            <div class="option-label">
-                                Extras
-                            </div>
-
-                            <div class="option-grid">
-
-                                <button
-                                    class="option-btn ${
-                                        extras.some(
-                                            x =>
-                                                x.id ===
-                                                "cheese-extra"
-                                        )
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        toggleExtra(
-                                            'cheese-extra',
-                                            'Extra Cheese',
-                                            25
-                                        );
-                                    "
-                                >
-                                    Extra Cheese +₹25
-                                </button>
-
-                                <button
-                                    class="option-btn ${
-                                        extras.some(
-                                            x =>
-                                                x.id ===
-                                                "jalapeno"
-                                        )
-                                            ? "selected"
-                                            : ""
-                                    }"
-                                    onclick="
-                                        toggleExtra(
-                                            'jalapeno',
-                                            'Jalapeños',
-                                            15
-                                        );
-                                    "
-                                >
-                                    Jalapeños +₹15
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="modal-footer">
-
-                        <div>
-
-                            <div style="
-                                color:#9299a1;
-                                font-size:10px;
-                            ">
-                                COMBO TOTAL
-                            </div>
-
-                            <div
-                                class="builder-total"
-                            >
-                                ${money(price)}
-                            </div>
-
-                        </div>
-
-                        <button
-                            class="confirm-btn"
-                            onclick="
-                                confirmCombo(
-                                    '${item.id}'
-                                );
-                            "
-                        >
-                            ADD TO ORDER
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-        window.currentCombo = {
-            side,
-            drink,
-            extras
-        };
-
-    }
-
-
-    window.comboSide =
-        "fries-m";
-
-    window.comboDrink =
-        "coke-m";
-
-    window.comboExtras = [];
-
-    window.rebuildCombo = function() {
-
-        side =
-            window.comboSide;
-
-        drink =
-            window.comboDrink;
-
-        extras =
-            window.comboExtras;
-
-        renderBuilder();
-
-    };
-
-
-    window.toggleExtra =
-        function(id, name, price) {
-
-            const index =
-                extras.findIndex(
-                    x => x.id === id
-                );
-
-            if (index >= 0) {
-
-                extras.splice(index, 1);
-
-            } else {
-
-                extras.push({
-                    id,
-                    name,
-                    price
-                });
-
-            }
-
-            window.comboExtras =
-                extras;
-
-            renderBuilder();
-
-        };
-
-
-    window.confirmCombo =
-        function(itemId) {
-
-            const combo =
-                menu.find(
-                    x => x.id === itemId
-                );
-
-            let price =
-                combo.price;
-
-            if (
-                window.comboSide ===
-                "fries-l"
-            ) {
-
-                price += 20;
-
-            }
-
-            window.comboExtras.forEach(
-                extra => {
-
-                    price += extra.price;
-
-                }
-            );
-
-            state.cart.push({
-
-                type: "combo",
-
-                id: combo.id,
-
-                name: combo.name,
-
-                price,
-
-                quantity: 1,
-
-                modifiers: [
-                    "Fries: " +
-                    (
-                        window.comboSide ===
-                        "fries-l"
-                            ? "Large"
-                            : "Medium"
-                    ),
-
-                    "Drink: " +
-                    window.comboDrink,
-
-                    ...window.comboExtras
-                        .map(
-                            x => x.name
-                        )
-                ]
-
-            });
-
-            closeModal();
-
-            renderCart();
-
-            validateOrder();
-
-        };
-
-
-    renderBuilder();
-
-}
-
-
-function closeModal() {
-
-    document.getElementById(
-        "modalRoot"
-    ).innerHTML = "";
-
-}
-
-
-/* =========================================================
-   PAYMENT
-========================================================= */
-
-function openPayment() {
-
-    if (!state.currentCustomer) return;
-
-    const subtotal =
-        getSubtotal();
-
-    const tax =
-        Math.max(
-            0,
-            subtotal -
-            state.discount
-        ) *
-        state.taxRate;
-
-    const total =
-        Math.max(
-            0,
-            subtotal -
-            state.discount
-        ) +
-        tax;
-
-    let method = "Card";
-
-    const modal =
-        document.getElementById(
-            "modalRoot"
-        );
-
-    function renderPayment() {
-
-        modal.innerHTML = `
-
-            <div class="modal-backdrop">
-
-                <div class="modal">
-
-                    <div class="modal-header">
-
-                        <div class="modal-title">
-                            Payment
-                        </div>
-
-                        <button
-                            class="modal-close"
-                            onclick="closeModal()"
-                        >
-                            ×
-                        </button>
-
-                    </div>
-
-                    <div class="modal-body">
-
-                        <div style="
-                            text-align:center;
-                            margin-bottom:20px;
-                        ">
-
-                            <div style="
-                                color:#9299a1;
-                                font-size:11px;
-                            ">
-                                AMOUNT DUE
-                            </div>
-
-                            <div style="
-                                font-size:34px;
-                                font-weight:900;
-                                margin-top:4px;
-                            ">
-                                ${money(total)}
-                            </div>
-
-                        </div>
-
-
-                        <div class="payment-methods">
-
-                            <button
-                                class="payment-method ${
-                                    method === "Cash"
-                                        ? "selected"
-                                        : ""
-                                }"
-                                onclick="
-                                    method='Cash';
-                                    renderPayment();
-                                "
-                            >
-                                💵 Cash
-                            </button>
-
-                            <button
-                                class="payment-method ${
-                                    method === "Card"
-                                        ? "selected"
-                                        : ""
-                                }"
-                                onclick="
-                                    method='Card';
-                                    renderPayment();
-                                "
-                            >
-                                💳 Card
-                            </button>
-
-                            <button
-                                class="payment-method ${
-                                    method === "UPI"
-                                        ? "selected"
-                                        : ""
-                                }"
-                                onclick="
-                                    method='UPI';
-                                    renderPayment();
-                                "
-                            >
-                                📱 UPI
-                            </button>
-
-                        </div>
-
-
-                        ${
-                            method === "Cash"
-                                ? `
-                                <input
-                                    class="cash-input"
-                                    id="cashTendered"
-                                    type="number"
-                                    placeholder="Amount tendered"
-                                    oninput="updateChange(
-                                        ${total}
-                                    )"
-                                >
-
-                                <div class="change-box">
-
-                                    <span>
-                                        Change
-                                    </span>
-
-                                    <strong
-                                        id="changeAmount"
-                                    >
-                                        ₹0.00
-                                    </strong>
-
-                                </div>
-                                `
-                                : `
-                                <div style="
-                                    padding:18px;
-                                    text-align:center;
-                                    background:#202428;
-                                    border-radius:8px;
-                                    color:#9299a1;
-                                ">
-                                    ${method} payment ready
-                                </div>
-                                `
-                        }
-
-                    </div>
-
-
-                    <div class="modal-footer">
-
-                        <div style="
-                            color:#9299a1;
-                            font-size:11px;
-                        ">
-                            ${method}
-                        </div>
-
-                        <button
-                            class="confirm-btn"
-                            onclick="
-                                completePayment(
-                                    '${method}',
-                                    ${total}
-                                );
-                            "
-                        >
-                            COMPLETE PAYMENT
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-    window.updateChange =
-        function(total) {
-
-            const input =
-                document.getElementById(
-                    "cashTendered"
-                );
-
-            const change =
-                document.getElementById(
-                    "changeAmount"
-                );
-
-            if (!input || !change) return;
-
-            const tendered =
-                Number(input.value);
-
-            const difference =
-                tendered - total;
-
-            change.textContent =
-                money(
-                    Math.max(
-                        0,
-                        difference
-                    )
-                );
-
-        };
-
-
-    window.completePayment =
-        function(method, total) {
-
-            if (method === "Cash") {
-
-                const input =
-                    document.getElementById(
-                        "cashTendered"
-                    );
-
-                const tendered =
-                    Number(
-                        input?.value || 0
-                    );
-
-                if (tendered < total) {
-
-                    alert(
-                        "Insufficient cash."
-                    );
-
-                    return;
-
-                }
-
-            }
-
-            state.served++;
-
-            state.sales += total;
-
-            const currentId =
-                state.currentCustomer.id;
-
-            state.queue =
-                state.queue.filter(
-                    customer =>
-                        customer.id !==
-                        currentId
-                );
-
-            state.currentCustomer =
-                null;
-
-            state.cart = [];
-
-            state.discount = 0;
-
-            closeModal();
-
-            updateStats();
-
-            renderCart();
-
-            /*
-             * Automatically bring in another
-             * customer after the order is completed.
-             */
-
-            setTimeout(
-                () => {
-
-                    createCustomer();
-
-                },
-                650
-            );
-
-            document.getElementById(
-                "requestText"
-            ).textContent =
-                "Order completed. Next customer arriving...";
-
-            document.getElementById(
-                "requestStatus"
-            ).textContent =
-                "Payment approved.";
-
-            document.getElementById(
-                "requestStatus"
-            ).className =
-                "request-status success";
-
-            document.getElementById(
-                "requestTicket"
-            ).className =
-                "request-ticket correct";
-
-        };
-
-
-    renderPayment();
-
-}
-
-
-/* =========================================================
-   HOLD / RECALL
-========================================================= */
-
-function holdOrder() {
-
-    if (
-        !state.currentCustomer ||
-        !state.cart.length
-    ) {
-
-        return;
-
-    }
-
-    state.heldOrder = {
-
-        customer:
-            state.currentCustomer,
-
-        cart:
-            JSON.parse(
-                JSON.stringify(
-                    state.cart
-                )
-            )
-
-    };
-
-    state.cart = [];
-
-    renderCart();
-
-    document.getElementById(
-        "requestText"
-    ).textContent =
-        "Order placed on hold.";
-
-}
-
-
-function showHeldOrder() {
-
-    if (!state.heldOrder) {
-
-        alert(
-            "There is no held order."
-        );
-
-        return;
-
-    }
-
-    state.currentCustomer =
-        state.heldOrder.customer;
-
-    state.cart =
-        state.heldOrder.cart;
-
-    state.heldOrder = null;
-
-    document.getElementById(
-        "requestText"
-    ).textContent =
-        state.currentCustomer.request;
-
-    document.getElementById(
-        "orderMode"
-    ).textContent =
-        state.currentCustomer.mode
-            .toUpperCase();
-
-    renderCart();
-
-    validateOrder();
-
-}
-
-
-/* =========================================================
-   DISCOUNT
-========================================================= */
-
-function showDiscount() {
-
-    const code =
-        prompt(
-            "Enter discount code:\n\nSAVE10 = 10% off"
-        );
-
-    if (!code) return;
-
-    if (
-        code.trim().toUpperCase() ===
-        "SAVE10"
-    ) {
-
-        state.discount =
-            getSubtotal() * 0.10;
-
-        updateTotals();
-
-        return;
-
-    }
-
-    alert(
-        "Invalid discount code."
+    showFeedback(
+        "New customer order received.",
+        "success"
     );
 
 }
 
 
 /* =========================================================
-   STATS
+   ORDER TIMER
 ========================================================= */
 
-function updateStats() {
+function startOrderTimer() {
 
-    document.getElementById(
-        "servedCount"
-    ).textContent =
+    clearInterval(
+        state.timerInterval
+    );
+
+
+    state.timerInterval =
+        setInterval(() => {
+
+            state.timerSeconds++;
+
+
+            const minutes =
+                Math.floor(
+                    state.timerSeconds / 60
+                );
+
+
+            const seconds =
+                state.timerSeconds % 60;
+
+
+            const formatted =
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0");
+
+
+            document
+                .getElementById("orderTimer")
+                .textContent =
+                formatted;
+
+
+        }, 1000);
+
+}
+
+
+/* =========================================================
+   STOP TIMER
+========================================================= */
+
+function stopOrderTimer() {
+
+    clearInterval(
+        state.timerInterval
+    );
+
+}
+
+
+/* =========================================================
+   NORMALIZE CART
+========================================================= */
+
+/*
+    This converts the current cart into a simple format
+    so we can compare it with the customer's request.
+*/
+
+function normalizeCart() {
+
+    return state.cart
+        .map(item => ({
+
+            id: item.id,
+
+            quantity: item.quantity
+
+        }))
+        .sort((a, b) =>
+            a.id.localeCompare(b.id)
+        );
+
+}
+
+
+/* =========================================================
+   NORMALIZE CUSTOMER ORDER
+========================================================= */
+
+function normalizeCustomerOrder() {
+
+    return state.currentCustomerOrder.items
+        .map(item => ({
+
+            id: item.id,
+
+            quantity: item.quantity
+
+        }))
+        .sort((a, b) =>
+            a.id.localeCompare(b.id)
+        );
+
+}
+
+
+/* =========================================================
+   CHECK WHETHER ITEMS MATCH
+========================================================= */
+
+function doesOrderMatch() {
+
+    if (!state.currentCustomerOrder) {
+
+        return false;
+
+    }
+
+
+    const requested =
+        normalizeCustomerOrder();
+
+
+    const entered =
+        normalizeCart();
+
+
+    if (
+        requested.length !==
+        entered.length
+    ) {
+
+        return false;
+
+    }
+
+
+    for (
+        let i = 0;
+        i < requested.length;
+        i++
+    ) {
+
+        if (
+            requested[i].id !==
+            entered[i].id
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            requested[i].quantity !==
+            entered[i].quantity
+        ) {
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   CHECKOUT BUTTON
+========================================================= */
+
+document
+    .getElementById("checkoutBtn")
+    .addEventListener("click", () => {
+
+        if (
+            !state.currentCustomerOrder
+        ) {
+
+            showFeedback(
+                "There is no active customer order.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            state.cart.length === 0
+        ) {
+
+            showFeedback(
+                "Add items before proceeding to payment.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*
+            Before payment, check whether
+            the order is actually correct.
+        */
+
+        if (!doesOrderMatch()) {
+
+            state.attemptedOrders++;
+
+            updateAccuracy();
+
+
+            showFeedback(
+                "Order does not match the customer request.",
+                "error"
+            );
+
+
+            highlightOrderError();
+
+
+            return;
+
+        }
+
+
+        /*
+            Correct order.
+            Payment screen will be added in Part 3.
+        */
+
+        openPaymentScreen();
+
+    });
+
+
+/* =========================================================
+   ORDER ERROR VISUAL
+========================================================= */
+
+function highlightOrderError() {
+
+    const incoming =
+        document.querySelector(
+            ".incoming-order"
+        );
+
+
+    incoming.style.borderColor =
+        "rgba(239,98,98,.8)";
+
+
+    setTimeout(() => {
+
+        incoming.style.borderColor =
+            "";
+
+    }, 700);
+
+}
+
+
+/* =========================================================
+   ACCURACY
+========================================================= */
+
+function updateAccuracy() {
+
+    const total =
+        state.attemptedOrders;
+
+
+    if (total === 0) {
+
+        document
+            .getElementById("accuracyDisplay")
+            .textContent =
+            "100%";
+
+        return;
+
+    }
+
+
+    const correct =
+        state.successfulOrders;
+
+
+    const accuracy =
+        Math.round(
+            (correct / total) * 100
+        );
+
+
+    document
+        .getElementById("accuracyDisplay")
+        .textContent =
+        `${accuracy}%`;
+
+}
+
+
+/* =========================================================
+   HOLD ORDER
+========================================================= */
+
+document
+    .getElementById("holdBtn")
+    .addEventListener("click", () => {
+
+        if (
+            state.cart.length === 0
+        ) {
+
+            showFeedback(
+                "There is no order to hold.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        state.heldOrders.push({
+
+            cart:
+                JSON.parse(
+                    JSON.stringify(
+                        state.cart
+                    )
+                ),
+
+            discount:
+                state.discount,
+
+            customerOrder:
+                state.currentCustomerOrder,
+
+            timerSeconds:
+                state.timerSeconds
+
+        });
+
+
+        state.cart = [];
+
+        state.discount = 0;
+
+
+        renderCart();
+
+
+        showFeedback(
+            "Order placed on hold.",
+            "success"
+        );
+
+    });
+
+
+/* =========================================================
+   RECALL ORDER
+========================================================= */
+
+document
+    .getElementById("recallBtn")
+    .addEventListener("click", () => {
+
+        if (
+            state.heldOrders.length === 0
+        ) {
+
+            showFeedback(
+                "No held orders available.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const held =
+            state.heldOrders.pop();
+
+
+        state.cart =
+            held.cart;
+
+
+        state.discount =
+            held.discount;
+
+
+        state.currentCustomerOrder =
+            held.customerOrder;
+
+
+        state.timerSeconds =
+            held.timerSeconds;
+
+
+        renderCart();
+
+
+        document
+            .getElementById("incomingOrderType")
+            .textContent =
+            state.currentCustomerOrder
+                .type
+                .toUpperCase();
+
+
+        document
+            .getElementById("orderMode")
+            .textContent =
+            state.currentCustomerOrder
+                .type
+                .toUpperCase();
+
+
+        document
+            .getElementById("incomingOrderText")
+            .textContent =
+            state.currentCustomerOrder
+                .text;
+
+
+        startOrderTimer();
+
+
+        showFeedback(
+            "Held order recalled.",
+            "success"
+        );
+
+    });
+
+
+/* =========================================================
+   DISCOUNT
+========================================================= */
+
+document
+    .getElementById("discountBtn")
+    .addEventListener("click", () => {
+
+        /*
+            For now we use a training discount.
+            A proper coupon interface comes in Part 3/4.
+        */
+
+        const subtotal =
+            calculateSubtotal();
+
+
+        if (subtotal <= 0) {
+
+            showFeedback(
+                "Add items before applying a discount.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (state.discount > 0) {
+
+            state.discount = 0;
+
+            updateTotals();
+
+
+            showFeedback(
+                "Discount removed."
+            );
+
+            return;
+
+        }
+
+
+        state.discount =
+            Math.round(
+                subtotal * 0.10
+            );
+
+
+        updateTotals();
+
+
+        showFeedback(
+            "10% training discount applied.",
+            "success"
+        );
+
+    });
+
+
+/* =========================================================
+   PAYMENT PLACEHOLDER
+========================================================= */
+
+/*
+    Part 3 will replace this with the proper
+    touchscreen payment interface.
+
+    For now we don't use a browser popup.
+*/
+
+function openPaymentScreen() {
+
+    showFeedback(
+        "Order verified. Payment terminal will open in Part 3.",
+        "success"
+    );
+
+}
+
+
+/* =========================================================
+   COMPLETE ORDER
+========================================================= */
+
+/*
+    Part 3 will call this after successful payment.
+*/
+
+function completeOrder() {
+
+    stopOrderTimer();
+
+
+    const totalText =
+        document
+            .getElementById("totalDisplay")
+            .textContent;
+
+
+    const total =
+        parseFloat(
+            totalText
+                .replace("₹", "")
+        ) || 0;
+
+
+    state.sales += total;
+
+    state.served++;
+
+    state.successfulOrders++;
+
+    state.attemptedOrders++;
+
+    state.score += 100;
+
+
+    document
+        .getElementById("servedCount")
+        .textContent =
         state.served;
 
-    document.getElementById(
-        "salesTotal"
-    ).textContent =
-        money(state.sales);
 
-    document.getElementById(
-        "currentOrderNumber"
-    ).textContent =
-        "#" +
-        state.orderNumber;
+    document
+        .getElementById("salesDisplay")
+        .textContent =
+        `₹${state.sales.toFixed(2)}`;
 
-    document.getElementById(
-        "orderNumber"
-    ).textContent =
-        "Order #" +
-        state.orderNumber;
+
+    updateAccuracy();
+
+
+    /*
+        Increase order number BEFORE
+        generating the next customer.
+    */
 
     state.orderNumber++;
 
-}
 
+    /*
+        Small pause makes the transition
+        feel like a real POS.
+    */
 
-/* =========================================================
-   CLOCK
-========================================================= */
+    setTimeout(() => {
 
-function updateClock() {
+        startNewCustomerOrder();
 
-    const now =
-        new Date();
-
-    document.getElementById(
-        "clock"
-    ).textContent =
-        now.toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            }
-        );
+    }, 800);
 
 }
 
 
-setInterval(
-    updateClock,
-    1000
-);
-
-
 /* =========================================================
-   PATIENCE TIMER
+   START FIRST ORDER
 ========================================================= */
 
-setInterval(
-    () => {
+/*
+    This is what makes an order appear
+    INSIDE THE WEBSITE immediately.
+*/
 
-        state.queue.forEach(
-            customer => {
-
-                customer.patience =
-                    Math.max(
-                        0,
-                        customer.patience -
-                        0.5
-                    );
-
-            }
-        );
-
-        renderQueue();
-
-    },
-    1000
-);
-
-
-/* =========================================================
-   START POS
-========================================================= */
-
-renderCategories();
-
-renderMenu();
-
-renderCart();
-
-updateStats();
-
-updateClock();
-
-createInitialCustomers();
+startNewCustomerOrder();
 
 </script>
 
