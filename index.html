@@ -3,78 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Restaurant POS Training Simulator</title>
+<title>Restaurant POS Simulator</title>
 
 <style>
-/* =========================================================
-   GLOBAL
-========================================================= */
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-:root {
-    --bg: #101214;
-    --panel: #181b1f;
-    --panel-2: #20242a;
-    --panel-3: #272c33;
-    --border: #343a43;
-    --text: #f4f5f7;
-    --muted: #9da4ad;
-    --accent: #ff9f1c;
-    --accent-dark: #d77b00;
-    --success: #35c98a;
-    --danger: #ef6262;
-    --info: #58a6ff;
-    --warning: #f4c95d;
-    --shadow: 0 10px 30px rgba(0,0,0,.25);
-}
-
-html,
 body {
-    width: 100%;
-    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111315;
+    color: #f4f4f4;
+    height: 100vh;
     overflow: hidden;
 }
 
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family:
-        Inter,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-}
+/* =========================
+   MAIN APP
+========================= */
 
-/* =========================================================
-   APP
-========================================================= */
-
-#app {
-    width: 100vw;
+.pos-app {
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* =========================================================
+/* =========================
    TOP BAR
-========================================================= */
+========================= */
 
 .topbar {
-    height: 68px;
-    min-height: 68px;
-    background: #15171a;
-    border-bottom: 1px solid var(--border);
+    height: 72px;
+    background: #1b1e21;
+    border-bottom: 1px solid #34383c;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    z-index: 20;
+    padding: 0 22px;
 }
 
 .brand {
@@ -83,702 +50,653 @@ body {
     gap: 12px;
 }
 
-.brand-logo {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: var(--accent);
-    color: #151515;
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    background: #f5f5f5;
+    color: #111;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 900;
     font-size: 20px;
+    font-weight: 900;
 }
 
-.brand-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.brand-name {
+.brand-text h1 {
     font-size: 17px;
-    font-weight: 800;
-    letter-spacing: .3px;
+    letter-spacing: .4px;
 }
 
-.brand-subtitle {
-    color: var(--muted);
+.brand-text span {
+    display: block;
+    color: #8e969d;
     font-size: 11px;
+    margin-top: 3px;
 }
 
 .top-status {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 24px;
 }
 
-.status-pill {
-    height: 38px;
-    padding: 0 14px;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 700;
+.status-item {
+    text-align: right;
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--success);
-    box-shadow: 0 0 8px rgba(53,201,138,.5);
-}
-
-.stat-box {
-    min-width: 85px;
-    height: 38px;
-    padding: 0 12px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.stat-label {
-    color: var(--muted);
-    font-size: 9px;
+.status-item small {
+    display: block;
+    color: #858c92;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: .8px;
 }
 
-.stat-value {
-    font-size: 13px;
-    font-weight: 800;
+.status-item strong {
+    font-size: 14px;
 }
 
-/* =========================================================
-   MAIN LAYOUT
-========================================================= */
-
-.main {
-    flex: 1;
-    min-height: 0;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 380px;
-    gap: 0;
+.live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #55d98b;
+    border-radius: 50%;
+    margin-right: 5px;
 }
 
-/* =========================================================
-   LEFT SIDE
-========================================================= */
+/* =========================
+   WORKSPACE
+========================= */
 
 .workspace {
-    min-width: 0;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 270px 1fr 390px;
     min-height: 0;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid var(--border);
 }
 
-/* =========================================================
-   INCOMING ORDER SECTION
-========================================================= */
+/* =========================
+   LEFT SIDE
+========================= */
+
+.left-panel {
+    background: #17191b;
+    border-right: 1px solid #303438;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* =========================
+   INCOMING ORDER
+========================= */
 
 .incoming-order {
-    margin: 14px 16px 10px;
-    background: #171a1e;
-    border: 1px solid #3a3f47;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    flex-shrink: 0;
+    padding: 16px;
+    border-bottom: 1px solid #303438;
 }
 
 .incoming-header {
-    height: 44px;
-    padding: 0 14px;
-    background: #20242a;
-    border-bottom: 1px solid var(--border);
     display: flex;
-    align-items: center;
     justify-content: space-between;
-}
-
-.incoming-title {
-    display: flex;
     align-items: center;
-    gap: 9px;
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: .7px;
-    text-transform: uppercase;
-}
-
-.live-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--success);
-    box-shadow: 0 0 9px rgba(53,201,138,.65);
-}
-
-.order-number {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 700;
-}
-
-.incoming-body {
-    min-height: 125px;
-    padding: 15px 17px;
-    display: grid;
-    grid-template-columns: 150px minmax(0, 1fr);
-    gap: 18px;
-}
-
-.order-type-display {
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 7px;
-}
-
-.order-type-label {
-    color: var(--muted);
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.order-type-value {
-    color: var(--accent);
-    font-size: 16px;
-    font-weight: 900;
-}
-
-.order-time {
-    color: var(--muted);
-    font-size: 11px;
-}
-
-.order-request {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 7px;
-}
-
-.order-request-label {
-    color: var(--muted);
-    font-size: 9px;
-    text-transform: uppercase;
-    font-weight: 800;
-    letter-spacing: 1px;
-}
-
-.order-request-text {
-    font-size: 15px;
-    line-height: 1.5;
-    font-weight: 650;
-}
-
-.order-instruction {
-    color: var(--muted);
-    font-size: 10px;
-}
-
-/* =========================================================
-   CATEGORY BAR
-========================================================= */
-
-.category-bar {
-    height: 62px;
-    min-height: 62px;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    overflow-x: auto;
-    border-bottom: 1px solid var(--border);
-}
-
-.category-bar::-webkit-scrollbar {
-    height: 4px;
-}
-
-.category-bar::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 4px;
-}
-
-.category-btn {
-    flex-shrink: 0;
-    height: 43px;
-    padding: 0 15px;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--muted);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 11px;
-    font-weight: 800;
-    transition: .15s ease;
-}
-
-.category-btn:hover {
-    background: var(--panel-2);
-    color: var(--text);
-}
-
-.category-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #161616;
-}
-
-/* =========================================================
-   MENU AREA
-========================================================= */
-
-.menu-area {
-    flex: 1;
-    min-height: 0;
-    padding: 15px 16px;
-    overflow-y: auto;
-}
-
-.menu-area::-webkit-scrollbar {
-    width: 6px;
-}
-
-.menu-area::-webkit-scrollbar-thumb {
-    background: #343941;
-    border-radius: 6px;
-}
-
-.menu-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 12px;
 }
 
-.menu-heading h2 {
-    font-size: 15px;
-    font-weight: 900;
+.incoming-header h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
 }
 
-.menu-heading span {
-    color: var(--muted);
+.order-live {
+    font-size: 9px;
+    color: #55d98b;
+    border: 1px solid #326f4c;
+    background: #14241b;
+    padding: 4px 7px;
+    border-radius: 4px;
+}
+
+.customer-order-card {
+    background: #202428;
+    border: 1px solid #383d42;
+    border-radius: 8px;
+    padding: 13px;
+}
+
+.order-number {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 9px;
+}
+
+.order-number strong {
+    font-size: 13px;
+}
+
+.order-type {
+    font-size: 9px;
+    text-transform: uppercase;
+    color: #aab1b7;
+    background: #2c3136;
+    padding: 4px 6px;
+    border-radius: 3px;
+}
+
+.order-instruction {
+    color: #8d959c;
+    font-size: 10px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.request-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.request-item {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #30353a;
+}
+
+.request-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.request-item-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.request-item-name {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.request-item-qty {
+    color: #aeb5ba;
     font-size: 11px;
+}
+
+.request-modifier {
+    margin-top: 3px;
+    color: #d4a84e;
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.order-timer {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #30353a;
+    display: flex;
+    justify-content: space-between;
+    color: #929aa1;
+    font-size: 10px;
+}
+
+.order-timer strong {
+    color: #f0c45c;
+}
+
+/* =========================
+   QUICK STATS
+========================= */
+
+.quick-stats {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.stat-box {
+    background: #1f2225;
+    border: 1px solid #303438;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.stat-box span {
+    display: block;
+    color: #858d94;
+    font-size: 9px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.stat-box strong {
+    font-size: 16px;
+}
+
+/* =========================
+   MIDDLE MENU
+========================= */
+
+.menu-panel {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: #121416;
+}
+
+.category-bar {
+    height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 13px;
+    background: #1a1d20;
+    border-bottom: 1px solid #303438;
+    overflow-x: auto;
+}
+
+.category-bar::-webkit-scrollbar {
+    height: 3px;
+}
+
+.category-bar::-webkit-scrollbar-thumb {
+    background: #444a4f;
+}
+
+.category-btn {
+    border: 1px solid #363b40;
+    background: #24282c;
+    color: #c5cbd0;
+    border-radius: 5px;
+    padding: 9px 13px;
+    font-size: 11px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.category-btn:hover {
+    background: #30353a;
+}
+
+.category-btn.active {
+    background: #e8e8e8;
+    color: #111;
+    border-color: #e8e8e8;
+    font-weight: 700;
+}
+
+.menu-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.menu-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.menu-title h2 {
+    font-size: 17px;
+}
+
+.menu-title span {
+    color: #737b82;
+    font-size: 10px;
 }
 
 .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    grid-template-columns: repeat(4, minmax(140px, 1fr));
     gap: 10px;
 }
 
-.menu-card {
-    min-height: 125px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+.menu-item {
+    min-height: 110px;
+    background: #1c2023;
+    border: 1px solid #30363b;
+    border-radius: 7px;
     padding: 13px;
     cursor: pointer;
+    transition: .12s;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition:
-        transform .12s ease,
-        background .12s ease,
-        border-color .12s ease;
 }
 
-.menu-card:hover {
-    background: var(--panel-2);
-    border-color: #4a515b;
+.menu-item:hover {
+    background: #252a2e;
+    border-color: #60676d;
     transform: translateY(-1px);
 }
 
-.menu-card:active {
+.menu-item:active {
     transform: scale(.98);
 }
 
-.menu-card-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
+.menu-item-name {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.3;
 }
 
-.menu-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 8px;
-    background: var(--panel-3);
+.menu-item-description {
+    color: #777f86;
+    font-size: 9px;
+    margin-top: 5px;
+    line-height: 1.35;
+}
+
+.menu-item-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.menu-item-price {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.add-symbol {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background: #30353a;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
 }
 
-.menu-price {
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 900;
-}
+/* =========================
+   RIGHT CART
+========================= */
 
-.menu-name {
-    font-size: 12px;
-    font-weight: 800;
-    margin-top: 9px;
-}
-
-.menu-description {
-    color: var(--muted);
-    font-size: 9px;
-    line-height: 1.4;
-    margin-top: 4px;
-}
-
-/* =========================================================
-   RIGHT ORDER PANEL
-========================================================= */
-
-.order-panel {
-    min-width: 0;
+.cart-panel {
+    background: #191c1f;
+    border-left: 1px solid #303438;
+    display: flex;
+    flex-direction: column;
     min-height: 0;
-    background: #15171a;
-    display: flex;
-    flex-direction: column;
 }
 
-/* =========================================================
-   ORDER PANEL HEADER
-========================================================= */
-
-.order-panel-header {
+.cart-header {
     height: 58px;
-    min-height: 58px;
     padding: 0 16px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #303438;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 }
 
-.order-panel-title {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.order-panel-title strong {
+.cart-header h2 {
     font-size: 14px;
 }
 
-.order-panel-title span {
-    color: var(--muted);
-    font-size: 10px;
-}
-
 .order-mode {
-    height: 32px;
-    padding: 0 9px;
-    background: var(--panel-2);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    border-radius: 7px;
+    display: flex;
+    gap: 5px;
+}
+
+.mode-btn {
+    border: 1px solid #383d42;
+    background: #24282c;
+    color: #aeb4b9;
+    border-radius: 4px;
+    padding: 6px 8px;
     font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
+    cursor: pointer;
 }
 
-/* =========================================================
-   CART
-========================================================= */
+.mode-btn.active {
+    background: #e8e8e8;
+    color: #111;
+}
 
-.cart {
+.cart-items {
     flex: 1;
-    min-height: 0;
     overflow-y: auto;
-    padding: 10px 13px;
-}
-
-.cart::-webkit-scrollbar {
-    width: 5px;
-}
-
-.cart::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 5px;
+    padding: 12px;
 }
 
 .empty-cart {
-    min-height: 180px;
+    height: 100%;
+    min-height: 220px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    color: #666e75;
     text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.6;
 }
 
+.empty-cart-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+    opacity: .5;
+}
+
+.empty-cart strong {
+    font-size: 12px;
+    color: #818990;
+}
+
+.empty-cart span {
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+/* cart item */
+
 .cart-item {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 9px;
+    background: #22262a;
+    border: 1px solid #343a3f;
+    border-radius: 6px;
     padding: 11px;
     margin-bottom: 8px;
 }
 
-.cart-item-main {
+.cart-item-top {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
 }
 
 .cart-item-name {
     font-size: 12px;
-    font-weight: 800;
-}
-
-.cart-item-price {
-    color: var(--accent);
-    font-size: 12px;
-    font-weight: 900;
-}
-
-.cart-item-details {
-    color: var(--muted);
-    font-size: 9px;
-    margin-top: 5px;
-    line-height: 1.5;
-}
-
-.cart-item-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 9px;
-}
-
-.quantity-controls {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.qty-btn {
-    width: 27px;
-    height: 27px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--panel-2);
-    color: var(--text);
-    cursor: pointer;
-    font-weight: 900;
-}
-
-.qty-btn:hover {
-    background: var(--panel-3);
-}
-
-.qty-value {
-    width: 25px;
-    text-align: center;
-    font-size: 11px;
-    font-weight: 800;
-}
-
-.remove-btn {
-    border: 0;
-    background: transparent;
-    color: var(--danger);
-    font-size: 10px;
-    cursor: pointer;
     font-weight: 700;
 }
 
-/* =========================================================
+.cart-item-price {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.cart-item-modifier {
+    color: #d2a84f;
+    font-size: 9px;
+    margin-top: 4px;
+}
+
+.cart-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 9px;
+}
+
+.qty-btn {
+    width: 24px;
+    height: 23px;
+    border: 1px solid #444a4f;
+    background: #2b3035;
+    color: #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.qty-number {
+    width: 25px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.remove-btn {
+    margin-left: auto;
+    border: none;
+    background: transparent;
+    color: #888f95;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.remove-btn:hover {
+    color: #ef7777;
+}
+
+/* =========================
    TOTALS
-========================================================= */
+========================= */
 
 .totals {
-    border-top: 1px solid var(--border);
-    padding: 12px 16px;
-    background: #181a1e;
+    border-top: 1px solid #303438;
+    padding: 13px 16px;
 }
 
 .total-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 7px;
-    color: var(--muted);
     font-size: 11px;
+    color: #92999f;
+    margin-bottom: 7px;
 }
 
-.total-row.final {
-    color: var(--text);
-    font-size: 16px;
-    font-weight: 900;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed var(--border);
-    margin-bottom: 0;
+.total-row.discount {
+    color: #64c98b;
 }
 
-.total-row.final span:last-child {
-    color: var(--accent);
+.total-row.grand-total {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+    padding-top: 8px;
+    margin-top: 5px;
+    border-top: 1px solid #34393e;
 }
 
-/* =========================================================
-   ACTION BUTTONS
-========================================================= */
+/* =========================
+   ACTIONS
+========================= */
 
 .action-area {
-    padding: 10px 13px 13px;
+    padding: 12px 16px 16px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 7px;
-    background: #181a1e;
 }
 
 .action-btn {
     height: 43px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--panel-2);
-    color: var(--text);
-    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #3c4247;
+    background: #282d31;
+    color: #d8dcdf;
     font-size: 11px;
-    font-weight: 800;
-    transition: .12s ease;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .action-btn:hover {
-    background: var(--panel-3);
+    background: #33393e;
 }
 
 .action-btn.primary {
-    grid-column: 1 / -1;
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #151515;
+    grid-column: span 2;
+    background: #e9e9e9;
+    color: #111;
+    border-color: #e9e9e9;
+    height: 48px;
+    font-size: 13px;
 }
 
 .action-btn.primary:hover {
-    background: #ffab38;
+    background: #fff;
 }
 
 .action-btn.danger {
-    color: var(--danger);
+    color: #e58181;
 }
 
-.action-btn:disabled {
-    opacity: .4;
-    cursor: not-allowed;
-}
-
-/* =========================================================
-   NOTIFICATION / FEEDBACK AREA
-========================================================= */
+/* =========================
+   FEEDBACK
+========================= */
 
 .feedback {
     position: fixed;
+    bottom: 20px;
     left: 50%;
-    bottom: 22px;
-    transform: translate(-50%, 20px);
-    min-width: 280px;
-    max-width: 500px;
-    padding: 12px 17px;
-    border-radius: 9px;
-    background: #24282e;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    color: var(--text);
+    transform: translateX(-50%) translateY(20px);
+    background: #252a2e;
+    border: 1px solid #4a5157;
+    border-radius: 6px;
+    padding: 11px 17px;
     font-size: 11px;
-    font-weight: 700;
-    text-align: center;
     opacity: 0;
     pointer-events: none;
-    transition: .2s ease;
+    transition: .2s;
     z-index: 100;
+    box-shadow: 0 8px 30px rgba(0,0,0,.35);
 }
 
 .feedback.show {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .feedback.success {
-    border-color: rgba(53,201,138,.5);
+    border-color: #3f8d60;
 }
 
 .feedback.error {
-    border-color: rgba(239,98,98,.5);
+    border-color: #a95757;
 }
 
-/* =========================================================
+/* =========================
+   SCROLLBARS
+========================= */
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #151719;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #383e43;
+    border-radius: 4px;
+}
+
+/* =========================
    RESPONSIVE
-========================================================= */
+========================= */
 
-@media (max-width: 1050px) {
-
-    .main {
-        grid-template-columns: minmax(0, 1fr) 330px;
-    }
-
-    .incoming-body {
-        grid-template-columns: 120px minmax(0, 1fr);
+@media (max-width: 1100px) {
+    .workspace {
+        grid-template-columns: 240px 1fr 340px;
     }
 
     .menu-grid {
-        grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-    }
-}
-
-@media (max-width: 800px) {
-
-    html,
-    body {
-        overflow: auto;
-    }
-
-    #app {
-        min-height: 100vh;
-        height: auto;
-    }
-
-    .main {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .workspace {
-        min-height: 650px;
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .order-panel {
-        min-height: 500px;
-    }
-
-    .top-status .stat-box {
-        display: none;
+        grid-template-columns: repeat(3, minmax(130px, 1fr));
     }
 }
 </style>
@@ -786,52 +704,46 @@ body {
 
 <body>
 
-<div id="app">
+<div class="pos-app">
 
-    <!-- =====================================================
+    <!-- =========================
          TOP BAR
-    ====================================================== -->
+    ========================== -->
 
     <header class="topbar">
 
         <div class="brand">
-
-            <div class="brand-logo">
-                P
-            </div>
+            <div class="brand-icon">POS</div>
 
             <div class="brand-text">
-                <div class="brand-name">
-                    PRIME POS
-                </div>
-
-                <div class="brand-subtitle">
-                    Restaurant Training Simulator
-                </div>
+                <h1>Restaurant POS Simulator</h1>
+                <span>TRAINING TERMINAL • REGISTER 04</span>
             </div>
-
         </div>
 
         <div class="top-status">
 
-            <div class="status-pill">
-                <span class="status-dot"></span>
-                SYSTEM ONLINE
+            <div class="status-item">
+                <small>System</small>
+                <strong>
+                    <span class="live-dot"></span>
+                    ONLINE
+                </strong>
             </div>
 
-            <div class="stat-box">
-                <span class="stat-label">Served</span>
-                <span class="stat-value" id="servedCount">0</span>
+            <div class="status-item">
+                <small>Served</small>
+                <strong id="servedCount">0</strong>
             </div>
 
-            <div class="stat-box">
-                <span class="stat-label">Accuracy</span>
-                <span class="stat-value" id="accuracyDisplay">100%</span>
+            <div class="status-item">
+                <small>Accuracy</small>
+                <strong id="accuracyDisplay">100%</strong>
             </div>
 
-            <div class="stat-box">
-                <span class="stat-label">Sales</span>
-                <span class="stat-value" id="salesDisplay">₹0.00</span>
+            <div class="status-item">
+                <small>Sales</small>
+                <strong id="salesDisplay">₹0.00</strong>
             </div>
 
         </div>
@@ -839,89 +751,53 @@ body {
     </header>
 
 
-    <!-- =====================================================
-         MAIN POS AREA
-    ====================================================== -->
+    <!-- =========================
+         MAIN WORKSPACE
+    ========================== -->
 
-    <main class="main">
-
-
-        <!-- =================================================
-             LEFT WORKSPACE
-        ================================================== -->
-
-        <section class="workspace">
+    <main class="workspace">
 
 
-            <!-- =============================================
-                 INCOMING CUSTOMER ORDER
+        <!-- =========================
+             LEFT PANEL
+        ========================== -->
 
-                 IMPORTANT:
-                 THIS IS THE ACTUAL IN-GAME ORDER SECTION.
-                 NO BROWSER ALERTS.
-            ============================================== -->
+        <aside class="left-panel">
+
+
+            <!-- INCOMING CUSTOMER ORDER -->
 
             <section class="incoming-order">
 
                 <div class="incoming-header">
-
-                    <div class="incoming-title">
-
-                        <span class="live-indicator"></span>
-
-                        Incoming Customer Order
-
-                    </div>
-
-                    <div class="order-number" id="incomingOrderNumber">
-                        ORDER #0001
-                    </div>
-
+                    <h2>Incoming Customer Order</h2>
+                    <span class="order-live">● LIVE</span>
                 </div>
 
+                <div class="customer-order-card">
 
-                <div class="incoming-body">
+                    <div class="order-number">
+                        <strong id="customerOrderNumber">
+                            ORDER #0001
+                        </strong>
 
-                    <div class="order-type-display">
-
-                        <span class="order-type-label">
-                            Order Type
-                        </span>
-
-                        <span
-                            class="order-type-value"
-                            id="incomingOrderType"
-                        >
+                        <span class="order-type" id="customerOrderType">
                             DINE IN
                         </span>
-
-                        <span
-                            class="order-time"
-                            id="orderTimer"
-                        >
-                            00:00
-                        </span>
-
                     </div>
 
+                    <div class="order-instruction">
+                        Enter the items below using the POS.
+                        The order will be checked before payment.
+                    </div>
 
-                    <div class="order-request">
+                    <div class="request-items" id="requestItems">
+                        <!-- JavaScript will put the customer's requested items here -->
+                    </div>
 
-                        <span class="order-request-label">
-                            Customer Request
-                        </span>
-
-                        <div
-                            class="order-request-text"
-                            id="incomingOrderText"
-                        >
-                            Waiting for incoming order...
-                        </div>
-
-                        <span class="order-instruction">
-                            Enter the requested items using the POS below.
-                        </span>
-
+                    <div class="order-timer">
+                        <span>Waiting time</span>
+                        <strong id="orderTimer">00:00</strong>
                     </div>
 
                 </div>
@@ -929,237 +805,140 @@ body {
             </section>
 
 
-            <!-- =============================================
-                 CATEGORIES
-            ============================================== -->
+            <!-- QUICK STATS -->
 
-            <nav
-                class="category-bar"
-                id="categoryBar"
-            >
+            <section class="quick-stats">
 
-                <button
-                    class="category-btn active"
-                    data-category="Burgers"
-                >
-                    Burgers
-                </button>
+                <div class="stat-box">
+                    <span>Completed</span>
+                    <strong id="sideServed">0</strong>
+                </div>
 
-                <button
-                    class="category-btn"
-                    data-category="Meals & Combos"
-                >
-                    Meals & Combos
-                </button>
+                <div class="stat-box">
+                    <span>Errors</span>
+                    <strong id="errorCount">0</strong>
+                </div>
 
-                <button
-                    class="category-btn"
-                    data-category="Chicken"
-                >
-                    Chicken
-                </button>
+                <div class="stat-box">
+                    <span>Score</span>
+                    <strong id="scoreDisplay">100</strong>
+                </div>
 
-                <button
-                    class="category-btn"
-                    data-category="Wraps"
-                >
-                    Wraps
-                </button>
+                <div class="stat-box">
+                    <span>Held</span>
+                    <strong id="heldCount">0</strong>
+                </div>
 
-                <button
-                    class="category-btn"
-                    data-category="Sides"
-                >
-                    Sides
-                </button>
+            </section>
 
-                <button
-                    class="category-btn"
-                    data-category="Drinks"
-                >
-                    Drinks
-                </button>
+        </aside>
 
-                <button
-                    class="category-btn"
-                    data-category="Shakes"
-                >
-                    Shakes
-                </button>
 
-                <button
-                    class="category-btn"
-                    data-category="Cafe"
-                >
-                    Cafe
-                </button>
+        <!-- =========================
+             MENU PANEL
+        ========================== -->
 
-                <button
-                    class="category-btn"
-                    data-category="Desserts"
-                >
-                    Desserts
-                </button>
+        <section class="menu-panel">
 
-                <button
-                    class="category-btn"
-                    data-category="Breakfast"
-                >
-                    Breakfast
-                </button>
-
-                <button
-                    class="category-btn"
-                    data-category="Kids"
-                >
-                    Kids
-                </button>
-
+            <nav class="category-bar" id="categoryBar">
+                <!-- Categories inserted by JavaScript -->
             </nav>
 
+            <div class="menu-content">
 
-            <!-- =============================================
-                 MENU
-            ============================================== -->
+                <div class="menu-title">
 
-            <section class="menu-area">
-
-                <div class="menu-heading">
-
-                    <h2 id="menuHeading">
+                    <h2 id="menuTitle">
                         Burgers
                     </h2>
 
-                    <span id="menuItemCount">
-                        0 items
+                    <span id="itemCount">
+                        0 ITEMS
                     </span>
 
                 </div>
 
-                <div
-                    class="menu-grid"
-                    id="menuGrid"
-                >
-                    <!-- JavaScript will populate this -->
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Food items inserted by JavaScript -->
                 </div>
 
-            </section>
+            </div>
 
         </section>
 
 
-        <!-- =================================================
-             RIGHT ORDER / CART PANEL
-        ================================================== -->
+        <!-- =========================
+             CART PANEL
+        ========================== -->
 
-        <aside class="order-panel">
+        <aside class="cart-panel">
 
+            <div class="cart-header">
 
-            <header class="order-panel-header">
+                <h2>Current Order</h2>
 
-                <div class="order-panel-title">
+                <div class="order-mode">
 
-                    <strong>
-                        Current Order
-                    </strong>
+                    <button
+                        class="mode-btn active"
+                        data-mode="Dine In"
+                    >
+                        DINE IN
+                    </button>
 
-                    <span>
-                        Build the order requested above
-                    </span>
+                    <button
+                        class="mode-btn"
+                        data-mode="Takeaway"
+                    >
+                        TAKEAWAY
+                    </button>
 
                 </div>
 
-                <div
-                    class="order-mode"
-                    id="orderMode"
-                >
-                    DINE IN
-                </div>
-
-            </header>
+            </div>
 
 
-            <!-- =============================================
-                 CART
-            ============================================== -->
-
-            <section
-                class="cart"
-                id="cart"
-            >
+            <div class="cart-items" id="cartItems">
 
                 <div class="empty-cart">
 
-                    No items added yet.<br>
-                    Select items from the menu.
+                    <div class="empty-cart-icon">▣</div>
+
+                    <strong>No items added</strong>
+
+                    <span>Tap a menu item to add it</span>
 
                 </div>
 
-            </section>
+            </div>
 
 
-            <!-- =============================================
-                 TOTALS
-            ============================================== -->
-
-            <section class="totals">
+            <div class="totals">
 
                 <div class="total-row">
-
-                    <span>
-                        Subtotal
-                    </span>
-
-                    <span id="subtotalDisplay">
-                        ₹0.00
-                    </span>
-
+                    <span>Subtotal</span>
+                    <span id="subtotal">₹0.00</span>
                 </div>
 
                 <div class="total-row">
-
-                    <span>
-                        Discount
-                    </span>
-
-                    <span id="discountDisplay">
-                        -₹0.00
-                    </span>
-
+                    <span>Tax (5%)</span>
+                    <span id="tax">₹0.00</span>
                 </div>
 
-                <div class="total-row">
-
-                    <span>
-                        Tax
-                    </span>
-
-                    <span id="taxDisplay">
-                        ₹0.00
-                    </span>
-
+                <div class="total-row discount">
+                    <span>Discount</span>
+                    <span id="discount">-₹0.00</span>
                 </div>
 
-                <div class="total-row final">
-
-                    <span>
-                        TOTAL
-                    </span>
-
-                    <span id="totalDisplay">
-                        ₹0.00
-                    </span>
-
+                <div class="total-row grand-total">
+                    <span>TOTAL</span>
+                    <span id="grandTotal">₹0.00</span>
                 </div>
 
-            </section>
+            </div>
 
 
-            <!-- =============================================
-                 ACTION BUTTONS
-            ============================================== -->
-
-            <section class="action-area">
+            <div class="action-area">
 
                 <button
                     class="action-btn"
@@ -1192,36 +971,30 @@ body {
                 <button
                     class="action-btn primary"
                     id="checkoutBtn"
-                    disabled
                 >
-                    PROCEED TO PAYMENT
+                    CHECKOUT
                 </button>
 
-            </section>
+            </div>
 
         </aside>
 
     </main>
 
-
-    <!-- =====================================================
-         IN-GAME FEEDBACK
-         ALSO NOT A BROWSER POPUP.
-    ====================================================== -->
-
-    <div
-        class="feedback"
-        id="feedback"
-    ></div>
-
 </div>
+
+
+<!-- Small in-game feedback message.
+     NOT a browser popup. -->
+
+<div class="feedback" id="feedback"></div>
 
 
 <script>
 
-/* =========================================================
-   APPLICATION STATE
-========================================================= */
+/* ============================================================
+   POS GAME STATE
+============================================================ */
 
 const state = {
 
@@ -1229,36 +1002,32 @@ const state = {
 
     cart: [],
 
-    discount: 0,
+    orderMode: "Dine In",
 
-    taxRate: 0.05,
+    currentCustomerOrder: null,
 
     orderNumber: 1,
 
     served: 0,
 
-    successfulOrders: 0,
+    errors: 0,
 
-    attemptedOrders: 0,
+    score: 100,
 
     sales: 0,
 
-    timerSeconds: 0,
-
-    timerInterval: null,
-
-    currentCustomerOrder: null,
-
     heldOrders: [],
 
-    score: 0
+    discount: 0,
+
+    orderStartedAt: Date.now()
 
 };
 
 
-/* =========================================================
+/* ============================================================
    MENU DATABASE
-========================================================= */
+============================================================ */
 
 const menu = {
 
@@ -1268,15 +1037,13 @@ const menu = {
             id: "classic-burger",
             name: "Classic Burger",
             price: 149,
-            icon: "🍔",
-            description: "Beef patty, lettuce, tomato & house sauce"
+            description: "Beef patty, lettuce, tomato & sauce"
         },
 
         {
             id: "cheeseburger",
             name: "Cheeseburger",
             price: 169,
-            icon: "🍔",
             description: "Classic burger with melted cheese"
         },
 
@@ -1284,7 +1051,6 @@ const menu = {
             id: "double-cheese",
             name: "Double Cheeseburger",
             price: 219,
-            icon: "🍔",
             description: "Two patties with double cheese"
         },
 
@@ -1292,7 +1058,6 @@ const menu = {
             id: "spicy-burger",
             name: "Spicy Chicken Burger",
             price: 189,
-            icon: "🌶️",
             description: "Crispy chicken with spicy sauce"
         },
 
@@ -1300,16 +1065,14 @@ const menu = {
             id: "bbq-burger",
             name: "BBQ Bacon Burger",
             price: 229,
-            icon: "🥓",
-            description: "Smoky BBQ sauce and crispy bacon"
+            description: "Beef, bacon, BBQ sauce & cheese"
         },
 
         {
             id: "mushroom-burger",
             name: "Mushroom Swiss Burger",
             price: 209,
-            icon: "🍄",
-            description: "Sautéed mushrooms and Swiss cheese"
+            description: "Mushrooms, Swiss cheese & beef"
         }
 
     ],
@@ -1321,32 +1084,28 @@ const menu = {
             id: "classic-meal",
             name: "Classic Burger Meal",
             price: 249,
-            icon: "🍔",
-            description: "Burger, fries and soft drink"
+            description: "Classic Burger + Fries + Drink"
         },
 
         {
             id: "cheese-meal",
             name: "Cheeseburger Meal",
             price: 269,
-            icon: "🍔",
-            description: "Cheeseburger, fries and soft drink"
+            description: "Cheeseburger + Fries + Drink"
         },
 
         {
             id: "chicken-meal",
             name: "Chicken Burger Meal",
             price: 279,
-            icon: "🍗",
-            description: "Chicken burger, fries and soft drink"
+            description: "Chicken Burger + Fries + Drink"
         },
 
         {
             id: "double-meal",
             name: "Double Burger Meal",
             price: 319,
-            icon: "🍔",
-            description: "Double cheeseburger, fries and drink"
+            description: "Double Burger + Fries + Drink"
         }
 
     ],
@@ -1358,7 +1117,6 @@ const menu = {
             id: "nuggets-6",
             name: "6pc Nuggets",
             price: 119,
-            icon: "🍗",
             description: "Six crispy chicken nuggets"
         },
 
@@ -1366,7 +1124,6 @@ const menu = {
             id: "nuggets-10",
             name: "10pc Nuggets",
             price: 179,
-            icon: "🍗",
             description: "Ten crispy chicken nuggets"
         },
 
@@ -1374,16 +1131,14 @@ const menu = {
             id: "crispy-chicken",
             name: "Crispy Chicken",
             price: 199,
-            icon: "🍗",
-            description: "Golden crispy chicken pieces"
+            description: "Crispy seasoned chicken pieces"
         },
 
         {
             id: "chicken-strips",
             name: "Chicken Strips",
             price: 169,
-            icon: "🍗",
-            description: "Crispy seasoned chicken strips"
+            description: "Tender crispy chicken strips"
         }
 
     ],
@@ -1395,24 +1150,21 @@ const menu = {
             id: "crispy-wrap",
             name: "Crispy Chicken Wrap",
             price: 179,
-            icon: "🌯",
-            description: "Crispy chicken, lettuce and sauce"
+            description: "Crispy chicken, lettuce & mayo"
         },
 
         {
             id: "spicy-wrap",
             name: "Spicy Chicken Wrap",
             price: 189,
-            icon: "🌯",
             description: "Spicy chicken with fresh vegetables"
         },
 
         {
             id: "veg-wrap",
-            name: "Veggie Wrap",
+            name: "Veg Wrap",
             price: 149,
-            icon: "🌯",
-            description: "Fresh vegetables and creamy sauce"
+            description: "Mixed vegetables with creamy sauce"
         }
 
     ],
@@ -1424,7 +1176,6 @@ const menu = {
             id: "small-fries",
             name: "Small Fries",
             price: 79,
-            icon: "🍟",
             description: "Crispy golden fries"
         },
 
@@ -1432,23 +1183,20 @@ const menu = {
             id: "medium-fries",
             name: "Medium Fries",
             price: 99,
-            icon: "🍟",
-            description: "Medium portion of crispy fries"
+            description: "Crispy golden fries"
         },
 
         {
             id: "large-fries",
             name: "Large Fries",
             price: 119,
-            icon: "🍟",
-            description: "Large portion of crispy fries"
+            description: "Large portion of golden fries"
         },
 
         {
             id: "onion-rings",
             name: "Onion Rings",
             price: 109,
-            icon: "🧅",
             description: "Crispy battered onion rings"
         },
 
@@ -1456,8 +1204,7 @@ const menu = {
             id: "loaded-fries",
             name: "Loaded Fries",
             price: 159,
-            icon: "🍟",
-            description: "Fries with cheese and special sauce"
+            description: "Fries topped with cheese & sauce"
         }
 
     ],
@@ -1467,9 +1214,8 @@ const menu = {
 
         {
             id: "coke",
-            name: "Coca-Cola",
+            name: "Coke",
             price: 69,
-            icon: "🥤",
             description: "Chilled Coca-Cola"
         },
 
@@ -1477,23 +1223,20 @@ const menu = {
             id: "sprite",
             name: "Sprite",
             price: 69,
-            icon: "🥤",
-            description: "Refreshing lemon-lime soda"
+            description: "Chilled lemon-lime soda"
         },
 
         {
             id: "fanta",
             name: "Fanta",
             price: 69,
-            icon: "🥤",
-            description: "Orange flavored soft drink"
+            description: "Chilled orange soda"
         },
 
         {
             id: "iced-tea",
             name: "Iced Tea",
             price: 79,
-            icon: "🧋",
             description: "Cold brewed iced tea"
         },
 
@@ -1501,8 +1244,7 @@ const menu = {
             id: "water",
             name: "Mineral Water",
             price: 40,
-            icon: "💧",
-            description: "Bottled mineral water"
+            description: "500ml bottled water"
         }
 
     ],
@@ -1514,7 +1256,6 @@ const menu = {
             id: "chocolate-shake",
             name: "Chocolate Shake",
             price: 139,
-            icon: "🥤",
             description: "Rich chocolate milkshake"
         },
 
@@ -1522,7 +1263,6 @@ const menu = {
             id: "vanilla-shake",
             name: "Vanilla Shake",
             price: 129,
-            icon: "🥤",
             description: "Classic vanilla milkshake"
         },
 
@@ -1530,16 +1270,14 @@ const menu = {
             id: "strawberry-shake",
             name: "Strawberry Shake",
             price: 139,
-            icon: "🍓",
-            description: "Creamy strawberry shake"
+            description: "Fresh strawberry milkshake"
         },
 
         {
             id: "oreo-shake",
             name: "Oreo Shake",
             price: 159,
-            icon: "🥤",
-            description: "Cookies and cream shake"
+            description: "Cookies & cream shake"
         }
 
     ],
@@ -1551,15 +1289,13 @@ const menu = {
             id: "cappuccino",
             name: "Cappuccino",
             price: 119,
-            icon: "☕",
             description: "Espresso with steamed milk foam"
         },
 
         {
             id: "latte",
-            name: "Cafe Latte",
+            name: "Latte",
             price: 129,
-            icon: "☕",
             description: "Smooth espresso and steamed milk"
         },
 
@@ -1567,7 +1303,6 @@ const menu = {
             id: "americano",
             name: "Americano",
             price: 99,
-            icon: "☕",
             description: "Espresso with hot water"
         },
 
@@ -1575,7 +1310,6 @@ const menu = {
             id: "iced-coffee",
             name: "Iced Coffee",
             price: 129,
-            icon: "🧋",
             description: "Cold coffee with milk"
         }
 
@@ -1588,15 +1322,13 @@ const menu = {
             id: "chocolate-sundae",
             name: "Chocolate Sundae",
             price: 99,
-            icon: "🍨",
-            description: "Vanilla ice cream with chocolate sauce"
+            description: "Soft serve with chocolate sauce"
         },
 
         {
             id: "brownie",
             name: "Chocolate Brownie",
             price: 109,
-            icon: "🍫",
             description: "Warm chocolate brownie"
         },
 
@@ -1604,15 +1336,13 @@ const menu = {
             id: "apple-pie",
             name: "Apple Pie",
             price: 89,
-            icon: "🥧",
-            description: "Classic baked apple pie"
+            description: "Warm cinnamon apple pie"
         },
 
         {
             id: "soft-serve",
             name: "Soft Serve",
             price: 79,
-            icon: "🍦",
             description: "Classic vanilla soft serve"
         }
 
@@ -1625,23 +1355,20 @@ const menu = {
             id: "breakfast-burger",
             name: "Breakfast Burger",
             price: 159,
-            icon: "🍳",
-            description: "Egg, cheese and breakfast patty"
+            description: "Egg, cheese & breakfast patty"
         },
 
         {
             id: "pancakes",
-            name: "Pancake Stack",
+            name: "Pancakes",
             price: 149,
-            icon: "🥞",
             description: "Fluffy pancakes with syrup"
         },
 
         {
             id: "egg-toast",
-            name: "Egg & Toast",
+            name: "Egg Toast",
             price: 119,
-            icon: "🍳",
             description: "Eggs served with toasted bread"
         }
 
@@ -1654,7 +1381,6 @@ const menu = {
             id: "kids-burger",
             name: "Kids Burger",
             price: 139,
-            icon: "🍔",
             description: "Small burger for kids"
         },
 
@@ -1662,16 +1388,14 @@ const menu = {
             id: "kids-nuggets",
             name: "Kids Nuggets",
             price: 129,
-            icon: "🍗",
-            description: "Four chicken nuggets with fries"
+            description: "Small portion chicken nuggets"
         },
 
         {
             id: "kids-meal",
             name: "Kids Meal",
             price: 189,
-            icon: "🍟",
-            description: "Kids burger, fries and drink"
+            description: "Kids burger + fries + drink"
         }
 
     ]
@@ -1679,61 +1403,87 @@ const menu = {
 };
 
 
-/* =========================================================
-   INITIAL MENU RENDER
-========================================================= */
+/* ============================================================
+   INITIAL MENU RENDERING
+============================================================ */
+
+const categoryBar = document.getElementById("categoryBar");
+const menuGrid = document.getElementById("menuGrid");
+const menuTitle = document.getElementById("menuTitle");
+const itemCount = document.getElementById("itemCount");
+
+
+function renderCategories() {
+
+    categoryBar.innerHTML = "";
+
+    Object.keys(menu).forEach(category => {
+
+        const button = document.createElement("button");
+
+        button.className = "category-btn";
+
+        if (category === state.activeCategory) {
+            button.classList.add("active");
+        }
+
+        button.textContent = category;
+
+        button.addEventListener("click", () => {
+
+            state.activeCategory = category;
+
+            renderCategories();
+            renderMenu();
+
+        });
+
+        categoryBar.appendChild(button);
+
+    });
+
+}
+
 
 function renderMenu() {
 
-    const grid = document.getElementById("menuGrid");
+    const items = menu[state.activeCategory];
 
-    const heading = document.getElementById("menuHeading");
+    menuTitle.textContent = state.activeCategory;
 
-    const count = document.getElementById("menuItemCount");
+    itemCount.textContent =
+        `${items.length} ITEMS`;
 
-    const items = menu[state.activeCategory] || [];
-
-    heading.textContent = state.activeCategory;
-
-    count.textContent =
-        `${items.length} item${items.length === 1 ? "" : "s"}`;
-
-    grid.innerHTML = "";
+    menuGrid.innerHTML = "";
 
     items.forEach(item => {
 
-        const card = document.createElement("button");
+        const card = document.createElement("div");
 
-        card.className = "menu-card";
-
-        card.type = "button";
+        card.className = "menu-item";
 
         card.innerHTML = `
-
-            <div class="menu-card-top">
-
-                <div class="menu-icon">
-                    ${item.icon}
-                </div>
-
-                <div class="menu-price">
-                    ₹${item.price.toFixed(2)}
-                </div>
-
-            </div>
-
             <div>
-
-                <div class="menu-name">
+                <div class="menu-item-name">
                     ${item.name}
                 </div>
 
-                <div class="menu-description">
+                <div class="menu-item-description">
                     ${item.description}
                 </div>
-
             </div>
 
+            <div class="menu-item-bottom">
+
+                <span class="menu-item-price">
+                    ₹${item.price.toFixed(2)}
+                </span>
+
+                <span class="add-symbol">
+                    +
+                </span>
+
+            </div>
         `;
 
         card.addEventListener("click", () => {
@@ -1742,55 +1492,22 @@ function renderMenu() {
 
         });
 
-        grid.appendChild(card);
+        menuGrid.appendChild(card);
 
     });
 
 }
 
 
-/* =========================================================
-   CATEGORY SWITCHING
-========================================================= */
-
-document
-    .getElementById("categoryBar")
-    .addEventListener("click", event => {
-
-        const button =
-            event.target.closest(".category-btn");
-
-        if (!button) return;
-
-        state.activeCategory =
-            button.dataset.category;
-
-        document
-            .querySelectorAll(".category-btn")
-            .forEach(btn => {
-
-                btn.classList.toggle(
-                    "active",
-                    btn === button
-                );
-
-            });
-
-        renderMenu();
-
-    });
-
-
-/* =========================================================
+/* ============================================================
    CART
-========================================================= */
+============================================================ */
 
 function addToCart(item) {
 
-    const existing =
-        state.cart.find(
-            cartItem => cartItem.id === item.id
-        );
+    const existing = state.cart.find(
+        cartItem => cartItem.id === item.id
+    );
 
     if (existing) {
 
@@ -1808,7 +1525,7 @@ function addToCart(item) {
 
             quantity: 1,
 
-            details: []
+            modifiers: []
 
         });
 
@@ -1826,10 +1543,9 @@ function addToCart(item) {
 
 function changeQuantity(id, amount) {
 
-    const item =
-        state.cart.find(
-            cartItem => cartItem.id === id
-        );
+    const item = state.cart.find(
+        cartItem => cartItem.id === id
+    );
 
     if (!item) return;
 
@@ -1837,10 +1553,9 @@ function changeQuantity(id, amount) {
 
     if (item.quantity <= 0) {
 
-        state.cart =
-            state.cart.filter(
-                cartItem => cartItem.id !== id
-            );
+        state.cart = state.cart.filter(
+            cartItem => cartItem.id !== id
+        );
 
     }
 
@@ -1851,41 +1566,37 @@ function changeQuantity(id, amount) {
 
 function removeFromCart(id) {
 
-    state.cart =
-        state.cart.filter(
-            item => item.id !== id
-        );
+    state.cart = state.cart.filter(
+        item => item.id !== id
+    );
 
     renderCart();
 
 }
 
 
-/* =========================================================
-   CART RENDER
-========================================================= */
-
 function renderCart() {
 
-    const cartElement =
-        document.getElementById("cart");
+    const cartContainer =
+        document.getElementById("cartItems");
 
     if (state.cart.length === 0) {
 
-        cartElement.innerHTML = `
-
+        cartContainer.innerHTML = `
             <div class="empty-cart">
 
-                No items added yet.<br>
-                Select items from the menu.
+                <div class="empty-cart-icon">
+                    ▣
+                </div>
+
+                <strong>No items added</strong>
+
+                <span>
+                    Tap a menu item to add it
+                </span>
 
             </div>
-
         `;
-
-        document
-            .getElementById("checkoutBtn")
-            .disabled = true;
 
         updateTotals();
 
@@ -1893,143 +1604,89 @@ function renderCart() {
 
     }
 
-    cartElement.innerHTML = "";
+
+    cartContainer.innerHTML = "";
+
 
     state.cart.forEach(item => {
 
-        const element =
-            document.createElement("div");
+        const element = document.createElement("div");
 
         element.className = "cart-item";
 
-        const details =
-            item.details.length
-                ? item.details.join(" • ")
-                : "Standard preparation";
-
         element.innerHTML = `
 
-            <div class="cart-item-main">
+            <div class="cart-item-top">
 
-                <div class="cart-item-name">
+                <span class="cart-item-name">
                     ${item.name}
-                </div>
+                </span>
 
-                <div class="cart-item-price">
-                    ₹${(
-                        item.price *
-                        item.quantity
-                    ).toFixed(2)}
-                </div>
+                <span class="cart-item-price">
+                    ₹${(item.price * item.quantity).toFixed(2)}
+                </span>
 
             </div>
 
-            <div class="cart-item-details">
-                ${details}
-            </div>
+            ${
+                item.modifiers.length
+                ?
+                `<div class="cart-item-modifier">
+                    ${item.modifiers.join(" • ")}
+                </div>`
+                :
+                ""
+            }
 
-            <div class="cart-item-controls">
+            <div class="cart-controls">
 
-                <div class="quantity-controls">
+                <button
+                    class="qty-btn"
+                    onclick="changeQuantity('${item.id}', -1)"
+                >
+                    −
+                </button>
 
-                    <button
-                        class="qty-btn"
-                        data-action="minus"
-                        data-id="${item.id}"
-                    >
-                        −
-                    </button>
+                <span class="qty-number">
+                    ${item.quantity}
+                </span>
 
-                    <span class="qty-value">
-                        ${item.quantity}
-                    </span>
-
-                    <button
-                        class="qty-btn"
-                        data-action="plus"
-                        data-id="${item.id}"
-                    >
-                        +
-                    </button>
-
-                </div>
+                <button
+                    class="qty-btn"
+                    onclick="changeQuantity('${item.id}', 1)"
+                >
+                    +
+                </button>
 
                 <button
                     class="remove-btn"
-                    data-action="remove"
-                    data-id="${item.id}"
+                    onclick="removeFromCart('${item.id}')"
                 >
                     REMOVE
                 </button>
 
             </div>
-
         `;
 
-        cartElement.appendChild(element);
+        cartContainer.appendChild(element);
 
     });
 
-    document
-        .getElementById("checkoutBtn")
-        .disabled = false;
 
     updateTotals();
 
 }
 
 
-/* =========================================================
-   CART BUTTON EVENTS
-========================================================= */
-
-document
-    .getElementById("cart")
-    .addEventListener("click", event => {
-
-        const button =
-            event.target.closest("button");
-
-        if (!button) return;
-
-        const id =
-            button.dataset.id;
-
-        const action =
-            button.dataset.action;
-
-        if (action === "plus") {
-
-            changeQuantity(id, 1);
-
-        }
-
-        if (action === "minus") {
-
-            changeQuantity(id, -1);
-
-        }
-
-        if (action === "remove") {
-
-            removeFromCart(id);
-
-        }
-
-    });
-
-
-/* =========================================================
-   TOTAL CALCULATIONS
-========================================================= */
+/* ============================================================
+   TOTALS
+============================================================ */
 
 function calculateSubtotal() {
 
     return state.cart.reduce(
         (total, item) =>
-            total +
-            item.price *
-            item.quantity,
+            total + item.price * item.quantity,
         0
     );
 
@@ -2038,83 +1695,68 @@ function calculateSubtotal() {
 
 function updateTotals() {
 
-    const subtotal =
-        calculateSubtotal();
+    const subtotal = calculateSubtotal();
 
-    const discount =
-        Math.min(
-            state.discount,
-            subtotal
-        );
+    const tax = subtotal * 0.05;
 
-    const taxable =
-        Math.max(
-            subtotal - discount,
-            0
-        );
-
-    const tax =
-        taxable *
-        state.taxRate;
+    const discount = state.discount;
 
     const total =
-        taxable + tax;
+        Math.max(
+            0,
+            subtotal + tax - discount
+        );
 
-    document
-        .getElementById("subtotalDisplay")
-        .textContent =
-        `₹${subtotal.toFixed(2)}`;
 
-    document
-        .getElementById("discountDisplay")
-        .textContent =
-        `-₹${discount.toFixed(2)}`;
+    document.getElementById("subtotal")
+        .textContent = `₹${subtotal.toFixed(2)}`;
 
-    document
-        .getElementById("taxDisplay")
-        .textContent =
-        `₹${tax.toFixed(2)}`;
+    document.getElementById("tax")
+        .textContent = `₹${tax.toFixed(2)}`;
 
-    document
-        .getElementById("totalDisplay")
-        .textContent =
-        `₹${total.toFixed(2)}`;
+    document.getElementById("discount")
+        .textContent = `-₹${discount.toFixed(2)}`;
+
+    document.getElementById("grandTotal")
+        .textContent = `₹${total.toFixed(2)}`;
 
 }
 
 
-/* =========================================================
+/* ============================================================
    FEEDBACK
-========================================================= */
+============================================================ */
 
-let feedbackTimeout = null;
+let feedbackTimeout;
+
 
 function showFeedback(message, type = "") {
 
     const feedback =
         document.getElementById("feedback");
 
-    feedback.textContent =
-        message;
+    feedback.textContent = message;
 
-    feedback.className =
-        `feedback show ${type}`;
+    feedback.className = "feedback show";
+
+    if (type) {
+        feedback.classList.add(type);
+    }
 
     clearTimeout(feedbackTimeout);
 
-    feedbackTimeout =
-        setTimeout(() => {
+    feedbackTimeout = setTimeout(() => {
 
-            feedback.classList.remove("show");
+        feedback.className = "feedback";
 
-        }, 2200);
+    }, 2200);
 
 }
 
 
-/* =========================================================
+/* ============================================================
    CLEAR ORDER
-========================================================= */
+============================================================ */
 
 document
     .getElementById("clearBtn")
@@ -2123,7 +1765,7 @@ document
         if (state.cart.length === 0) {
 
             showFeedback(
-                "There are no items to clear."
+                "The order is already empty"
             );
 
             return;
@@ -2137,40 +1779,56 @@ document
         renderCart();
 
         showFeedback(
-            "Current order cleared."
+            "Current order cleared"
         );
 
     });
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+/* ============================================================
+   ORDER MODE
+============================================================ */
+
+document
+    .querySelectorAll(".mode-btn")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            document
+                .querySelectorAll(".mode-btn")
+                .forEach(btn =>
+                    btn.classList.remove("active")
+                );
+
+            button.classList.add("active");
+
+            state.orderMode =
+                button.dataset.mode;
+
+        });
+
+    });
+
+
+/* ============================================================
+   START BASIC UI
+============================================================ */
+
+renderCategories();
 
 renderMenu();
 
 renderCart();
 
-<!-- =========================================================
-     PART 2 — CUSTOMER ORDER ENGINE
-========================================================= -->
-
+</script>
 <script>
 
-/* =========================================================
-   CUSTOMER ORDER DATABASE
-========================================================= */
+/* ============================================================
+   CUSTOMER ORDER GENERATOR
+============================================================ */
 
-/*
-    Every order below is an order the POS is going to ask
-    you to build.
-
-    IMPORTANT:
-    These are displayed INSIDE the website.
-    There are NO browser alerts.
-*/
-
-const customerOrders = [
+const orderTemplates = [
 
     {
         type: "Dine In",
@@ -2178,21 +1836,19 @@ const customerOrders = [
             {
                 id: "cheeseburger",
                 quantity: 1,
-                details: ["Extra cheese"]
+                modifiers: ["Extra Cheese"]
             },
             {
                 id: "large-fries",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "coke",
                 quantity: 1,
-                details: ["No ice"]
+                modifiers: ["No Ice"]
             }
-        ],
-        text:
-            "1 Cheeseburger with extra cheese, 1 Large Fries, and 1 Coke with no ice."
+        ]
     },
 
     {
@@ -2201,21 +1857,19 @@ const customerOrders = [
             {
                 id: "classic-burger",
                 quantity: 2,
-                details: ["One with no onions"]
+                modifiers: []
             },
             {
                 id: "large-fries",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "coke",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "2 Classic Burgers, one with no onions, 1 Large Fries, and 1 Coke."
+        ]
     },
 
     {
@@ -2224,21 +1878,19 @@ const customerOrders = [
             {
                 id: "crispy-wrap",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "nuggets-6",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "chocolate-shake",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Crispy Chicken Wrap, 6pc Nuggets, and 1 Chocolate Shake."
+        ]
     },
 
     {
@@ -2247,16 +1899,14 @@ const customerOrders = [
             {
                 id: "chicken-meal",
                 quantity: 1,
-                details: ["Extra cheese"]
+                modifiers: ["Extra Cheese"]
             },
             {
                 id: "sprite",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Chicken Burger Meal with extra cheese and 1 Sprite."
+        ]
     },
 
     {
@@ -2265,62 +1915,56 @@ const customerOrders = [
             {
                 id: "double-cheese",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "medium-fries",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "chocolate-shake",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Double Cheeseburger, 1 Medium Fries, and 1 Chocolate Shake."
-    },
-
-    {
-        type: "Takeaway",
-        items: [
-            {
-                id: "spicy-wrap",
-                quantity: 1,
-                details: []
-            },
-            {
-                id: "onion-rings",
-                quantity: 1,
-                details: []
-            },
-            {
-                id: "sprite",
-                quantity: 1,
-                details: ["No ice"]
-            }
-        ],
-        text:
-            "1 Spicy Chicken Wrap, 1 Onion Rings, and 1 Sprite with no ice."
+        ]
     },
 
     {
         type: "Drive-Thru",
         items: [
             {
+                id: "spicy-wrap",
+                quantity: 1,
+                modifiers: ["No Onions"]
+            },
+            {
+                id: "onion-rings",
+                quantity: 1,
+                modifiers: []
+            },
+            {
+                id: "sprite",
+                quantity: 1,
+                modifiers: ["No Ice"]
+            }
+        ]
+    },
+
+    {
+        type: "Takeaway",
+        items: [
+            {
                 id: "classic-meal",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "nuggets-10",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Classic Burger Meal and 10pc Nuggets."
+        ]
     },
 
     {
@@ -2329,21 +1973,19 @@ const customerOrders = [
             {
                 id: "double-meal",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "large-fries",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "fanta",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Double Burger Meal, 1 Large Fries, and 1 Fanta."
+        ]
     },
 
     {
@@ -2352,44 +1994,35 @@ const customerOrders = [
             {
                 id: "mushroom-burger",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "loaded-fries",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "iced-tea",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Mushroom Swiss Burger, 1 Loaded Fries, and 1 Iced Tea."
+        ]
     },
 
     {
         type: "Takeaway",
         items: [
             {
-                id: "kids-burger",
+                id: "kids-meal",
                 quantity: 1,
-                details: []
-            },
-            {
-                id: "small-fries",
-                quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "vanilla-shake",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Kids Burger, 1 Small Fries, and 1 Vanilla Shake."
+        ]
     },
 
     {
@@ -2398,66 +2031,103 @@ const customerOrders = [
             {
                 id: "classic-burger",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "onion-rings",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "cappuccino",
                 quantity: 1,
-                details: []
+                modifiers: []
             },
             {
                 id: "brownie",
                 quantity: 1,
-                details: []
+                modifiers: []
             }
-        ],
-        text:
-            "1 Classic Burger, 1 Onion Rings, 1 Cappuccino, and 1 Chocolate Brownie."
+        ]
+    },
+
+    {
+        type: "Drive-Thru",
+        items: [
+            {
+                id: "crispy-chicken",
+                quantity: 2,
+                modifiers: []
+            },
+            {
+                id: "medium-fries",
+                quantity: 2,
+                modifiers: []
+            },
+            {
+                id: "coke",
+                quantity: 2,
+                modifiers: ["No Ice"]
+            }
+        ]
     },
 
     {
         type: "Delivery",
         items: [
             {
-                id: "crispy-chicken",
-                quantity: 2,
-                details: []
+                id: "spicy-burger",
+                quantity: 1,
+                modifiers: ["Extra Cheese"]
             },
             {
-                id: "medium-fries",
-                quantity: 2,
-                details: []
+                id: "large-fries",
+                quantity: 1,
+                modifiers: []
             },
             {
-                id: "coke",
-                quantity: 2,
-                details: ["No ice"]
+                id: "oreo-shake",
+                quantity: 1,
+                modifiers: []
             }
-        ],
-        text:
-            "2 Crispy Chicken, 2 Medium Fries, and 2 Cokes with no ice."
+        ]
+    },
+
+    {
+        type: "Takeaway",
+        items: [
+            {
+                id: "veg-wrap",
+                quantity: 2,
+                modifiers: []
+            },
+            {
+                id: "small-fries",
+                quantity: 2,
+                modifiers: []
+            },
+            {
+                id: "water",
+                quantity: 2,
+                modifiers: []
+            }
+        ]
     }
 
 ];
 
 
-/* =========================================================
+/* ============================================================
    FIND MENU ITEM
-========================================================= */
+============================================================ */
 
 function findMenuItem(id) {
 
-    for (const category in menu) {
+    for (const category of Object.values(menu)) {
 
-        const found =
-            menu[category].find(
-                item => item.id === id
-            );
+        const found = category.find(
+            item => item.id === id
+        );
 
         if (found) {
             return found;
@@ -2466,194 +2136,223 @@ function findMenuItem(id) {
     }
 
     return null;
+}
+
+
+/* ============================================================
+   RANDOM CUSTOMER ORDER
+============================================================ */
+
+function generateCustomerOrder() {
+
+    const template =
+        orderTemplates[
+            Math.floor(
+                Math.random() * orderTemplates.length
+            )
+        ];
+
+    return {
+
+        number: state.orderNumber,
+
+        type: template.type,
+
+        items: template.items.map(item => {
+
+            const menuItem =
+                findMenuItem(item.id);
+
+            return {
+
+                id: item.id,
+
+                name: menuItem
+                    ? menuItem.name
+                    : item.id,
+
+                price: menuItem
+                    ? menuItem.price
+                    : 0,
+
+                quantity: item.quantity,
+
+                modifiers: [...item.modifiers]
+
+            };
+
+        })
+
+    };
 
 }
 
 
-/* =========================================================
-   PICK RANDOM CUSTOMER ORDER
-========================================================= */
+/* ============================================================
+   DISPLAY CUSTOMER ORDER
+============================================================ */
 
-function getRandomCustomerOrder() {
+function renderCustomerOrder() {
 
-    const index =
-        Math.floor(
-            Math.random() *
-            customerOrders.length
-        );
+    const order =
+        state.currentCustomerOrder;
 
-    return customerOrders[index];
+    if (!order) return;
+
+
+    document.getElementById(
+        "customerOrderNumber"
+    ).textContent =
+        `ORDER #${String(order.number).padStart(4, "0")}`;
+
+
+    document.getElementById(
+        "customerOrderType"
+    ).textContent =
+        order.type.toUpperCase();
+
+
+    const container =
+        document.getElementById("requestItems");
+
+
+    container.innerHTML = "";
+
+
+    order.items.forEach(item => {
+
+        const row =
+            document.createElement("div");
+
+        row.className = "request-item";
+
+
+        let modifierHTML = "";
+
+        if (item.modifiers.length > 0) {
+
+            modifierHTML = `
+                <div class="request-modifier">
+                    ${item.modifiers.join(" • ")}
+                </div>
+            `;
+
+        }
+
+
+        row.innerHTML = `
+
+            <div class="request-item-main">
+
+                <span class="request-item-name">
+                    ${item.name}
+                </span>
+
+                <span class="request-item-qty">
+                    × ${item.quantity}
+                </span>
+
+            </div>
+
+            ${modifierHTML}
+
+        `;
+
+
+        container.appendChild(row);
+
+    });
 
 }
 
 
-/* =========================================================
+/* ============================================================
    START NEW CUSTOMER ORDER
-========================================================= */
+============================================================ */
 
 function startNewCustomerOrder() {
 
-    /*
-        Pick a random order.
-    */
-
     state.currentCustomerOrder =
-        getRandomCustomerOrder();
+        generateCustomerOrder();
 
+    state.orderStartedAt =
+        Date.now();
 
-    /*
-        Reset timer.
-    */
-
-    state.timerSeconds = 0;
-
-    startOrderTimer();
-
-
-    /*
-        Reset current POS order.
-    */
 
     state.cart = [];
 
     state.discount = 0;
 
+
+    renderCustomerOrder();
+
     renderCart();
 
 
-    /*
-        Update the actual IN-GAME order section.
-    */
-
-    const order =
-        state.currentCustomerOrder;
-
-
-    document
-        .getElementById("incomingOrderType")
-        .textContent =
-        order.type.toUpperCase();
-
-
-    document
-        .getElementById("orderMode")
-        .textContent =
-        order.type.toUpperCase();
-
-
-    document
-        .getElementById("incomingOrderText")
-        .textContent =
-        order.text;
-
-
-    document
-        .getElementById("incomingOrderNumber")
-        .textContent =
-        `ORDER #${String(state.orderNumber).padStart(4, "0")}`;
-
-
-    /*
-        Give the order a small visual confirmation.
-    */
-
-    const incoming =
-        document.querySelector(".incoming-order");
-
-    incoming.style.borderColor =
-        "rgba(255,159,28,.65)";
-
-
-    setTimeout(() => {
-
-        incoming.style.borderColor =
-            "";
-
-    }, 500);
-
-
-    showFeedback(
-        "New customer order received.",
-        "success"
+    console.log(
+        "NEW CUSTOMER ORDER:",
+        state.currentCustomerOrder
     );
 
 }
 
 
-/* =========================================================
+/* ============================================================
    ORDER TIMER
-========================================================= */
+============================================================ */
 
-function startOrderTimer() {
+function updateOrderTimer() {
 
-    clearInterval(
-        state.timerInterval
-    );
+    if (!state.currentCustomerOrder) return;
 
 
-    state.timerInterval =
-        setInterval(() => {
-
-            state.timerSeconds++;
-
-
-            const minutes =
-                Math.floor(
-                    state.timerSeconds / 60
-                );
+    const elapsed =
+        Math.floor(
+            (Date.now() - state.orderStartedAt) / 1000
+        );
 
 
-            const seconds =
-                state.timerSeconds % 60;
+    const minutes =
+        Math.floor(elapsed / 60)
+            .toString()
+            .padStart(2, "0");
 
 
-            const formatted =
-                String(minutes).padStart(2, "0") +
-                ":" +
-                String(seconds).padStart(2, "0");
+    const seconds =
+        (elapsed % 60)
+            .toString()
+            .padStart(2, "0");
 
 
-            document
-                .getElementById("orderTimer")
-                .textContent =
-                formatted;
-
-
-        }, 1000);
+    document.getElementById(
+        "orderTimer"
+    ).textContent =
+        `${minutes}:${seconds}`;
 
 }
 
 
-/* =========================================================
-   STOP TIMER
-========================================================= */
-
-function stopOrderTimer() {
-
-    clearInterval(
-        state.timerInterval
-    );
-
-}
+setInterval(
+    updateOrderTimer,
+    1000
+);
 
 
-/* =========================================================
-   NORMALIZE CART
-========================================================= */
+/* ============================================================
+   NORMALIZE ORDER
+============================================================ */
 
-/*
-    This converts the current cart into a simple format
-    so we can compare it with the customer's request.
-*/
+function normalizeItems(items) {
 
-function normalizeCart() {
-
-    return state.cart
+    return items
         .map(item => ({
 
             id: item.id,
 
-            quantity: item.quantity
+            quantity: item.quantity,
+
+            modifiers: [...(item.modifiers || [])]
+                .sort()
 
         }))
         .sort((a, b) =>
@@ -2663,77 +2362,55 @@ function normalizeCart() {
 }
 
 
-/* =========================================================
-   NORMALIZE CUSTOMER ORDER
-========================================================= */
-
-function normalizeCustomerOrder() {
-
-    return state.currentCustomerOrder.items
-        .map(item => ({
-
-            id: item.id,
-
-            quantity: item.quantity
-
-        }))
-        .sort((a, b) =>
-            a.id.localeCompare(b.id)
-        );
-
-}
-
-
-/* =========================================================
-   CHECK WHETHER ITEMS MATCH
-========================================================= */
+/* ============================================================
+   CHECK CUSTOMER ORDER AGAINST CART
+============================================================ */
 
 function doesOrderMatch() {
 
     if (!state.currentCustomerOrder) {
-
         return false;
-
     }
 
 
     const requested =
-        normalizeCustomerOrder();
+        normalizeItems(
+            state.currentCustomerOrder.items
+        );
 
 
     const entered =
-        normalizeCart();
+        normalizeItems(
+            state.cart
+        );
 
 
-    if (
-        requested.length !==
-        entered.length
-    ) {
-
+    if (requested.length !== entered.length) {
         return false;
-
     }
 
 
-    for (
-        let i = 0;
-        i < requested.length;
-        i++
-    ) {
+    for (let i = 0; i < requested.length; i++) {
 
-        if (
-            requested[i].id !==
-            entered[i].id
-        ) {
+        const wanted = requested[i];
 
+        const actual = entered[i];
+
+
+        if (wanted.id !== actual.id) {
             return false;
+        }
 
+
+        if (wanted.quantity !== actual.quantity) {
+            return false;
         }
 
 
         if (
-            requested[i].quantity !==
-            entered[i].quantity
+            JSON.stringify(wanted.modifiers)
+            !==
+            JSON.stringify(actual.modifiers)
         ) {
 
             return false;
@@ -2748,158 +2425,93 @@ function doesOrderMatch() {
 }
 
 
-/* =========================================================
+/* ============================================================
+   ORDER MATCH CHECK
+============================================================ */
+
+function checkCurrentOrder() {
+
+    if (state.cart.length === 0) {
+
+        showFeedback(
+            "Add the customer's items first.",
+            "error"
+        );
+
+        state.errors++;
+
+        updateStats();
+
+        return false;
+
+    }
+
+
+    if (!doesOrderMatch()) {
+
+        state.errors++;
+
+        state.score =
+            Math.max(
+                0,
+                state.score - 5
+            );
+
+        updateStats();
+
+
+        showFeedback(
+            "Order does not match the customer request.",
+            "error"
+        );
+
+
+        return false;
+
+    }
+
+
+    showFeedback(
+        "Order matched successfully.",
+        "success"
+    );
+
+
+    return true;
+
+}
+
+
+/* ============================================================
    CHECKOUT BUTTON
-========================================================= */
+============================================================ */
 
 document
     .getElementById("checkoutBtn")
     .addEventListener("click", () => {
 
-        if (
-            !state.currentCustomerOrder
-        ) {
-
-            showFeedback(
-                "There is no active customer order.",
-                "error"
-            );
-
+        if (!checkCurrentOrder()) {
             return;
-
         }
 
-
-        if (
-            state.cart.length === 0
-        ) {
-
-            showFeedback(
-                "Add items before proceeding to payment.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        /*
-            Before payment, check whether
-            the order is actually correct.
-        */
-
-        if (!doesOrderMatch()) {
-
-            state.attemptedOrders++;
-
-            updateAccuracy();
-
-
-            showFeedback(
-                "Order does not match the customer request.",
-                "error"
-            );
-
-
-            highlightOrderError();
-
-
-            return;
-
-        }
-
-
-        /*
-            Correct order.
-            Payment screen will be added in Part 3.
-        */
 
         openPaymentScreen();
 
     });
 
 
-/* =========================================================
-   ORDER ERROR VISUAL
-========================================================= */
-
-function highlightOrderError() {
-
-    const incoming =
-        document.querySelector(
-            ".incoming-order"
-        );
-
-
-    incoming.style.borderColor =
-        "rgba(239,98,98,.8)";
-
-
-    setTimeout(() => {
-
-        incoming.style.borderColor =
-            "";
-
-    }, 700);
-
-}
-
-
-/* =========================================================
-   ACCURACY
-========================================================= */
-
-function updateAccuracy() {
-
-    const total =
-        state.attemptedOrders;
-
-
-    if (total === 0) {
-
-        document
-            .getElementById("accuracyDisplay")
-            .textContent =
-            "100%";
-
-        return;
-
-    }
-
-
-    const correct =
-        state.successfulOrders;
-
-
-    const accuracy =
-        Math.round(
-            (correct / total) * 100
-        );
-
-
-    document
-        .getElementById("accuracyDisplay")
-        .textContent =
-        `${accuracy}%`;
-
-}
-
-
-/* =========================================================
+/* ============================================================
    HOLD ORDER
-========================================================= */
+============================================================ */
 
 document
     .getElementById("holdBtn")
     .addEventListener("click", () => {
 
-        if (
-            state.cart.length === 0
-        ) {
+        if (state.cart.length === 0) {
 
             showFeedback(
-                "There is no order to hold.",
+                "Nothing to hold.",
                 "error"
             );
 
@@ -2910,21 +2522,16 @@ document
 
         state.heldOrders.push({
 
-            cart:
-                JSON.parse(
-                    JSON.stringify(
-                        state.cart
-                    )
-                ),
-
-            discount:
-                state.discount,
-
             customerOrder:
                 state.currentCustomerOrder,
 
-            timerSeconds:
-                state.timerSeconds
+            cart:
+                JSON.parse(
+                    JSON.stringify(state.cart)
+                ),
+
+            discount:
+                state.discount
 
         });
 
@@ -2932,6 +2539,12 @@ document
         state.cart = [];
 
         state.discount = 0;
+
+
+        document.getElementById(
+            "heldCount"
+        ).textContent =
+            state.heldOrders.length;
 
 
         renderCart();
@@ -2945,20 +2558,18 @@ document
     });
 
 
-/* =========================================================
+/* ============================================================
    RECALL ORDER
-========================================================= */
+============================================================ */
 
 document
     .getElementById("recallBtn")
     .addEventListener("click", () => {
 
-        if (
-            state.heldOrders.length === 0
-        ) {
+        if (state.heldOrders.length === 0) {
 
             showFeedback(
-                "No held orders available.",
+                "No held orders.",
                 "error"
             );
 
@@ -2971,6 +2582,10 @@ document
             state.heldOrders.pop();
 
 
+        state.currentCustomerOrder =
+            held.customerOrder;
+
+
         state.cart =
             held.cart;
 
@@ -2979,41 +2594,19 @@ document
             held.discount;
 
 
-        state.currentCustomerOrder =
-            held.customerOrder;
+        state.orderStartedAt =
+            Date.now();
 
 
-        state.timerSeconds =
-            held.timerSeconds;
-
+        renderCustomerOrder();
 
         renderCart();
 
 
-        document
-            .getElementById("incomingOrderType")
-            .textContent =
-            state.currentCustomerOrder
-                .type
-                .toUpperCase();
-
-
-        document
-            .getElementById("orderMode")
-            .textContent =
-            state.currentCustomerOrder
-                .type
-                .toUpperCase();
-
-
-        document
-            .getElementById("incomingOrderText")
-            .textContent =
-            state.currentCustomerOrder
-                .text;
-
-
-        startOrderTimer();
+        document.getElementById(
+            "heldCount"
+        ).textContent =
+            state.heldOrders.length;
 
 
         showFeedback(
@@ -3024,18 +2617,13 @@ document
     });
 
 
-/* =========================================================
+/* ============================================================
    DISCOUNT
-========================================================= */
+============================================================ */
 
 document
     .getElementById("discountBtn")
     .addEventListener("click", () => {
-
-        /*
-            For now we use a training discount.
-            A proper coupon interface comes in Part 3/4.
-        */
 
         const subtotal =
             calculateSubtotal();
@@ -3057,142 +2645,3822 @@ document
 
             state.discount = 0;
 
-            updateTotals();
-
-
             showFeedback(
-                "Discount removed."
+                "Discount removed.",
+                "success"
             );
 
-            return;
+        } else {
+
+            state.discount =
+                Math.round(
+                    subtotal * 0.10
+                );
+
+            showFeedback(
+                "10% training discount applied.",
+                "success"
+            );
 
         }
 
 
-        state.discount =
-            Math.round(
-                subtotal * 0.10
-            );
-
-
         updateTotals();
 
+    });
 
-        showFeedback(
-            "10% training discount applied.",
-            "success"
+
+/* ============================================================
+   STATISTICS
+============================================================ */
+
+function updateStats() {
+
+    document.getElementById(
+        "servedCount"
+    ).textContent =
+        state.served;
+
+
+    document.getElementById(
+        "sideServed"
+    ).textContent =
+        state.served;
+
+
+    document.getElementById(
+        "errorCount"
+    ).textContent =
+        state.errors;
+
+
+    document.getElementById(
+        "scoreDisplay"
+    ).textContent =
+        state.score;
+
+
+    document.getElementById(
+        "salesDisplay"
+    ).textContent =
+        `₹${state.sales.toFixed(2)}`;
+
+
+    const totalAttempts =
+        state.served + state.errors;
+
+
+    const accuracy =
+        totalAttempts === 0
+        ? 100
+        : Math.max(
+            0,
+            Math.round(
+                (state.served /
+                totalAttempts) * 100
+            )
+        );
+
+
+    document.getElementById(
+        "accuracyDisplay"
+    ).textContent =
+        `${accuracy}%`;
+
+}
+
+
+/* ============================================================
+   PAYMENT SCREEN
+============================================================ */
+
+function openPaymentScreen() {
+
+    const total =
+        Math.max(
+            0,
+            calculateSubtotal()
+            +
+            calculateSubtotal() * 0.05
+            -
+            state.discount
+        );
+
+
+    const paymentHTML = `
+
+        <div
+            id="paymentOverlay"
+            style="
+                position:fixed;
+                inset:0;
+                background:rgba(0,0,0,.78);
+                z-index:200;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+            "
+        >
+
+            <div
+                style="
+                    width:440px;
+                    background:#1c2023;
+                    border:1px solid #41474c;
+                    border-radius:9px;
+                    box-shadow:0 20px 60px rgba(0,0,0,.6);
+                    overflow:hidden;
+                "
+            >
+
+                <div
+                    style="
+                        padding:18px;
+                        border-bottom:1px solid #343a3f;
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                    "
+                >
+
+                    <strong style="font-size:15px;">
+                        PAYMENT
+                    </strong>
+
+                    <span
+                        style="
+                            color:#8b9399;
+                            font-size:10px;
+                        "
+                    >
+                        ORDER #${String(
+                            state.currentCustomerOrder.number
+                        ).padStart(4, "0")}
+                    </span>
+
+                </div>
+
+
+                <div style="padding:20px;">
+
+                    <div
+                        style="
+                            text-align:center;
+                            padding:15px;
+                            background:#15181a;
+                            border:1px solid #30363a;
+                            border-radius:6px;
+                            margin-bottom:16px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                color:#858d94;
+                                font-size:10px;
+                                text-transform:uppercase;
+                                margin-bottom:6px;
+                            "
+                        >
+                            Amount Due
+                        </div>
+
+                        <div
+                            style="
+                                font-size:28px;
+                                font-weight:800;
+                            "
+                        >
+                            ₹${total.toFixed(2)}
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:grid;
+                            grid-template-columns:1fr 1fr 1fr;
+                            gap:7px;
+                            margin-bottom:15px;
+                        "
+                    >
+
+                        <button
+                            class="payment-method"
+                            data-payment="Cash"
+                        >
+                            CASH
+                        </button>
+
+                        <button
+                            class="payment-method"
+                            data-payment="Card"
+                        >
+                            CARD
+                        </button>
+
+                        <button
+                            class="payment-method"
+                            data-payment="UPI"
+                        >
+                            UPI
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="cashArea"
+                        style="
+                            display:none;
+                            margin-bottom:15px;
+                        "
+                    >
+
+                        <label
+                            style="
+                                display:block;
+                                color:#8d959c;
+                                font-size:10px;
+                                margin-bottom:6px;
+                            "
+                        >
+                            CASH TENDERED
+                        </label>
+
+                        <input
+                            id="cashTendered"
+                            type="number"
+                            min="0"
+                            step="1"
+                            placeholder="Enter amount"
+                            style="
+                                width:100%;
+                                height:42px;
+                                background:#121416;
+                                border:1px solid #3a4045;
+                                border-radius:5px;
+                                color:#fff;
+                                padding:0 12px;
+                                font-size:14px;
+                                outline:none;
+                            "
+                        >
+
+                        <div
+                            id="changeDisplay"
+                            style="
+                                margin-top:8px;
+                                color:#65cc8d;
+                                font-size:11px;
+                            "
+                        ></div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:7px;
+                        "
+                    >
+
+                        <button
+                            id="cancelPayment"
+                            style="
+                                flex:1;
+                                height:44px;
+                                background:#292e32;
+                                border:1px solid #41474c;
+                                color:#ddd;
+                                border-radius:5px;
+                                font-weight:700;
+                                cursor:pointer;
+                            "
+                        >
+                            CANCEL
+                        </button>
+
+                        <button
+                            id="confirmPayment"
+                            style="
+                                flex:1;
+                                height:44px;
+                                background:#e9e9e9;
+                                border:1px solid #e9e9e9;
+                                color:#111;
+                                border-radius:5px;
+                                font-weight:700;
+                                cursor:pointer;
+                            "
+                        >
+                            COMPLETE PAYMENT
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+
+    document.body.insertAdjacentHTML(
+        "beforeend",
+        paymentHTML
+    );
+
+
+    let selectedPayment = null;
+
+
+    const paymentButtons =
+        document.querySelectorAll(
+            ".payment-method"
+        );
+
+
+    paymentButtons.forEach(button => {
+
+        button.style.cssText = `
+            height:42px;
+            background:#292e32;
+            border:1px solid #3d4449;
+            color:#d9dde0;
+            border-radius:5px;
+            font-size:10px;
+            font-weight:700;
+            cursor:pointer;
+        `;
+
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                paymentButtons.forEach(btn => {
+
+                    btn.style.background =
+                        "#292e32";
+
+                    btn.style.color =
+                        "#d9dde0";
+
+                });
+
+
+                button.style.background =
+                    "#e9e9e9";
+
+                button.style.color =
+                    "#111";
+
+
+                selectedPayment =
+                    button.dataset.payment;
+
+
+                document.getElementById(
+                    "cashArea"
+                ).style.display =
+                    selectedPayment === "Cash"
+                    ? "block"
+                    : "none";
+
+            }
         );
 
     });
 
 
-/* =========================================================
-   PAYMENT PLACEHOLDER
-========================================================= */
+    document.getElementById(
+        "cashTendered"
+    )?.addEventListener(
+        "input",
+        () => {
 
-/*
-    Part 3 will replace this with the proper
-    touchscreen payment interface.
+            const input =
+                Number(
+                    document.getElementById(
+                        "cashTendered"
+                    ).value
+                );
 
-    For now we don't use a browser popup.
-*/
 
-function openPaymentScreen() {
+            const change =
+                input - total;
+
+
+            document.getElementById(
+                "changeDisplay"
+            ).textContent =
+                change >= 0
+                ? `Change: ₹${change.toFixed(2)}`
+                : `Amount short by ₹${Math.abs(change).toFixed(2)}`;
+
+        }
+    );
+
+
+    document.getElementById(
+        "cancelPayment"
+    ).addEventListener(
+        "click",
+        () => {
+
+            document.getElementById(
+                "paymentOverlay"
+            ).remove();
+
+        }
+    );
+
+
+    document.getElementById(
+        "confirmPayment"
+    ).addEventListener(
+        "click",
+        () => {
+
+            if (!selectedPayment) {
+
+                showFeedback(
+                    "Select a payment method.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (selectedPayment === "Cash") {
+
+                const tendered =
+                    Number(
+                        document.getElementById(
+                            "cashTendered"
+                        ).value
+                    );
+
+
+                if (
+                    !Number.isFinite(tendered)
+                    ||
+                    tendered < total
+                ) {
+
+                    showFeedback(
+                        "Insufficient cash tendered.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            document.getElementById(
+                "paymentOverlay"
+            ).remove();
+
+
+            completeOrder(
+                total,
+                selectedPayment
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   COMPLETE ORDER
+============================================================ */
+
+function completeOrder(
+    total,
+    paymentMethod
+) {
+
+    state.sales += total;
+
+    state.served++;
+
+    state.score =
+        Math.min(
+            100,
+            state.score + 2
+        );
+
+
+    updateStats();
+
 
     showFeedback(
-        "Order verified. Payment terminal will open in Part 3.",
+        `Payment accepted • ${paymentMethod} • Order completed`,
+        "success"
+    );
+
+
+    setTimeout(() => {
+
+        state.orderNumber++;
+
+        startNewCustomerOrder();
+
+        showFeedback(
+            "New customer order received.",
+            "success"
+        );
+
+    }, 900);
+
+}
+
+
+/* ============================================================
+   FIRST CUSTOMER ORDER
+============================================================ */
+
+startNewCustomerOrder();
+
+updateStats();
+
+</script>
+<script>
+
+/* ============================================================
+   MODIFIER DATABASE
+============================================================ */
+
+const modifierDatabase = {
+
+    "cheeseburger": [
+        "Extra Cheese",
+        "No Cheese",
+        "No Onions",
+        "No Pickles",
+        "Extra Sauce"
+    ],
+
+    "classic-burger": [
+        "Extra Cheese",
+        "No Onions",
+        "No Pickles",
+        "Extra Sauce",
+        "No Lettuce"
+    ],
+
+    "double-cheese": [
+        "Extra Cheese",
+        "No Onions",
+        "No Pickles",
+        "Extra Sauce"
+    ],
+
+    "spicy-burger": [
+        "Extra Cheese",
+        "No Onions",
+        "No Lettuce",
+        "Extra Sauce"
+    ],
+
+    "crispy-wrap": [
+        "Extra Sauce",
+        "No Onions",
+        "No Lettuce",
+        "Extra Cheese"
+    ],
+
+    "spicy-wrap": [
+        "Extra Sauce",
+        "No Onions",
+        "No Lettuce",
+        "Extra Cheese"
+    ],
+
+    "coke": [
+        "No Ice",
+        "Light Ice",
+        "Extra Ice"
+    ],
+
+    "sprite": [
+        "No Ice",
+        "Light Ice",
+        "Extra Ice"
+    ],
+
+    "fanta": [
+        "No Ice",
+        "Light Ice",
+        "Extra Ice"
+    ],
+
+    "iced-tea": [
+        "No Ice",
+        "Light Ice",
+        "Extra Ice"
+    ],
+
+    "fries": [
+        "No Salt",
+        "Extra Salt",
+        "Extra Sauce"
+    ]
+
+};
+
+
+/* ============================================================
+   OPEN ITEM OPTIONS
+============================================================ */
+
+function openItemOptions(item) {
+
+    const modifiers =
+        modifierDatabase[item.id]
+        || [];
+
+
+    const modifierButtons =
+        modifiers.length > 0
+        ?
+        modifiers.map(modifier => `
+
+            <button
+                class="modifier-option"
+                data-modifier="${modifier}"
+            >
+                <span class="modifier-check">✓</span>
+                ${modifier}
+            </button>
+
+        `).join("")
+        :
+        `
+            <div
+                style="
+                    color:#777f86;
+                    font-size:11px;
+                    padding:10px 0;
+                "
+            >
+                No special options available for this item.
+            </div>
+        `;
+
+
+    const overlay = document.createElement("div");
+
+    overlay.id = "itemOptionsOverlay";
+
+
+    overlay.innerHTML = `
+
+        <div class="item-options-box">
+
+            <div class="item-options-header">
+
+                <div>
+                    <div
+                        style="
+                            color:#858d94;
+                            font-size:9px;
+                            text-transform:uppercase;
+                            margin-bottom:4px;
+                        "
+                    >
+                        ITEM OPTIONS
+                    </div>
+
+                    <strong>
+                        ${item.name}
+                    </strong>
+                </div>
+
+                <button
+                    id="closeItemOptions"
+                    class="close-options"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="item-options-body">
+
+                <div class="option-section">
+
+                    <div class="option-title">
+                        Special Instructions
+                    </div>
+
+                    <div class="modifier-list">
+                        ${modifierButtons}
+                    </div>
+
+                </div>
+
+
+                <div class="option-section">
+
+                    <div class="option-title">
+                        Quantity
+                    </div>
+
+                    <div class="quantity-selector">
+
+                        <button
+                            id="optionMinus"
+                            class="quantity-control"
+                        >
+                            −
+                        </button>
+
+                        <strong id="optionQuantity">
+                            1
+                        </strong>
+
+                        <button
+                            id="optionPlus"
+                            class="quantity-control"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="item-options-footer">
+
+                <button
+                    id="cancelItemOptions"
+                    class="options-cancel"
+                >
+                    CANCEL
+                </button>
+
+                <button
+                    id="addWithOptions"
+                    class="options-add"
+                >
+                    ADD TO ORDER
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(overlay);
+
+
+    let quantity = 1;
+
+    const selectedModifiers = [];
+
+
+    const modifierElements =
+        overlay.querySelectorAll(
+            ".modifier-option"
+        );
+
+
+    modifierElements.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const modifier =
+                    button.dataset.modifier;
+
+
+                const index =
+                    selectedModifiers.indexOf(
+                        modifier
+                    );
+
+
+                if (index === -1) {
+
+                    selectedModifiers.push(
+                        modifier
+                    );
+
+                    button.classList.add(
+                        "selected"
+                    );
+
+                } else {
+
+                    selectedModifiers.splice(
+                        index,
+                        1
+                    );
+
+                    button.classList.remove(
+                        "selected"
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+    overlay.querySelector(
+        "#optionMinus"
+    ).addEventListener(
+        "click",
+        () => {
+
+            quantity =
+                Math.max(
+                    1,
+                    quantity - 1
+                );
+
+
+            overlay.querySelector(
+                "#optionQuantity"
+            ).textContent =
+                quantity;
+
+        }
+    );
+
+
+    overlay.querySelector(
+        "#optionPlus"
+    ).addEventListener(
+        "click",
+        () => {
+
+            quantity =
+                Math.min(
+                    20,
+                    quantity + 1
+                );
+
+
+            overlay.querySelector(
+                "#optionQuantity"
+            ).textContent =
+                quantity;
+
+        }
+    );
+
+
+    function closeOptions() {
+
+        overlay.remove();
+
+    }
+
+
+    overlay.querySelector(
+        "#closeItemOptions"
+    ).addEventListener(
+        "click",
+        closeOptions
+    );
+
+
+    overlay.querySelector(
+        "#cancelItemOptions"
+    ).addEventListener(
+        "click",
+        closeOptions
+    );
+
+
+    overlay.querySelector(
+        "#addWithOptions"
+    ).addEventListener(
+        "click",
+        () => {
+
+            addConfiguredItem(
+                item,
+                quantity,
+                selectedModifiers
+            );
+
+
+            closeOptions();
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   ADD CONFIGURED ITEM
+============================================================ */
+
+function addConfiguredItem(
+    item,
+    quantity,
+    modifiers
+) {
+
+    const modifierKey =
+        [...modifiers]
+            .sort()
+            .join("|");
+
+
+    const existing =
+        state.cart.find(
+            cartItem =>
+                cartItem.id === item.id
+                &&
+                [...cartItem.modifiers]
+                    .sort()
+                    .join("|")
+                    === modifierKey
+        );
+
+
+    if (existing) {
+
+        existing.quantity += quantity;
+
+    } else {
+
+        state.cart.push({
+
+            id: item.id,
+
+            name: item.name,
+
+            price: item.price,
+
+            quantity: quantity,
+
+            modifiers: [...modifiers]
+
+        });
+
+    }
+
+
+    renderCart();
+
+
+    let message =
+        `${quantity} × ${item.name} added`;
+
+
+    if (modifiers.length) {
+
+        message +=
+            ` • ${modifiers.join(", ")}`;
+
+    }
+
+
+    showFeedback(
+        message,
         "success"
     );
 
 }
 
 
-/* =========================================================
-   COMPLETE ORDER
-========================================================= */
+/* ============================================================
+   OVERRIDE MENU ITEM CLICK
+============================================================ */
 
-/*
-    Part 3 will call this after successful payment.
-*/
-
-function completeOrder() {
-
-    stopOrderTimer();
-
-
-    const totalText =
-        document
-            .getElementById("totalDisplay")
-            .textContent;
-
-
-    const total =
-        parseFloat(
-            totalText
-                .replace("₹", "")
-        ) || 0;
-
-
-    state.sales += total;
-
-    state.served++;
-
-    state.successfulOrders++;
-
-    state.attemptedOrders++;
-
-    state.score += 100;
-
+function setupAdvancedMenuClicks() {
 
     document
-        .getElementById("servedCount")
-        .textContent =
-        state.served;
+        .querySelectorAll(".menu-item")
+        .forEach(card => {
+
+            const itemId =
+                card.dataset.itemId;
 
 
-    document
-        .getElementById("salesDisplay")
-        .textContent =
-        `₹${state.sales.toFixed(2)}`;
+            if (!itemId) return;
 
 
-    updateAccuracy();
+            const item =
+                findMenuItem(itemId);
 
 
-    /*
-        Increase order number BEFORE
-        generating the next customer.
-    */
-
-    state.orderNumber++;
+            if (!item) return;
 
 
-    /*
-        Small pause makes the transition
-        feel like a real POS.
-    */
+            card.onclick = () => {
 
-    setTimeout(() => {
+                const modifiers =
+                    modifierDatabase[item.id]
+                    || [];
 
-        startNewCustomerOrder();
 
-    }, 800);
+                if (
+                    modifiers.length > 0
+                    ||
+                    item.id.includes("meal")
+                ) {
+
+                    openItemOptions(item);
+
+                } else {
+
+                    addConfiguredItem(
+                        item,
+                        1,
+                        []
+                    );
+
+                }
+
+            };
+
+        });
 
 }
 
 
-/* =========================================================
-   START FIRST ORDER
-========================================================= */
+/* ============================================================
+   PATCH MENU RENDER
+============================================================ */
 
-/*
-    This is what makes an order appear
-    INSIDE THE WEBSITE immediately.
-*/
+const originalRenderMenu =
+    renderMenu;
 
-startNewCustomerOrder();
+
+renderMenu = function() {
+
+    originalRenderMenu();
+
+
+    const items =
+        menu[state.activeCategory];
+
+
+    const cards =
+        document.querySelectorAll(
+            ".menu-item"
+        );
+
+
+    cards.forEach((card, index) => {
+
+        if (items[index]) {
+
+            card.dataset.itemId =
+                items[index].id;
+
+        }
+
+    });
+
+
+    setupAdvancedMenuClicks();
+
+};
+
+
+/* ============================================================
+   COMBO BUILDER
+============================================================ */
+
+function openComboBuilder(combo) {
+
+    const overlay =
+        document.createElement("div");
+
+
+    overlay.id =
+        "comboBuilderOverlay";
+
+
+    overlay.innerHTML = `
+
+        <div class="combo-builder">
+
+            <div class="combo-header">
+
+                <div>
+
+                    <div class="combo-small-title">
+                        MEAL BUILDER
+                    </div>
+
+                    <h2>
+                        ${combo.name}
+                    </h2>
+
+                </div>
+
+                <button
+                    id="closeCombo"
+                    class="close-options"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="combo-body">
+
+
+                <div class="combo-step">
+
+                    <div class="combo-step-title">
+
+                        <span>1</span>
+
+                        Choose Main
+
+                    </div>
+
+
+                    <div class="combo-choice-grid">
+
+                        <button
+                            class="combo-choice selected"
+                            data-main="classic-burger"
+                        >
+                            Classic Burger
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-main="cheeseburger"
+                        >
+                            Cheeseburger
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-main="spicy-burger"
+                        >
+                            Spicy Chicken
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-main="double-cheese"
+                        >
+                            Double Cheeseburger
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="combo-step">
+
+                    <div class="combo-step-title">
+
+                        <span>2</span>
+
+                        Choose Side
+
+                    </div>
+
+
+                    <div class="combo-choice-grid">
+
+                        <button
+                            class="combo-choice selected"
+                            data-side="medium-fries"
+                        >
+                            Medium Fries
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-side="large-fries"
+                        >
+                            Large Fries
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-side="onion-rings"
+                        >
+                            Onion Rings
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="combo-step">
+
+                    <div class="combo-step-title">
+
+                        <span>3</span>
+
+                        Choose Drink
+
+                    </div>
+
+
+                    <div class="combo-choice-grid">
+
+                        <button
+                            class="combo-choice selected"
+                            data-drink="coke"
+                        >
+                            Coke
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-drink="sprite"
+                        >
+                            Sprite
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-drink="fanta"
+                        >
+                            Fanta
+                        </button>
+
+                        <button
+                            class="combo-choice"
+                            data-drink="iced-tea"
+                        >
+                            Iced Tea
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="combo-step">
+
+                    <div class="combo-step-title">
+
+                        <span>4</span>
+
+                        Extras
+
+                    </div>
+
+
+                    <div class="combo-choice-grid">
+
+                        <button
+                            class="combo-choice extra-choice"
+                            data-extra="Extra Cheese"
+                        >
+                            Extra Cheese
+                            <small>+₹20</small>
+                        </button>
+
+                        <button
+                            class="combo-choice extra-choice"
+                            data-extra="Large Side"
+                        >
+                            Upgrade Side
+                            <small>+₹20</small>
+                        </button>
+
+                        <button
+                            class="combo-choice extra-choice"
+                            data-extra="Extra Sauce"
+                        >
+                            Extra Sauce
+                            <small>+₹10</small>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="combo-summary">
+
+                    <div>
+                        <span>Combo Total</span>
+
+                        <strong
+                            id="comboTotal"
+                        >
+                            ₹${combo.price.toFixed(2)}
+                        </strong>
+                    </div>
+
+                    <div
+                        id="comboSummaryText"
+                    >
+                        Classic Burger • Medium Fries • Coke
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="combo-footer">
+
+                <button
+                    id="cancelCombo"
+                    class="options-cancel"
+                >
+                    CANCEL
+                </button>
+
+                <button
+                    id="addCombo"
+                    class="options-add"
+                >
+                    ADD COMBO TO ORDER
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    let selectedMain =
+        "classic-burger";
+
+
+    let selectedSide =
+        "medium-fries";
+
+
+    let selectedDrink =
+        "coke";
+
+
+    const selectedExtras = [];
+
+
+    function getName(id) {
+
+        const item =
+            findMenuItem(id);
+
+        return item
+            ? item.name
+            : id;
+
+    }
+
+
+    function updateCombo() {
+
+        let price =
+            combo.price;
+
+
+        if (
+            selectedSide ===
+            "large-fries"
+        ) {
+
+            price += 20;
+
+        }
+
+
+        selectedExtras.forEach(
+            extra => {
+
+                if (
+                    extra ===
+                    "Extra Cheese"
+                ) {
+
+                    price += 20;
+
+                }
+
+                if (
+                    extra ===
+                    "Large Side"
+                ) {
+
+                    price += 20;
+
+                }
+
+                if (
+                    extra ===
+                    "Extra Sauce"
+                ) {
+
+                    price += 10;
+
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "comboTotal"
+        ).textContent =
+            `₹${price.toFixed(2)}`;
+
+
+        const summary = [
+
+            getName(selectedMain),
+
+            getName(selectedSide),
+
+            getName(selectedDrink),
+
+            ...selectedExtras
+
+        ];
+
+
+        document.getElementById(
+            "comboSummaryText"
+        ).textContent =
+            summary.join(" • ");
+
+    }
+
+
+    overlay
+        .querySelectorAll(
+            ".combo-choice"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        button.dataset.main
+                    ) {
+
+                        overlay
+                            .querySelectorAll(
+                                "[data-main]"
+                            )
+                            .forEach(
+                                b =>
+                                    b.classList
+                                     .remove(
+                                         "selected"
+                                     )
+                            );
+
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedMain =
+                            button.dataset.main;
+
+                    }
+
+
+                    if (
+                        button.dataset.side
+                    ) {
+
+                        overlay
+                            .querySelectorAll(
+                                "[data-side]"
+                            )
+                            .forEach(
+                                b =>
+                                    b.classList
+                                     .remove(
+                                         "selected"
+                                     )
+                            );
+
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedSide =
+                            button.dataset.side;
+
+                    }
+
+
+                    if (
+                        button.dataset.drink
+                    ) {
+
+                        overlay
+                            .querySelectorAll(
+                                "[data-drink]"
+                            )
+                            .forEach(
+                                b =>
+                                    b.classList
+                                     .remove(
+                                         "selected"
+                                     )
+                            );
+
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedDrink =
+                            button.dataset.drink;
+
+                    }
+
+
+                    if (
+                        button.dataset.extra
+                    ) {
+
+                        const extra =
+                            button.dataset.extra;
+
+
+                        const index =
+                            selectedExtras.indexOf(
+                                extra
+                            );
+
+
+                        if (index === -1) {
+
+                            selectedExtras.push(
+                                extra
+                            );
+
+                            button.classList.add(
+                                "selected"
+                            );
+
+                        } else {
+
+                            selectedExtras.splice(
+                                index,
+                                1
+                            );
+
+                            button.classList.remove(
+                                "selected"
+                            );
+
+                        }
+
+                    }
+
+
+                    updateCombo();
+
+                }
+            );
+
+        });
+
+
+    function closeCombo() {
+
+        overlay.remove();
+
+    }
+
+
+    overlay.querySelector(
+        "#closeCombo"
+    ).addEventListener(
+        "click",
+        closeCombo
+    );
+
+
+    overlay.querySelector(
+        "#cancelCombo"
+    ).addEventListener(
+        "click",
+        closeCombo
+    );
+
+
+    overlay.querySelector(
+        "#addCombo"
+    ).addEventListener(
+        "click",
+        () => {
+
+            const modifiers =
+                [...selectedExtras];
+
+
+            addConfiguredItem(
+                combo,
+                1,
+                modifiers
+            );
+
+
+            closeCombo();
+
+        }
+    );
+
+
+    updateCombo();
+
+}
+
+
+/* ============================================================
+   COMBO DETECTION
+============================================================ */
+
+function isCombo(item) {
+
+    return (
+        item.id.includes("meal")
+        ||
+        item.id === "kids-meal"
+    );
+
+}
+
+
+/* ============================================================
+   FINAL MENU CLICK PATCH
+============================================================ */
+
+function enableAdvancedMenu() {
+
+    const cards =
+        document.querySelectorAll(
+            ".menu-item"
+        );
+
+
+    const items =
+        menu[state.activeCategory];
+
+
+    cards.forEach((card, index) => {
+
+        const item =
+            items[index];
+
+
+        if (!item) return;
+
+
+        card.dataset.itemId =
+            item.id;
+
+
+        card.onclick = () => {
+
+            if (isCombo(item)) {
+
+                openComboBuilder(item);
+
+                return;
+
+            }
+
+
+            const modifiers =
+                modifierDatabase[item.id]
+                || [];
+
+
+            if (modifiers.length > 0) {
+
+                openItemOptions(item);
+
+            } else {
+
+                addConfiguredItem(
+                    item,
+                    1,
+                    []
+                );
+
+            }
+
+        };
+
+    });
+
+}
+
+
+/* ============================================================
+   REPLACE CATEGORY RENDER AGAIN
+============================================================ */
+
+const baseRenderMenu =
+    renderMenu;
+
+
+renderMenu = function() {
+
+    baseRenderMenu();
+
+    enableAdvancedMenu();
+
+};
+
+
+/* ============================================================
+   INITIALIZE ADVANCED MENU
+============================================================ */
+
+renderCategories();
+
+renderMenu();
+
+renderCart();
 
 </script>
+<script>
+
+/* ============================================================
+   POS QUEUE / LIVE ORDER FEEL
+============================================================ */
+
+state.orderHistory = [];
+
+state.lastCompletedOrder = null;
+
+
+/* ============================================================
+   RECEIPT GENERATOR
+============================================================ */
+
+function generateReceiptHTML(
+    order,
+    cart,
+    total,
+    paymentMethod
+) {
+
+    const now = new Date();
+
+    const time =
+        now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+
+    const itemRows =
+        cart.map(item => `
+
+            <div class="receipt-item">
+
+                <div class="receipt-item-name">
+                    ${item.name}
+                    <span>×${item.quantity}</span>
+                </div>
+
+                <div class="receipt-item-price">
+                    ₹${(
+                        item.price *
+                        item.quantity
+                    ).toFixed(2)}
+                </div>
+
+                ${
+                    item.modifiers.length
+                    ?
+                    `
+                    <div class="receipt-modifier">
+                        ${item.modifiers.join(" • ")}
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+        `).join("");
+
+
+    const subtotal =
+        calculateCartSubtotal(cart);
+
+
+    const tax =
+        subtotal * 0.05;
+
+
+    const discount =
+        state.discount;
+
+
+    return `
+
+        <div
+            id="receiptOverlay"
+            class="receipt-overlay"
+        >
+
+            <div class="receipt-window">
+
+                <div class="receipt-top">
+
+                    <div class="receipt-brand">
+                        RESTAURANT POS
+                    </div>
+
+                    <div class="receipt-status">
+                        PAYMENT COMPLETE
+                    </div>
+
+                </div>
+
+
+                <div class="receipt-divider">
+                    --------------------------------
+                </div>
+
+
+                <div class="receipt-info">
+
+                    <div>
+                        <span>ORDER</span>
+                        <strong>
+                            #${String(
+                                order.number
+                            ).padStart(4, "0")}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>TYPE</span>
+                        <strong>
+                            ${order.type}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>TIME</span>
+                        <strong>
+                            ${time}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>PAYMENT</span>
+                        <strong>
+                            ${paymentMethod}
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="receipt-divider">
+                    --------------------------------
+                </div>
+
+
+                <div class="receipt-items">
+
+                    ${itemRows}
+
+                </div>
+
+
+                <div class="receipt-divider">
+                    --------------------------------
+                </div>
+
+
+                <div class="receipt-total-row">
+
+                    <span>Subtotal</span>
+
+                    <span>
+                        ₹${subtotal.toFixed(2)}
+                    </span>
+
+                </div>
+
+
+                <div class="receipt-total-row">
+
+                    <span>Tax</span>
+
+                    <span>
+                        ₹${tax.toFixed(2)}
+                    </span>
+
+                </div>
+
+
+                ${
+                    discount > 0
+                    ?
+                    `
+                    <div class="receipt-total-row discount-row">
+                        <span>Discount</span>
+                        <span>
+                            -₹${discount.toFixed(2)}
+                        </span>
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+
+                <div class="receipt-grand-total">
+
+                    <span>TOTAL</span>
+
+                    <strong>
+                        ₹${total.toFixed(2)}
+                    </strong>
+
+                </div>
+
+
+                <div class="receipt-footer">
+
+                    <div>
+                        Thank you.
+                    </div>
+
+                    <div>
+                        Training transaction
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="closeReceipt"
+                    class="receipt-close"
+                >
+                    CONTINUE
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   CART SUBTOTAL HELPER
+============================================================ */
+
+function calculateCartSubtotal(cart) {
+
+    return cart.reduce(
+        (sum, item) =>
+            sum +
+            (
+                item.price *
+                item.quantity
+            ),
+        0
+    );
+
+}
+
+
+/* ============================================================
+   RECEIPT DISPLAY
+============================================================ */
+
+function showReceipt(
+    order,
+    cart,
+    total,
+    paymentMethod
+) {
+
+    const existing =
+        document.getElementById(
+            "receiptOverlay"
+        );
+
+
+    if (existing) {
+        existing.remove();
+    }
+
+
+    document.body.insertAdjacentHTML(
+        "beforeend",
+
+        generateReceiptHTML(
+            order,
+            cart,
+            total,
+            paymentMethod
+        )
+    );
+
+
+    document.getElementById(
+        "closeReceipt"
+    ).addEventListener(
+        "click",
+        () => {
+
+            const receipt =
+                document.getElementById(
+                    "receiptOverlay"
+                );
+
+
+            if (receipt) {
+                receipt.remove();
+            }
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   SAVE COMPLETED ORDER
+============================================================ */
+
+function saveCompletedOrder(
+    order,
+    cart,
+    total,
+    paymentMethod
+) {
+
+    const completed = {
+
+        number:
+            order.number,
+
+        type:
+            order.type,
+
+        items:
+            JSON.parse(
+                JSON.stringify(cart)
+            ),
+
+        total:
+            total,
+
+        payment:
+            paymentMethod,
+
+        completedAt:
+            new Date().toISOString()
+
+    };
+
+
+    state.lastCompletedOrder =
+        completed;
+
+
+    state.orderHistory.push(
+        completed
+    );
+
+
+    if (
+        state.orderHistory.length > 20
+    ) {
+
+        state.orderHistory.shift();
+
+    }
+
+}
+
+
+/* ============================================================
+   PATCH COMPLETE ORDER
+============================================================ */
+
+const previousCompleteOrder =
+    completeOrder;
+
+
+completeOrder = function(
+    total,
+    paymentMethod
+) {
+
+    const completedOrder =
+        state.currentCustomerOrder;
+
+
+    const completedCart =
+        JSON.parse(
+            JSON.stringify(
+                state.cart
+            )
+        );
+
+
+    saveCompletedOrder(
+        completedOrder,
+        completedCart,
+        total,
+        paymentMethod
+    );
+
+
+    previousCompleteOrder(
+        total,
+        paymentMethod
+    );
+
+
+    setTimeout(() => {
+
+        showReceipt(
+            completedOrder,
+            completedCart,
+            total,
+            paymentMethod
+        );
+
+    }, 950);
+
+};
+
+
+/* ============================================================
+   ORDER QUEUE INDICATOR
+============================================================ */
+
+function updateLiveOrderIndicator() {
+
+    const indicator =
+        document.querySelector(
+            ".order-live"
+        );
+
+
+    if (!indicator) return;
+
+
+    indicator.textContent =
+        "● LIVE";
+
+}
+
+
+/* ============================================================
+   ORDER TYPE COLOR / DISPLAY
+============================================================ */
+
+function updateOrderTypeVisual() {
+
+    const type =
+        document.getElementById(
+            "customerOrderType"
+        );
+
+
+    if (!type) return;
+
+
+    type.style.transition =
+        "background .2s";
+
+
+    const orderType =
+        state.currentCustomerOrder?.type;
+
+
+    if (orderType === "Drive-Thru") {
+
+        type.style.background =
+            "#303c47";
+
+    } else if (
+        orderType === "Delivery"
+    ) {
+
+        type.style.background =
+            "#3b3424";
+
+    } else if (
+        orderType === "Takeaway"
+    ) {
+
+        type.style.background =
+            "#293a32";
+
+    } else {
+
+        type.style.background =
+            "#2c3136";
+
+    }
+
+}
+
+
+/* ============================================================
+   PATCH CUSTOMER ORDER RENDER
+============================================================ */
+
+const previousRenderCustomerOrder =
+    renderCustomerOrder;
+
+
+renderCustomerOrder = function() {
+
+    previousRenderCustomerOrder();
+
+    updateOrderTypeVisual();
+
+    updateLiveOrderIndicator();
+
+};
+
+
+/* ============================================================
+   ORDER TIMER WARNING
+============================================================ */
+
+setInterval(() => {
+
+    const timer =
+        document.getElementById(
+            "orderTimer"
+        );
+
+
+    if (!timer) return;
+
+
+    const elapsed =
+        Math.floor(
+            (
+                Date.now()
+                -
+                state.orderStartedAt
+            ) / 1000
+        );
+
+
+    if (elapsed >= 45) {
+
+        timer.style.color =
+            "#e77b7b";
+
+    } else if (elapsed >= 25) {
+
+        timer.style.color =
+            "#e1b65d";
+
+    } else {
+
+        timer.style.color =
+            "#f0c45c";
+
+    }
+
+}, 1000);
+
+
+/* ============================================================
+   COMPLETED ORDER HISTORY PANEL
+============================================================ */
+
+function openOrderHistory() {
+
+    if (
+        document.getElementById(
+            "historyOverlay"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const overlay =
+        document.createElement("div");
+
+
+    overlay.id =
+        "historyOverlay";
+
+
+    overlay.className =
+        "history-overlay";
+
+
+    const orders =
+        [...state.orderHistory]
+            .reverse();
+
+
+    overlay.innerHTML = `
+
+        <div class="history-window">
+
+            <div class="history-header">
+
+                <div>
+
+                    <div class="history-small">
+                        TRANSACTION LOG
+                    </div>
+
+                    <h2>
+                        Completed Orders
+                    </h2>
+
+                </div>
+
+                <button
+                    id="closeHistory"
+                    class="close-options"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="history-body">
+
+                ${
+                    orders.length === 0
+                    ?
+                    `
+                    <div class="history-empty">
+                        No completed orders yet.
+                    </div>
+                    `
+                    :
+                    orders.map(order => `
+
+                        <div class="history-order">
+
+                            <div>
+
+                                <strong>
+                                    #${String(
+                                        order.number
+                                    ).padStart(4, "0")}
+                                </strong>
+
+                                <span>
+                                    ${order.type}
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    ₹${order.total.toFixed(2)}
+                                </strong>
+
+                                <span>
+                                    ${order.payment}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    `).join("")
+                }
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    document.getElementById(
+        "closeHistory"
+    ).addEventListener(
+        "click",
+        () => overlay.remove()
+    );
+
+}
+
+
+/* ============================================================
+   ADD HISTORY BUTTON TO TOP BAR
+============================================================ */
+
+const topStatus =
+    document.querySelector(
+        ".top-status"
+    );
+
+
+if (topStatus) {
+
+    const historyButton =
+        document.createElement("button");
+
+
+    historyButton.id =
+        "historyButton";
+
+
+    historyButton.textContent =
+        "ORDERS";
+
+
+    historyButton.style.cssText = `
+        height:32px;
+        padding:0 12px;
+        border-radius:5px;
+        border:1px solid #3b4146;
+        background:#252a2e;
+        color:#c9ced2;
+        font-size:10px;
+        font-weight:700;
+        cursor:pointer;
+    `;
+
+
+    historyButton.addEventListener(
+        "click",
+        openOrderHistory
+    );
+
+
+    topStatus.appendChild(
+        historyButton
+    );
+
+}
+
+
+/* ============================================================
+   LIVE ORDER NUMBER UPDATE
+============================================================ */
+
+function refreshOrderNumberDisplay() {
+
+    if (
+        !state.currentCustomerOrder
+    ) {
+
+        return;
+
+    }
+
+
+    const number =
+        document.getElementById(
+            "customerOrderNumber"
+        );
+
+
+    if (!number) return;
+
+
+    number.textContent =
+        `ORDER #${String(
+            state.currentCustomerOrder.number
+        ).padStart(4, "0")}`;
+
+}
+
+
+/* ============================================================
+   FINAL INITIALIZATION
+============================================================ */
+
+refreshOrderNumberDisplay();
+
+updateOrderTypeVisual();
+
+updateStats();
+
+</script>
+<script>
+
+/* ============================================================
+   PART 5 — POS VISUAL SYSTEM
+============================================================ */
+
+const posPolishStyles = document.createElement("style");
+
+posPolishStyles.textContent = `
+
+/* ============================================================
+   ITEM OPTIONS
+============================================================ */
+
+#itemOptionsOverlay,
+#comboBuilderOverlay {
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.78);
+
+    z-index: 180;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.item-options-box {
+
+    width: 430px;
+
+    max-width: 95vw;
+
+    background: #1c2023;
+
+    border: 1px solid #41474c;
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.65);
+
+    overflow: hidden;
+
+}
+
+
+.item-options-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 18px;
+
+    border-bottom:
+        1px solid #343a3f;
+
+}
+
+
+.item-options-header strong {
+
+    font-size: 16px;
+
+}
+
+
+.close-options {
+
+    width: 30px;
+
+    height: 30px;
+
+    border: 1px solid #3d4348;
+
+    background: #282d31;
+
+    color: #cbd0d4;
+
+    border-radius: 5px;
+
+    font-size: 19px;
+
+    cursor: pointer;
+
+}
+
+
+.close-options:hover {
+
+    background: #353b40;
+
+}
+
+
+.item-options-body {
+
+    padding: 18px;
+
+}
+
+
+.option-section {
+
+    margin-bottom: 20px;
+
+}
+
+
+.option-title {
+
+    color: #858d94;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .7px;
+
+    margin-bottom: 9px;
+
+}
+
+
+.modifier-list {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+
+}
+
+
+.modifier-option {
+
+    min-height: 42px;
+
+    padding: 8px 10px;
+
+    background: #252a2e;
+
+    border: 1px solid #383f44;
+
+    border-radius: 5px;
+
+    color: #cbd0d4;
+
+    text-align: left;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+}
+
+
+.modifier-option:hover {
+
+    background: #2d3338;
+
+}
+
+
+.modifier-option.selected {
+
+    background: #303b35;
+
+    border-color: #5c9771;
+
+    color: #e8f3eb;
+
+}
+
+
+.modifier-check {
+
+    display: inline-flex;
+
+    width: 17px;
+
+    height: 17px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #50575d;
+
+    border-radius: 3px;
+
+    margin-right: 5px;
+
+    color: transparent;
+
+    font-size: 10px;
+
+}
+
+
+.modifier-option.selected .modifier-check {
+
+    background: #5d9c74;
+
+    border-color: #5d9c74;
+
+    color: #fff;
+
+}
+
+
+.quantity-selector {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.quantity-control {
+
+    width: 38px;
+
+    height: 34px;
+
+    border: 1px solid #41484e;
+
+    background: #292e33;
+
+    color: #fff;
+
+    border-radius: 5px;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+}
+
+
+.quantity-selector strong {
+
+    min-width: 28px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+}
+
+
+.item-options-footer {
+
+    padding: 13px 18px 18px;
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.options-cancel,
+.options-add {
+
+    flex: 1;
+
+    height: 45px;
+
+    border-radius: 5px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+.options-cancel {
+
+    background: #292e32;
+
+    border: 1px solid #41474c;
+
+    color: #d2d6d9;
+
+}
+
+
+.options-add {
+
+    background: #e9e9e9;
+
+    border: 1px solid #e9e9e9;
+
+    color: #111;
+
+}
+
+
+.options-add:hover {
+
+    background: #fff;
+
+}
+
+
+/* ============================================================
+   COMBO BUILDER
+============================================================ */
+
+.combo-builder {
+
+    width: 700px;
+
+    max-width: 95vw;
+
+    max-height: 92vh;
+
+    background: #1c2023;
+
+    border: 1px solid #41474c;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.65);
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.combo-header {
+
+    padding: 18px 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #343a3f;
+
+}
+
+
+.combo-header h2 {
+
+    font-size: 17px;
+
+}
+
+
+.combo-small-title {
+
+    color: #858d94;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: .8px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.combo-body {
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+}
+
+
+.combo-step {
+
+    margin-bottom: 22px;
+
+}
+
+
+.combo-step-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+
+    margin-bottom: 9px;
+
+}
+
+
+.combo-step-title span {
+
+    width: 22px;
+
+    height: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #e9e9e9;
+
+    color: #111;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+
+}
+
+
+.combo-choice-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 7px;
+
+}
+
+
+.combo-choice {
+
+    min-height: 45px;
+
+    padding: 8px;
+
+    background: #252a2e;
+
+    border: 1px solid #383f44;
+
+    color: #cbd0d4;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+}
+
+
+.combo-choice:hover {
+
+    background: #2d3338;
+
+}
+
+
+.combo-choice.selected {
+
+    background: #30363a;
+
+    border-color: #9ba2a7;
+
+    color: #fff;
+
+}
+
+
+.combo-choice small {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #d2aa5b;
+
+}
+
+
+.combo-summary {
+
+    margin-top: 5px;
+
+    background: #15181a;
+
+    border: 1px solid #33393e;
+
+    border-radius: 6px;
+
+    padding: 13px;
+
+}
+
+
+.combo-summary > div:first-child {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.combo-summary span {
+
+    color: #858d94;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+}
+
+
+.combo-summary strong {
+
+    font-size: 18px;
+
+}
+
+
+#comboSummaryText {
+
+    margin-top: 7px;
+
+    color: #aeb5ba;
+
+    font-size: 10px;
+
+}
+
+
+.combo-footer {
+
+    display: flex;
+
+    gap: 8px;
+
+    padding: 13px 20px 18px;
+
+    border-top: 1px solid #343a3f;
+
+}
+
+
+/* ============================================================
+   RECEIPT
+============================================================ */
+
+.receipt-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 210;
+
+    background: rgba(0,0,0,.8);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.receipt-window {
+
+    width: 360px;
+
+    max-width: 94vw;
+
+    background: #f4f4f1;
+
+    color: #171717;
+
+    padding: 22px;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.7);
+
+    font-family:
+        "Courier New",
+        monospace;
+
+}
+
+
+.receipt-top {
+
+    text-align: center;
+
+}
+
+
+.receipt-brand {
+
+    font-size: 18px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+}
+
+
+.receipt-status {
+
+    margin-top: 5px;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+
+}
+
+
+.receipt-divider {
+
+    margin: 13px 0;
+
+    color: #777;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+}
+
+
+.receipt-info {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 9px;
+
+}
+
+
+.receipt-info div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.receipt-info span {
+
+    font-size: 8px;
+
+    color: #777;
+
+}
+
+
+.receipt-info strong {
+
+    font-size: 10px;
+
+}
+
+
+.receipt-item {
+
+    margin-bottom: 9px;
+
+}
+
+
+.receipt-item-name {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+.receipt-item-price {
+
+    text-align: right;
+
+    font-size: 10px;
+
+}
+
+
+.receipt-modifier {
+
+    color: #666;
+
+    font-size: 8px;
+
+    margin-top: 3px;
+
+}
+
+
+.receipt-total-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 10px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.discount-row {
+
+    color: #34734b;
+
+}
+
+
+.receipt-grand-total {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    border-top: 1px dashed #888;
+
+    padding-top: 10px;
+
+    margin-top: 9px;
+
+    font-size: 14px;
+
+}
+
+
+.receipt-footer {
+
+    text-align: center;
+
+    margin-top: 20px;
+
+    font-size: 9px;
+
+    color: #777;
+
+    line-height: 1.7;
+
+}
+
+
+.receipt-close {
+
+    width: 100%;
+
+    height: 42px;
+
+    margin-top: 18px;
+
+    background: #181818;
+
+    color: #fff;
+
+    border: none;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+
+/* ============================================================
+   ORDER HISTORY
+============================================================ */
+
+.history-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 190;
+
+    background: rgba(0,0,0,.78);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+}
+
+
+.history-window {
+
+    width: 560px;
+
+    max-width: 95vw;
+
+    max-height: 80vh;
+
+    background: #1c2023;
+
+    border: 1px solid #41474c;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.65);
+
+}
+
+
+.history-header {
+
+    padding: 18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #343a3f;
+
+}
+
+
+.history-small {
+
+    color: #858d94;
+
+    font-size: 9px;
+
+    letter-spacing: .8px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.history-header h2 {
+
+    font-size: 16px;
+
+}
+
+
+.history-body {
+
+    max-height: 60vh;
+
+    overflow-y: auto;
+
+    padding: 12px;
+
+}
+
+
+.history-empty {
+
+    padding: 50px 20px;
+
+    text-align: center;
+
+    color: #747c82;
+
+    font-size: 11px;
+
+}
+
+
+.history-order {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 13px;
+
+    background: #24282c;
+
+    border: 1px solid #343a3f;
+
+    border-radius: 5px;
+
+    margin-bottom: 7px;
+
+}
+
+
+.history-order > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.history-order > div:last-child {
+
+    text-align: right;
+
+}
+
+
+.history-order strong {
+
+    font-size: 11px;
+
+}
+
+
+.history-order span {
+
+    color: #838b92;
+
+    font-size: 9px;
+
+}
+
+
+/* ============================================================
+   PAYMENT METHOD BUTTONS
+============================================================ */
+
+.payment-method {
+
+    transition:
+        background .12s,
+        border-color .12s;
+
+}
+
+
+.payment-method:hover {
+
+    border-color: #6a7278 !important;
+
+}
+
+
+/* ============================================================
+   MENU TOUCH FEEDBACK
+============================================================ */
+
+.menu-item {
+
+    user-select: none;
+
+    -webkit-user-select: none;
+
+}
+
+
+.menu-item:active {
+
+    transform: scale(.975) !important;
+
+}
+
+
+/* ============================================================
+   INCOMING ORDER EMPHASIS
+============================================================ */
+
+.customer-order-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+.customer-order-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    width: 3px;
+
+    background: #55d98b;
+
+}
+
+
+.order-live {
+
+    animation:
+        livePulse 1.8s infinite;
+
+}
+
+
+@keyframes livePulse {
+
+    0%,100% {
+
+        opacity: 1;
+
+    }
+
+    50% {
+
+        opacity: .55;
+
+    }
+
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .workspace {
+
+        grid-template-columns:
+            220px 1fr 320px;
+
+    }
+
+    .menu-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .combo-choice-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    body {
+
+        overflow: auto;
+
+    }
+
+    .pos-app {
+
+        min-height: 100vh;
+
+        height: auto;
+
+    }
+
+    .workspace {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .left-panel {
+
+        border-right: none;
+
+        border-bottom: 1px solid #303438;
+
+    }
+
+    .cart-panel {
+
+        border-left: none;
+
+        border-top: 1px solid #303438;
+
+        min-height: 450px;
+
+    }
+
+    .topbar {
+
+        height: auto;
+
+        min-height: 72px;
+
+        gap: 10px;
+
+    }
+
+    .top-status {
+
+        gap: 8px;
+
+    }
+
+    .status-item {
+
+        display: none;
+
+    }
+
+}
+
+`;
+
+document.head.appendChild(
+    posPolishStyles
+);
+
+
+/* ============================================================
+   BETTER MENU CARDS
+============================================================ */
+
+function refreshMenuCards() {
+
+    const cards =
+        document.querySelectorAll(
+            ".menu-item"
+        );
+
+
+    const items =
+        menu[state.activeCategory];
+
+
+    cards.forEach(
+        (card, index) => {
+
+            const item =
+                items[index];
+
+
+            if (!item) return;
+
+
+            card.dataset.itemId =
+                item.id;
+
+
+            card.setAttribute(
+                "title",
+                `Add ${item.name}`
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   PATCH MENU RENDER FOR TOUCH POS
+============================================================ */
+
+const renderMenuBeforePolish =
+    renderMenu;
+
+
+renderMenu = function() {
+
+    renderMenuBeforePolish();
+
+    enableAdvancedMenu();
+
+    refreshMenuCards();
+
+};
+
+
+/* ============================================================
+   RE-RENDER
+============================================================ */
+
+renderCategories();
+
+renderMenu();
+
+renderCart();
+
+updateStats();
+
+updateOrderTypeVisual();
+
+</script>
+
 
 </body>
 </html>
